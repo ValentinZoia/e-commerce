@@ -1,23 +1,24 @@
 import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "@/layouts";
+import {Home, Categories, Products, AboutUs, Login, Register, Error} from '@/pages';
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
-        errorElement: <div>404</div>,
+        errorElement: <Error />,
         children:[
             {
                 index:true,
-                element: <div>Home</div>
+                element: <Home />,
             },
             {
                 path:"categories",
-                element: <div>Categories</div>
+                element: <Categories />,
             },
             {
                 path:"products/:prefix",
-                element: <div>Products</div>,
+                element: <Products />,
                 loader: ({params}) =>{
                     if(typeof params.prefix !== "string" ||  !/^[a-z]+$/i.test(params.prefix)){
                         throw new Response("Invalid prefix", {status:400})
@@ -27,15 +28,15 @@ const router = createBrowserRouter([
             },
             {
                 path:"about-us",
-                element: <div>About Us</div>
+                element: <AboutUs />,
             },
             {
                 path:"login",
-                element: <div>Login</div>
+                element: <Login />,
             },
             {
                 path:"register",
-                element: <div>Register</div>
+                element: <Register />,
             },
         ],
     },
