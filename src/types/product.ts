@@ -1,7 +1,12 @@
-export type Product ={
-    id: number;
-    title:string;
-    price:string;
-    cat_prefix?:string;
-    img:string;
-}   
+import { BaseEntity } from "./baseTypes";
+import { Category } from "./category";
+
+export interface Product extends BaseEntity {
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
+    image: string;
+    categoryId: number;
+    category?: Category;
+  }
