@@ -1,8 +1,10 @@
+import { Product } from "./_components"
 
 
 const Products = () => {
   return (
-    <div>Products</div>
+    
+    <Product />
   )
 }
 
