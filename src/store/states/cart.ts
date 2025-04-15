@@ -1,5 +1,5 @@
 import {CartItem, CartState } from "@/types"
-import { findCartItem, calculateItemPrice, checkStock, addItemToState} from "@/utilities";
+import { findCartItem, calculateItemPrice, checkStock, addItemToState} from "@/utilities/cartSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 
@@ -15,7 +15,7 @@ const initialState: CartState={
 
 
 
-const cartSlice = createSlice({
+export const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers:{
