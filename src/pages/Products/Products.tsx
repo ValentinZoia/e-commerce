@@ -1,10 +1,10 @@
-import { Product } from "./_components"
+import { ProductList } from "./_components"
 
 
 const Products = () => {
   return (
     
-    <Product />
+    <ProductList />
   )
 }
 
