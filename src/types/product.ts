@@ -7,6 +7,15 @@ export interface Product extends BaseEntity {
     price: number;
     stock: number;
     image: string;
-    categoryId: number;
+    isFeatured?: boolean;
+    categoryId: string;
     category?: Category;
+  }
+
+  export interface ProductsState {
+    products: Product[];
+    featuredProducts: Product[];
+    currentProduct: Product | null;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
   }
