@@ -23,16 +23,17 @@ export const cartSlice = createSlice({
             const item = action.payload;
 
             // Validaciones de seguridad
+            //verificamos que exita el producto
             if(!item?.product) {
                 state.error = "Producto no valido";
                 return;
             };
-
+            //verificamos que haya stock
             if(item.product.stock <= 0){
                 state.error = "Producto sin stock";
                 return;
             }
-
+            //preguntamos si el producto ya esta en el carrito o es nuevo
             const existingItem = findCartItem(state.items, item.product.id);
 
             const itemPrice = calculateItemPrice(item.product);
@@ -42,18 +43,21 @@ export const cartSlice = createSlice({
                     state.error = "No hay suficiente stock";
                     return;
                 }
+                //si el producto ya esta en el carrito, incrementamos la cantidad
                 existingItem.quantity += 1;
                 
             }else{
+                //si el producto no esta en el carrito, lo agregamos
                 addItemToState(state, item);
             }
+
             state.totalItems += 1;
-            state.totalPrice += itemPrice * item.quantity;// a revisar
+            state.totalPrice += itemPrice * item.quantity;
             state.loading = false;
             state.error = null;
         },
 
-        removeFromCart:(state, action: PayloadAction<number>)=>{
+        removeItemFromCart:(state, action: PayloadAction<number>)=>{
             const productId = action.payload;
 
             const existingItem = findCartItem(state.items, productId);
@@ -66,6 +70,7 @@ export const cartSlice = createSlice({
                 // Si hay más de 1, reducimos la cantidad
                 existingItem.quantity -= 1;
                 state.totalItems -= 1;
+                state.totalPrice -= existingItem?.product ? existingItem.product.price : 0;
                 
               } else {
                 // Si solo queda 1, lo eliminamos completamente
@@ -75,6 +80,20 @@ export const cartSlice = createSlice({
               }
 
 
+        },
+        removeProductFromCart:(state, action: PayloadAction<number>)=>{
+            const productId = action.payload;
+
+            const existingItem = findCartItem(state.items, productId);
+
+            if(!existingItem){
+                state.error = "Producto no encontrado";
+                return;
+            }
+
+            state.totalItems -= existingItem.quantity;
+            state.totalPrice -= existingItem?.product ? existingItem.product.price * existingItem.quantity :0;
+            state.items = state.items.filter(item => item.productId !== productId);
         },
 
         clearCart:(state)=>{
@@ -87,6 +106,6 @@ export const cartSlice = createSlice({
     }
 });
 
-export const {addToCart, removeFromCart, clearCart} = cartSlice.actions;
+export const {addToCart, removeItemFromCart, removeProductFromCart, clearCart} = cartSlice.actions;
 
 export default cartSlice.reducer;

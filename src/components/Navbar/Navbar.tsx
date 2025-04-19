@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 
-import { HeaderBasket, MobileMenu } from "./_components";
+import {  MobileMenu } from "./_components";
+import { CartPanel } from "../ShoppingCart";
 
 const Navbar = () => {
   return (
@@ -79,7 +80,8 @@ const Navbar = () => {
 
           {/* Shopping Cart */}
          
-            <HeaderBasket />
+            {/* <HeaderBasket /> */}
+            <CartPanel />
           
           {/* Mobile Menu */}
             <MobileMenu />
