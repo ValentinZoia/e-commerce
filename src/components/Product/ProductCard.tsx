@@ -1,20 +1,32 @@
-import { Product } from "@/types"
+import { CartItem, Product } from "@/types"
 import{ Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {Image} from '@/components/Image'
 
 import { ShoppingCart } from "lucide-react"
+import { useAppDispatch } from "@/store/store"
+import {addToCart} from '@/store/states/cart'
 
 interface ProductCardProps {
   product: Product
 }
 
 const ProductCard = ({product}:ProductCardProps) => {
-  
-  const handleAddToCart = () =>{
-    console.log("se hagrego");
+  const dispatch = useAppDispatch();
+
+  //Agregamos al carrito
+  const handleAddToCart = (product:Product) =>{
+    const data:CartItem ={
+      productId: product.id,
+      quantity: 1,
+      product,
+    }
+    
+    dispatch(addToCart(data));
   }
+
+
   const isLowStock = product.stock <= 5 && product.stock > 0
   const isOutOfStock = product.stock === 0
 
@@ -67,7 +79,7 @@ const ProductCard = ({product}:ProductCardProps) => {
             </Badge>
           )}
         </div>
-        <Button onClick={handleAddToCart} disabled={isOutOfStock} size="sm" className="gap-1 cursor-pointer">
+        <Button onClick={()=> handleAddToCart(product)} disabled={isOutOfStock} size="sm" className="gap-1 cursor-pointer">
           <ShoppingCart className="h-4 w-4" />
           Add to cart
         </Button>
