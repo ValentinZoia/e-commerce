@@ -52,10 +52,10 @@ const router = createBrowserRouter([
             path: ":categoryId",
             element: <CategoryProducts />,
             loader: async ({ params }) => {
-              if (!params.categoryId || !/^\d+$/.test(params.categoryId)) {
+              if (!params.categoryId ) {
                 throw new Response("Invalid category ID", { status: 400 });
               }
-              return { categoryId: parseInt(params.categoryId) };
+              return { categoryId: params.categoryId };
             },
           },
         ],
