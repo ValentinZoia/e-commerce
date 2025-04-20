@@ -1,4 +1,4 @@
-import { CartItem } from "@/types"
+import { CartItem, Product } from "@/types"
 
 
 // Encuentra un ítem en el carrito
@@ -7,19 +7,14 @@ export const findCartItem = (items: CartItem[], productId: number) => {
 };
 
 // Calcula el precio considerando posibles descuentos
-export const calculateItemPrice = (product: {
-    price: number;
-    discount?: number;
-}) => {
+export const calculateItemPrice = (product: Product) => {
     return product.discount 
         ? product.price * (1 - product.discount)
         : product.price;
 };
 
 // Verifica el stock disponible
-export const checkStock = (product: {
-    stock: number;
-}, desiredQuantity: number) => {
+export const checkStock = (product: Product, desiredQuantity: number) => {
     return product.stock >= desiredQuantity;
 };
 
