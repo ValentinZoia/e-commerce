@@ -1,4 +1,4 @@
-import {CartItem, CartState } from "@/types"
+import {CartItem, CartState, Product } from "@/types"
 import { findCartItem, calculateItemPrice, checkStock, addItemToState} from "@/utilities/cartSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
@@ -48,7 +48,9 @@ export const cartSlice = createSlice({
                 
             }else{
                 //si el producto no esta en el carrito, lo agregamos
-                addItemToState(state, item);
+                const newProduct: Product = {...item.product , price: itemPrice};
+                const itemData: CartItem = {...item, product: newProduct};
+                addItemToState(state, itemData);
             }
 
             state.totalItems += 1;

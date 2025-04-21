@@ -22,3 +22,9 @@ export interface Product extends BaseEntity {
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   }
+
+  export enum ProductStatus {
+    NEW = 'new',
+    FEATURED = 'featured',
+    PROMOTION = 'promotion',
+  }

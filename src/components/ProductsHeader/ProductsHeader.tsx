@@ -1,15 +1,18 @@
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import {ProductsCarousel} from './_components'
+import { ProductStatus, Product } from "@/types";
 
 
 interface PoductsHeaderProps{
     title:string;
+    produsctsStatus: ProductStatus
+    products: Product[]
 
 }
 
 
-const ProductsHeader = ({title}:PoductsHeaderProps) => {
+const ProductsHeader = ({title, produsctsStatus, products}:PoductsHeaderProps) => {
   return (
     <section className="py-10">
           <div className="container">
@@ -20,7 +23,7 @@ const ProductsHeader = ({title}:PoductsHeaderProps) => {
                 <ChevronRight className="h-4 w-4 ml-1" />
               </Link>
             </div>
-            <ProductsCarousel />
+            <ProductsCarousel productsStatus={produsctsStatus} products={products}/>
           </div>
         </section>
   )
