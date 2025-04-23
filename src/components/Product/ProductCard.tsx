@@ -1,5 +1,5 @@
-import { CartItem, Product, ProductStatus } from "@/types";
-import { Button } from "@/components/ui/button";
+import {  Product, ProductStatus } from "@/types";
+
 import {
   Card,
   
@@ -11,51 +11,48 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Image } from "@/components/Image";
 
-import { ShoppingCart } from "lucide-react";
-import { useAppDispatch } from "@/store/store";
-import { addToCart } from "@/store/states/cart";
+
 import { cn } from "@/lib/utils";
 import { calculateItemPrice } from "@/utilities/cartSlice";
+import { Link } from "react-router-dom";
+import { AddProductButton } from "@/components";
 
 interface ProductCardProps {
   product: Product;
-  productsStatus: ProductStatus;
+  productsStatus?: ProductStatus;
 }
 
 const ProductCard = ({ product, productsStatus }: ProductCardProps) => {
-  const dispatch = useAppDispatch();
+  
 
   //Agregamos al carrito
-  const handleAddToCart = (product: Product) => {
-    const data: CartItem = {
-      productId: product.id,
-      quantity: 1,
-      product,
-    };
-
-    dispatch(addToCart(data));
-  };
+  
 
   const isLowStock = product.stock <= 5 && product.stock > 0;
   const isOutOfStock = product.stock === 0;
+  const isProductNew = productsStatus === ProductStatus.NEW || product.isNew;
+  const isProductPromotion =
+    productsStatus === ProductStatus.PROMOTION || product.isPromotion;
 
   const discountPorcentage = product?.discount ? product.discount * 100 : 0;
   return (
+    
     <Card className="overflow-hidden transition-all hover:shadow-md">
+      <Link to={`/products/${product.id}`} className="w-full">
       <div className="relative aspect-square overflow-hidden">
-        {((productsStatus === ProductStatus.PROMOTION && product.isPromotion) ||
-          (productsStatus === ProductStatus.NEW && product.isNew)) && (
+        {((isProductPromotion) ||
+          (isProductNew)) && (
           <Badge
             className={cn("absolute top-2 right-2 z-10", {
               "bg-red-500 hover:bg-red-600":
-                productsStatus === ProductStatus.PROMOTION,
+                isProductPromotion,
               "bg-green-500 hover:bg-green-600":
-                productsStatus === ProductStatus.NEW,
+                isProductNew,
             })}
           >
-            {productsStatus === ProductStatus.PROMOTION &&
+            {isProductPromotion &&
               `-${discountPorcentage}%`}
-            {productsStatus === ProductStatus.NEW && "Nuevo"}
+            {isProductNew && "Nuevo"}
           </Badge>
         )}
         <Image
@@ -86,18 +83,18 @@ const ProductCard = ({ product, productsStatus }: ProductCardProps) => {
           <div className="text-right flex items-center gap-2 mt-2">
             <span className={cn("font-bold" ,{
                 "text-red-500":
-                productsStatus === ProductStatus.PROMOTION,
+                isProductPromotion,
             })}>
-              ${calculateItemPrice(product).toFixed(2)}
+              ${calculateItemPrice(product).toFixed(0)}
 
             </span>
-            {productsStatus === ProductStatus.PROMOTION && (
+            {isProductPromotion && (
               <span className="text-sm text-muted-foreground line-through">${product.price}</span>
             )}
           </div>
         </div>
       </CardHeader>
-      
+      </Link>
       <CardFooter className="flex flex-wrap gap-2 items-center justify-between px-4 pt-0">
         <div>
           {isOutOfStock ? (
@@ -118,17 +115,12 @@ const ProductCard = ({ product, productsStatus }: ProductCardProps) => {
             </Badge>
           )}
         </div>
-        <Button
-          onClick={() => handleAddToCart(product)}
-          disabled={isOutOfStock}
-          size="sm"
-          className="gap-1 cursor-pointer"
-        >
-          <ShoppingCart className="h-4 w-4" />
-          Add to cart
-        </Button>
+        
+        <AddProductButton product={product} />
       </CardFooter>
     </Card>
+    
+    
   );
 };
 
