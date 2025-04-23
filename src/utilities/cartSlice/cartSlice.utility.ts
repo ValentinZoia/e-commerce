@@ -2,7 +2,7 @@ import { CartItem, Product } from "@/types"
 
 
 // Encuentra un ítem en el carrito
-export const findCartItem = (items: CartItem[], productId: number) => {
+export const findCartItem = (items: CartItem[], productId: string) => {
     return items.find(item => item.productId === productId);
 };
 
