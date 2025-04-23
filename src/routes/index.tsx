@@ -71,10 +71,10 @@ const router = createBrowserRouter([
             path: ":productId",
             element: <ProductDetail />,
             loader: async ({ params }) => {
-              if (!params.productId || !/^\d+$/.test(params.productId)) {
+              if (!params.productId ) {
                 throw new Response("Invalid product ID", { status: 400 });
               }
-              return { productId: parseInt(params.productId) };
+              return { productId: params.productId };
             },
           },
         ],
