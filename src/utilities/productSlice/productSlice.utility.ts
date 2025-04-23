@@ -3,8 +3,11 @@ import { Product } from "@/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {collection, getDocs, doc , getDoc, query, where} from 'firebase/firestore'
 
+const collectionName = 'productos';
+
 export function isProduct(data: any): data is Product {
     return (
+      data &&
       typeof data?.name === 'string' &&
       typeof data?.description === 'string' &&
       typeof data?.price === 'number' &&
@@ -17,7 +20,7 @@ export const fetchProducts = createAsyncThunk(
     'products/fetchAll',
     async (_,{rejectWithValue}) =>{
         try{
-            const productsCol = collection(db, 'productos');
+            const productsCol = collection(db, collectionName);
             
             const snapshot = await getDocs(productsCol);
             
@@ -47,7 +50,7 @@ export const fetchFeaturedProducts = createAsyncThunk(
     'products/fetchFeatured',
     async (_, { rejectWithValue }) => {
       try {
-        const q = query(collection(db, 'products'), where('isFeatured', '==', true));
+        const q = query(collection(db, collectionName), where('isFeatured', '==', true));
         const snapshot = await getDocs(q);
         const products = snapshot.docs.map(doc => {
             const data = doc.data();
@@ -74,7 +77,8 @@ export const fetchFeaturedProducts = createAsyncThunk(
     'products/fetchById',
     async (productId: string, { rejectWithValue }) => {
       try {
-        const docRef = doc(db, 'products', productId);
+        const docRef = doc(db, collectionName, productId);
+        
         const docSnap = await getDoc(docRef);
         
         if (!docSnap.exists()) {
@@ -100,7 +104,8 @@ export const fetchFeaturedProducts = createAsyncThunk(
           
           return product;
       } catch (error) {
-        return rejectWithValue(error);
+         // Pasa solo el mensaje de error, no el objeto completo
+      return rejectWithValue(error );
       }
     }
   );
