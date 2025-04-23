@@ -5,7 +5,7 @@ import { ProductStatus, Product } from '@/types'
 
 const featuredProducts: Product[] = [
   {
-      id: 1,
+      id: "1",
       name: 'Smartphone Premium',
       description: 'Último modelo con cámara profesional',
       price: 999,
@@ -15,7 +15,7 @@ const featuredProducts: Product[] = [
       categoryId: 'electronics'
   },
   {
-      id: 2,
+      id: "2",
       name: 'Sofá de Diseño',
       description: 'Sofá ergonómico en piel sintética',
       price: 1200,
@@ -25,7 +25,7 @@ const featuredProducts: Product[] = [
       categoryId: 'furniture'
   },
   {
-      id: 3,
+      id: "3",
       name: 'Cafetera Automática',
       description: 'Prepara café como un barista profesional',
       price: 299,
@@ -39,7 +39,7 @@ const featuredProducts: Product[] = [
 // Productos nuevos (isNew: true)
 const newProducts: Product[] = [
   {
-      id: 4,
+      id: "4",
       name: 'Audífonos Inalámbricos',
       description: 'Nueva generación con cancelación de ruido',
       price: 199,
@@ -49,7 +49,7 @@ const newProducts: Product[] = [
       categoryId: 'electronics'
   },
   {
-      id: 5,
+      id: "5",
       name: 'Zapatillas Running',
       description: 'Tecnología de amortiguación avanzada',
       price: 129,
@@ -59,7 +59,7 @@ const newProducts: Product[] = [
       categoryId: 'sports'
   },
   {
-      id: 6,
+      id: "6",
       name: 'Libro de Cocina',
       description: 'Nuevas recetas para 2023',
       price: 35,
@@ -73,7 +73,7 @@ const newProducts: Product[] = [
 // Productos en promoción (isPromotion: true con discount)
 const promotionProducts: Product[] = [
   {
-      id: 7,
+      id: "7",
       name: 'Televisor 4K',
       description: '55 pulgadas con HDR',
       price: 799,
@@ -84,7 +84,7 @@ const promotionProducts: Product[] = [
       categoryId: 'electronics'
   },
   {
-      id: 8,
+      id: "8",
       name: 'Juego de Sartenes',
       description: 'Antiadherente de última generación',
       price: 89,
@@ -95,7 +95,7 @@ const promotionProducts: Product[] = [
       categoryId: 'home'
   },
   {
-      id: 9,
+      id: "9",
       name: 'Mochila Profesional',
       description: 'Resistente al agua con compartimentos',
       price: 59,
