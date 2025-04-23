@@ -59,7 +59,7 @@ export const cartSlice = createSlice({
             state.error = null;
         },
 
-        removeItemFromCart:(state, action: PayloadAction<number>)=>{
+        removeItemFromCart:(state, action: PayloadAction<string>)=>{
             const productId = action.payload;
 
             const existingItem = findCartItem(state.items, productId);
@@ -83,7 +83,7 @@ export const cartSlice = createSlice({
 
 
         },
-        removeProductFromCart:(state, action: PayloadAction<number>)=>{
+        removeProductFromCart:(state, action: PayloadAction<string>)=>{
             const productId = action.payload;
 
             const existingItem = findCartItem(state.items, productId);
