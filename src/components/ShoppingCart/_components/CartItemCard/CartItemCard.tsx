@@ -6,8 +6,8 @@ import { Trash2, X } from "lucide-react";
 
 interface CartItemProps {
   item: CartItem;
-  removeItem: (productId: number) => void;
-  removeProduct: (productId: number) => void;
+  removeItem: (productId: string) => void;
+  removeProduct: (productId: string) => void;
 }
 
 
@@ -28,7 +28,7 @@ const CartItemCard = ({item, removeItem, removeProduct}: CartItemProps) => {
             <div className="flex items-center justify-between mt-1">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold">
-                  ${item.product?.price.toFixed(2)}
+                  ${item.product?.price.toFixed(0)}
                 </span>
                 <span className="text-xs text-muted-foreground">
                   x{item.quantity}

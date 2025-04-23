@@ -30,12 +30,12 @@ const CartPanel = () => {
     };
 
     //remover item individual
-    const removeItem = (productId: number) => {
+    const removeItem = (productId: string) => {
         dispatch(removeItemFromCart(productId));
     };
 
     //remover item completo
-    const removeProduct = (productId: number) => {
+    const removeProduct = (productId: string) => {
         dispatch(removeProductFromCart(productId));
     };
 
@@ -88,7 +88,7 @@ const CartPanel = () => {
     
                   <div className="flex items-center justify-between">
                     <span className="font-medium">Total:</span>
-                    <span className="font-bold">${totalPrice.toFixed(2)}</span>
+                    <span className="font-bold">${totalPrice.toFixed(0)}</span>
                   </div>
     
                   <div className="mt-4 grid grid-cols-2 gap-2">
