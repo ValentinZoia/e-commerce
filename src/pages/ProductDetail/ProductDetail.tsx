@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { fetchProductById } from "@/utilities/productSlice";
-import { RootState, useAppDispatch } from "@/store/store";
+
 import {useLoaderData} from 'react-router-dom'
 import {ProductDetailCard} from './_components'
+import { useFetchProducts } from "@/hooks/useFetchProducts";
+import { ProductStatus } from "@/types";
 
 
 const ProductDetail = () => {
@@ -11,35 +10,18 @@ const ProductDetail = () => {
   const {productId} = useLoaderData() as{
     productId: string
   }
-  console.log(productId);
+  
   if(!productId){
     
     throw new Response("Invalid category ID", {status: 400})
     
   }
   
-  const dispatch = useAppDispatch();
-    const { currentProduct,  status, error } = useSelector(
-      (state: RootState) => state.products
-    );
+  const {status, error, currentProduct} = useFetchProducts({productsStatus: ProductStatus.SINGLEPRODUCT, productId:productId});
   
-    useEffect(() => {
-      const loadProducts = async () => {
-        try {
-          await dispatch(fetchProductById(productId)).unwrap();
-          
-        } catch (error) {
-          console.error("Failed to load products:", error);
-          // Puedes mostrar un mensaje de error al usuario aquí
-        }
-      };
-  
-      loadProducts();
-    }, [dispatch]);
-  
-    if (status === "loading") return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-    if(!currentProduct) return <div>Product not found</div>
+    if (status === "loading") return <div className="flex justify-center items-center h-screen text-center">Loading...</div>;
+    if (error) return <div className="flex justify-center items-center h-screen text-center">Error: {error}</div>;
+    if(!currentProduct) return <div className="flex justify-center items-center h-screen text-center">Product not found</div>
   
   return (
     <main className="bg-white min-h-screen rounded-md">

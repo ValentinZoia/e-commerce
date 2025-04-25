@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { fetchProducts} from "@/utilities/productSlice";
-import { RootState, useAppDispatch } from "@/store/store";
+
 import { ProductList } from "./_components"
+import { useFetchProducts } from "@/hooks/useFetchProducts";
+import { ProductStatus } from "@/types";
 
 //En esta pagina se mostrarian todos los productos
 //Hay que hacer un fetching de datos
@@ -11,27 +10,10 @@ import { ProductList } from "./_components"
 
 
 const Products = () => {
-  const dispatch = useAppDispatch();
-  const { products,  status, error } = useSelector(
-    (state: RootState) => state.products
-  );
+  const{status, error, products} = useFetchProducts({productsStatus: ProductStatus.All});
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        await dispatch(fetchProducts()).unwrap();
-        
-      } catch (error) {
-        console.error("Failed to load products:", error);
-        // Puedes mostrar un mensaje de error al usuario aquí
-      }
-    };
-
-    loadProducts();
-  }, [dispatch]);
-
-  if (status === "loading") return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (status === "loading") return <div className="flex justify-center items-center h-screen text-center">Loading...</div>;
+  if (error) return <div className="flex justify-center items-center h-screen text-cente text-center">Error: {error}</div>;
   
   return (
     <div className="container mx-auto py-10">

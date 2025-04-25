@@ -1,18 +1,23 @@
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import {ProductsCarousel} from './_components'
-import { ProductStatus, Product } from "@/types";
+import { ProductStatus } from "@/types";
 
 
-interface PoductsHeaderProps{
+
+interface PoductsHeaderProps {
     title:string;
-    produsctsStatus: ProductStatus
-    products: Product[]
+    productsStatus: ProductStatus
+    
 
 }
 
 
-const ProductsHeader = ({title, produsctsStatus, products}:PoductsHeaderProps) => {
+const ProductsHeader = ({title, productsStatus}:PoductsHeaderProps) => {
+  
+
+  
+  
   return (
     <section className="py-10">
           <div className="container">
@@ -23,7 +28,8 @@ const ProductsHeader = ({title, produsctsStatus, products}:PoductsHeaderProps) =
                 <ChevronRight className="h-4 w-4 ml-1" />
               </Link>
             </div>
-            <ProductsCarousel productsStatus={produsctsStatus} products={products}/>
+            
+            <ProductsCarousel productsStatus={productsStatus} />
           </div>
         </section>
   )
