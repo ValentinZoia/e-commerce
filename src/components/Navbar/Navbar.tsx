@@ -57,10 +57,10 @@ const Navbar = () => {
           </DropdownMenu>
 
           <Link
-            to="about-us"
+            to="products"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
-            About
+            Products
           </Link>
         </nav>
 
