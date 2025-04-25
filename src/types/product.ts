@@ -18,12 +18,23 @@ export interface Product extends BaseEntity {
   export interface ProductsState {
     products: Product[];
     featuredProducts: Product[];
+    promotionalProducts: Product[];
+    newProducts: Product[];
     currentProduct: Product | null;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
+    lastFetched: {
+      all: number | undefined;
+      new: number | undefined;
+      featured: number | undefined;
+      promotion: number | undefined;
+      singleProduct: number | undefined;
+    } 
   }
 
   export enum ProductStatus {
+    All = 'all',
+    SINGLEPRODUCT = 'singleProduct',
     NEW = 'new',
     FEATURED = 'featured',
     PROMOTION = 'promotion',
