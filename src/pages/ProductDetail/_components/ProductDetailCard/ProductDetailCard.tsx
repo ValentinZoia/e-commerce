@@ -1,4 +1,4 @@
-import { type Product, ProductStatus } from "@/types"
+import { type Product } from "@/types"
 import { Image } from "@/components/Image"
 import { Share2 } from "lucide-react"
 import { AddProductButton } from "@/components"
@@ -8,10 +8,10 @@ import { calculateItemPrice } from "@/utilities/cartSlice"
 
 interface ProductDetailCardProps {
   product: Product
-  productStatus?: ProductStatus
+ 
 }
 
-const ProductDetailCard = ({ product, productStatus }: ProductDetailCardProps) => {
+const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
  
 
   // Determine if product is in stock
