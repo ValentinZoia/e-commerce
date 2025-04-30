@@ -68,10 +68,10 @@ const ProductCard = ({ product, productsStatus }: ProductCardProps) => {
 
         
       </div>
-      <CardHeader className="px-4">
+      <CardHeader className="px-2">
         <div className="flex flex-col items-start justify-between">
           <div>
-            <CardTitle className="line-clamp-1 text-lg">
+            <CardTitle className="line-clamp-1 text-md font-normal">
               {product.name}
             </CardTitle>
             {product.category && (
@@ -80,17 +80,28 @@ const ProductCard = ({ product, productsStatus }: ProductCardProps) => {
               </CardDescription>
             )}
           </div>
-          <div className="text-right flex items-center gap-2 mt-2">
-            <span className={cn("font-bold" ,{
-                "text-red-500":
-                isProductPromotion,
-            })}>
-              ${calculateItemPrice(product).toFixed(0)}
-
-            </span>
-            {isProductPromotion && (
+          <div className="text-right flex flex-col items-start gap-0 mt-2">
+            
+          {isProductPromotion && (
               <span className="text-sm text-muted-foreground line-through">${product.price}</span>
             )}
+            <div className="flex gap-2 items-center">
+              <span className={cn("font-bold text-lg" ,{
+                "":
+                isProductPromotion,
+            })}>
+              ${calculateItemPrice(product).toFixed(2)}
+
+            </span>
+            {isProductPromotion &&
+            <span className="text-md text-primary font-normal">
+              {`${discountPorcentage}% OFF`}
+            </span>
+              }
+            
+            </div>
+            
+            
           </div>
         </div>
       </CardHeader>
