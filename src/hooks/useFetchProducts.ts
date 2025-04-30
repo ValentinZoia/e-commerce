@@ -76,7 +76,7 @@ export function useFetchProducts({
         const lastFetch = lastFetched?.[productsStatus] || 0;
 
         // Si ya tenemos productos y no necesitamos refrescar, no hacemos nada
-        if (currentProducts && currentProducts.length > 0 && !shouldRefresh(lastFetch)) {
+        if (currentProducts && currentProducts.length > 0 && !shouldRefresh(lastFetch) && productsStatus !== ProductStatus.SINGLEPRODUCT) {
             return;
         }
 
@@ -97,7 +97,7 @@ export function useFetchProducts({
             if (!productId) return;
             
             // Para producto único, verificamos si ya lo tenemos y si está actualizado
-            if (currentProduct?.id === productId && !shouldRefresh(lastFetch)) {
+            if (currentProduct?.id === productId  && !shouldRefresh(lastFetched?.singleProduct)) {
                 
               return;
               }
