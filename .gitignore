@@ -25,3 +25,12 @@ dist-ssr
 *.sw?
 firebase.ts
 
+# Frontend (client)
+client/node_modules
+client/dist
+
+# Backend (server)
+server/node_modules
+server/.env
+server/prisma/migrations
+

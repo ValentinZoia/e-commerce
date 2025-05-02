@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id                     String         @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String
+  description            String?
+  price                  Float
+  discountPercentage     Float?         @default(0) // 0-1 (ej: 0.2 = 20%)
+  cashPrice              Float?
+  cashDiscountPercentage Float?         @default(0) // 0-1
+  stock                  Int            @default(0)
+  sizes                  Sizes[]
+  currentSize            String?
+  freeShippingThreshold  Float? //Si se supera este monto es envio gratis.
+  isFreeShipping         Boolean?       @default(false) // Tiene envio gratis?
+  isFeatured             Boolean?       @default(false)
+  isPromotion            Boolean?       @default(false)
+  isNew                  Boolean?       @default(false)
+  categoryId             String
+  category               Category       @relation(fields: [categoryId], references: [id])
+  installments           Installments[] // Relación 1-a-muchos
+  images                 String[]
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+
+  // Validaciones adicionales (se implementan en lógica de negocio)
+  // @@index([name]) // Opcional para búsquedas frecuentes
+}
+
+//Estas serian las cuatas del producto ej(quantity :3 ; amount : 500. 3 cuotas de $500)
+type Installments {
+  quantity Int
+  amount   Float
+}
+
+type Sizes {
+  name  String
+  stock Int
+}
+
+model Category {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
