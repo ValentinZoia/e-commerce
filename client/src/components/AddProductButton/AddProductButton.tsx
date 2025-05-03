@@ -6,10 +6,11 @@ import { Button } from '../ui/button';
 
 interface AddProductButtonProps {
   product: Product
-  size?: "sm" | "lg" | "xl"| "default" | "icon" | null | undefined
+  disabled:boolean
+  
 }
 
-const AddProductButton = ({product, size}: AddProductButtonProps) => {
+const AddProductButton = ({product, disabled}: AddProductButtonProps) => {
   const dispatch = useAppDispatch();
   
     //Agregamos al carrito
@@ -25,16 +26,18 @@ const AddProductButton = ({product, size}: AddProductButtonProps) => {
   
     const isOutOfStock = product.stock === 0;
     return (
-    <Button
-          onClick={() => handleAddToCart(product)}
-          disabled={isOutOfStock}
-          size={size || "sm"}
-          className= {`gap-1 cursor-pointer ${size == "xl" && "text-md"}`}
-          type="button"
-        >
-          <ShoppingCart className="h-4 w-4" />
-          Add to cart
-        </Button>
+      <Button 
+      disabled={isOutOfStock || disabled}
+      onClick={() => handleAddToCart(product)}
+      
+      className="w-full bg-lime-500 hover:bg-lime-600 text-md text-black  h-10 px-12 rounded-none cursor-pointer">
+      <div className="flex items-center gap-2">
+        <ShoppingCart className="w-6 h-6" />
+        Agregar al carrito
+      </div>
+      
+      
+    </Button>
   )
 }
 
