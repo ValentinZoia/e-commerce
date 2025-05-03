@@ -9,6 +9,7 @@ import {
   calculateItemPrice,
 } from "@/utilities/cartSlice";
 import { Link } from "react-router-dom";
+import { formatPrice } from "@/utilities";
 
 // import { cn } from "@/lib/utils";
 // import { calculateItemPrice } from "@/utilities/cartSlice";
@@ -20,6 +21,7 @@ interface ProductCardProps {
   productsStatus?: ProductStatus;
 }
 
+
 const ProductCard = ({ product }: ProductCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -27,16 +29,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     ? `${product.discountPercentage * 100}% OFF`
     : null;
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })
-      .format(price)
-      .replace(",00", ",00");
-  };
+  
 
   const handleMouseEnter = () => {
     if (product.images.length > 1) {
