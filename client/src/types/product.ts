@@ -9,7 +9,7 @@ export interface Product extends BaseEntity {
   discountPercentage?: number ;
   cashPrice?: number ; // Precio de contado
   cashDiscountPercentage?: number ; // Porcentaje de descuento de contado
-  stock?: number;
+  stock: number;
   sizes?: Sizes[]; // Relación con el modelo Sizes (Talles)
   currentSize?: string ;
   freeShippingThreshold?: number ; // Indica el monto mínimo para envío gratis
