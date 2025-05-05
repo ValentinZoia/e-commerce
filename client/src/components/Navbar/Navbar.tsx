@@ -29,22 +29,22 @@ const Navbar = () => {
         {/* Right Side -  Cart */}
 
         <div className="flex items-center gap-4">
-          {/* Shopping Cart */}
+          
 
-          {/* <HeaderBasket /> */}
+          {/* Shopping Cart */}
           <CartPanel />
 
           {/* Mobile Menu */}
           <MobileMenu />
         </div>
       </div>
-      <div className="w-full bg-primary hidden md:block">
+      <div className="w-full bg-white border-y-1 hidden md:block">
         <div className="container flex h-16 items-center justify-center ">
           {/* Menu Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <Link
               to="/"
-              className="text-sm text-primary-foreground font-medium transition-colors hover:text-primary-foreground/80"
+              className="text-sm  font-medium transition-colors "
             >
               Home
             </Link>
@@ -53,7 +53,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="link"
-                  className=" cursor-pointer p-0 h-auto font-medium text-sm flex items-center gap-1 text-primary-foreground hover:text-primary-foreground/80"
+                  className=" cursor-pointer text-black p-0 h-auto font-medium text-sm flex items-center gap-1  "
                 >
                   Categories
                   <ChevronDown className="h-4 w-4" />
@@ -77,7 +77,7 @@ const Navbar = () => {
 
             <Link
               to="products"
-              className="text-sm font-medium transition-colors text-primary-foreground hover:text-primary-foreground/80"
+              className="text-sm font-medium transition-colors  "
             >
               Products
             </Link>
