@@ -32,6 +32,7 @@ export const addItemToState = (state: { items: CartItem[] }, item: CartItem) => 
         productId: item.productId,
         product: item.product,
         quantity: 1,
+        size: item.size,
        
     });
     
