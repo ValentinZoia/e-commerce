@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { getLocalStorage, setLocalStorage } from "@/utilities";
 import { SearchModal } from "../SearchModal";
