@@ -4,6 +4,7 @@ import { Product } from "./product";
 export interface CartItem {
     productId: string;
     quantity: number;
+    size?: string | null;
     product?: Product; // Populated on client side
   }
   
