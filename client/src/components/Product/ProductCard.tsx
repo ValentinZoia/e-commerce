@@ -24,6 +24,9 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const isDiscount = product.discountPercentage === undefined || product.discountPercentage === 0 ? false : true;
+  const isCashDiscount = product.cashDiscountPercentage === undefined || product.cashDiscountPercentage === 0 ? false : true;
+  console.log(isCashDiscount)
 
   const discountText = product.discountPercentage
     ? `${product.discountPercentage * 100}% OFF`
@@ -78,7 +81,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           threshold={0.2}
         />
         {product.discountPercentage && product.discountPercentage > 0 && (
-          <Badge className="absolute top-2 right-2 bg-emerald-600 hover:bg-emerald-700">
+          <Badge className="absolute top-2 right-2 bg-celeste/95 hover:bg-celeste">
             -{discountText}
           </Badge>
         )}
@@ -90,14 +93,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </h3>
         <div className="flex flex-col gap-2">
           <div className="flex flex-col items-start gap-0">
-            <span className="text-gray-500 line-through text-sm">
+            { isDiscount &&  (
+              <span className="text-gray-500 line-through text-sm">
               {formatPrice(product.price)}
+              
+              
             </span>
+            )}
+            
             <div className="flex items-center gap-2">
               <span className="font-bold text-xl">
                 {formatPrice(calculateItemPrice(product))}
               </span>
-              <span className="text-md  font-normal text-emerald-600">
+              <span className="text-md  font-normal text-celeste">
                 {discountText}
               </span>
             </div>
@@ -110,11 +118,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
             )}
           </div>
 
-          {product.cashDiscountPercentage &&
-            product.cashDiscountPercentage > 0 && (
-              <p className="text-sm text-emerald-600 font-semibold">
+          {isCashDiscount && (
+              <p className="text-sm text-celeste font-semibold">
                 {formatPrice(calculateItemCashPrice(product))} con Efectivo o
                 Transferencia
+                
               </p>
             )}
 
