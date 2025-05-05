@@ -48,8 +48,10 @@ export const cartSlice = createSlice({
                 
             }else{
                 //si el producto no esta en el carrito, lo agregamos
+                
                 const newProduct: Product = {...item.product , price: itemPrice};
-                const itemData: CartItem = {...item, product: newProduct};
+                const itemData: CartItem = {...item, product: newProduct,size:item.size};
+                
                 addItemToState(state, itemData);
             }
 
@@ -57,6 +59,7 @@ export const cartSlice = createSlice({
             state.totalPrice += itemPrice * item.quantity;
             state.loading = false;
             state.error = null;
+            
         },
 
         removeItemFromCart:(state, action: PayloadAction<string>)=>{
@@ -83,6 +86,32 @@ export const cartSlice = createSlice({
 
 
         },
+        plusItemFromCart:(state, action: PayloadAction<string>)=>{
+            const productId = action.payload;
+
+            //verificar si existe el producto en el carrito
+            const existingItem = findCartItem(state.items, productId);
+            if(!existingItem || !existingItem.product){
+                state.error = "Producto no encontrado";
+                return;
+            };
+
+            //verificar el stock antes de incrementar
+            if(!checkStock(existingItem.product, existingItem.quantity + 1)){
+                state.error = "No hay suficiente stock";
+                return;
+            }
+            //si el producto ya esta en el carrito, incrementamos la cantidad
+            existingItem.quantity += 1;
+            state.totalItems += 1;
+            state.totalPrice += existingItem?.product ? existingItem.product.price : 0;
+            state.loading = false;
+            state.error = null;
+        
+
+        },
+        //remover producto completo del carrito
+
         removeProductFromCart:(state, action: PayloadAction<string>)=>{
             const productId = action.payload;
 
@@ -108,6 +137,6 @@ export const cartSlice = createSlice({
     }
 });
 
-export const {addToCart, removeItemFromCart, removeProductFromCart, clearCart} = cartSlice.actions;
+export const {addToCart, removeItemFromCart, removeProductFromCart, clearCart, plusItemFromCart} = cartSlice.actions;
 
 export default cartSlice.reducer;
