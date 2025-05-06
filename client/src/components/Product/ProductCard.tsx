@@ -26,8 +26,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const isDiscount = product.discountPercentage === undefined || product.discountPercentage === 0 ? false : true;
   const isCashDiscount = product.cashDiscountPercentage === undefined || product.cashDiscountPercentage === 0 ? false : true;
-  console.log(isCashDiscount)
-
+  
   const discountText = product.discountPercentage
     ? `${product.discountPercentage * 100}% OFF`
     : null;

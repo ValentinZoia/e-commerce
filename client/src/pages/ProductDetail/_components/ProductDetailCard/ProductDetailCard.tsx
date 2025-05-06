@@ -91,6 +91,7 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Parte izquierda - Imagenes */}
           <div className="space-y-4">
+            {/* TODO: SEPARAR TODO ESTO EN OTRO COMPONENTE PARA EVITAR UN RERENDER DER COMPONENTE COMPLETO */}
             <div className="flex gap-4">
               {/* VISTA DE IMAGENES PEQUEÑAS - SE VERA A PARTIR DE MD */}
               {product.images.length > 1 && (
