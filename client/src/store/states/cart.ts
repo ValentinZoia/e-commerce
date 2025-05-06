@@ -23,23 +23,38 @@ export const cartSlice = createSlice({
             const item = action.payload;
 
             // Validaciones de seguridad
-            //verificamos que exita el producto
-            if(!item?.product) {
-                state.error = "Producto no valido";
-                return;
-            };
-            //verificamos que haya stock
-            if(item.product.stock <= 0){
+            // 1 -- verificamos que exita el producto
+                if(!item?.product) {
+                    state.error = "Producto no valido";
+                    return;
+                };
+
+            // 2 -- verificamos que haya stock del producto en general
+                if(item.product.stock <= 0){
                 state.error = "Producto sin stock";
                 return;
-            }
-            //preguntamos si el producto ya esta en el carrito o es nuevo
+                }
+
+            // 3 -- verificamos que haya stock del producto en la talla seleccionada
+                
+                const selectedSizeStock =item.product.sizes && item.product.sizes.find((size) => size.name === item.size)?.stock as number;
+                if(selectedSizeStock && selectedSizeStock <= 0){
+                    state.error = "Producto sin stock en la talla seleccionada";
+                    return;
+                }
+
+
+
+            // 4 -- calculamos el precio
+                const itemPrice = calculateItemPrice(item.product);
+
+            // 5 -- preguntamos si el producto ya esta en el carrito o es nuevo
             const existingItem = findCartItem(state.items, item.product.id);
 
-            const itemPrice = calculateItemPrice(item.product);
+            
             if(existingItem){
                 //verificar stock antes de incrementar
-                if(!checkStock(item.product, existingItem.quantity + 1)){
+                if(!checkStock(item.product, existingItem.quantity + 1, selectedSizeStock)){
                     state.error = "No hay suficiente stock";
                     return;
                 }
@@ -49,8 +64,8 @@ export const cartSlice = createSlice({
             }else{
                 //si el producto no esta en el carrito, lo agregamos
                 
-                const newProduct: Product = {...item.product , price: itemPrice};
-                const itemData: CartItem = {...item, product: newProduct,size:item.size};
+                const newProduct: Product = {...item.product , price: itemPrice, stock:(item.product.sizes ? selectedSizeStock as number : item.product.stock)};
+                const itemData: CartItem = {...item, product: newProduct,size:item.size, };
                 
                 addItemToState(state, itemData);
             }
@@ -88,6 +103,7 @@ export const cartSlice = createSlice({
         },
         plusItemFromCart:(state, action: PayloadAction<string>)=>{
             const productId = action.payload;
+            
 
             //verificar si existe el producto en el carrito
             const existingItem = findCartItem(state.items, productId);
@@ -95,9 +111,11 @@ export const cartSlice = createSlice({
                 state.error = "Producto no encontrado";
                 return;
             };
+                
+                const sizeOfStock =(existingItem.product.sizes && existingItem.product.sizes.find((size) => size.name === existingItem.size)?.stock);
 
             //verificar el stock antes de incrementar
-            if(!checkStock(existingItem.product, existingItem.quantity + 1)){
+            if(!checkStock(existingItem.product, existingItem.quantity + 1, sizeOfStock)){
                 state.error = "No hay suficiente stock";
                 return;
             }
@@ -110,8 +128,8 @@ export const cartSlice = createSlice({
         
 
         },
+        
         //remover producto completo del carrito
-
         removeProductFromCart:(state, action: PayloadAction<string>)=>{
             const productId = action.payload;
 

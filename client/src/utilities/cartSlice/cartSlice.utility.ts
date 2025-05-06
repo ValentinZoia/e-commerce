@@ -21,8 +21,12 @@ export const calculateItemCashPrice = (product: Product) => {
 }
 
 // Verifica el stock disponible
-export const checkStock = (product: Product, desiredQuantity: number) => {
+export const checkStock = (product: Product, desiredQuantity: number, selectedSizeStock?: number) => {
     if(product.stock === undefined) return false; // Si no hay stock definido, no se puede verificar
+    if(selectedSizeStock !== undefined){
+        // Si se proporciona stock de talle seleccionado, verifica contra eso
+        return selectedSizeStock >= desiredQuantity;
+    }
     return product.stock >= desiredQuantity;
 };
 
