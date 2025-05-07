@@ -7,3 +7,21 @@ export interface Category extends BaseEntity {
     description?: string;
     products?: Product[];
   }
+
+  export interface CategoriesState {
+    categories: Category[];
+    currentCategory: Category | null;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+    lastFetched: {
+      all: number | undefined;
+      
+      singleCategory: number | undefined;
+    } 
+  }
+
+  export enum CategoryStatus {
+    All = 'all',
+    SINGLECATEGORY = 'singleCategory',
+   
+  }
