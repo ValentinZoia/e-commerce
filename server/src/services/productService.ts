@@ -1,6 +1,8 @@
+
 import prisma from "../config/prisma";
 
-import {  Product } from "../generated/prisma";
+import {  Product} from "../generated/prisma";
+
 
 
 
@@ -63,6 +65,32 @@ export const ProductService = {
         }
     },
 
+    
+
+    async getProductsByCategoryV2(categoryId: string): Promise<Product[]> {
+        try {
+            if (!categoryId) {
+                throw new Error("Category ID is required");
+            }
+
+            const category = await prisma.category.findUnique({
+                where:{name:categoryId},
+                select:{products:true}
+            });
+
+            if(!category){
+                throw new Error("Category not found");
+            }
+            const {products} = category;
+            return products;
+        } catch (error) {
+            console.error("Error in getProductsByCategoryV2 service:", error);
+            throw error;
+        }
+    },
+
+   
+
     async getFeaturedProducts(): Promise<Product[]> {
         try {
             const products = await prisma.product.findMany({
@@ -99,10 +127,47 @@ export const ProductService = {
             if (!product.name || !product.price) {
                 throw new Error("Product name and price are required");
             }
+            const productData:Omit<Product, "id"> = {...product, categoryId: product.categoryId.toLocaleLowerCase()};
             
             const newProduct = await prisma.product.create({ 
-                data: product 
+                data: productData 
             });
+            const categoryId = newProduct.categoryId.toLocaleLowerCase();
+
+            // Verificar si existe una categoria con el categoryId
+            const existingCategory = await prisma.category.findUnique({
+                where: {name: categoryId}
+            });
+
+            if(!existingCategory){
+                //si no existe, la creamos
+                const newCategory = await prisma.category.create({
+                    data:{
+                        name: categoryId,
+                        products: {
+                            connect: {
+                                id: newProduct.id
+                            }
+                        },
+                        slug: categoryId,
+                        description: categoryId
+                    }
+                })
+            }
+
+            //si existe la categoria la conectamos al producto
+            else{
+                await prisma.category.update({
+                    where: {name: categoryId},
+                    data: {
+                        products: {
+                            connect: {
+                                id: newProduct.id
+                            }
+                        }
+                    }
+                })
+            }
             
             return newProduct;
         } catch (error) {
@@ -110,6 +175,4 @@ export const ProductService = {
             throw error;
         }
     },
-};
-
-
+}
