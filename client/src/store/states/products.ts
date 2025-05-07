@@ -1,11 +1,12 @@
-import { ProductsState } from "@/types";
+import { Product, ProductsState } from "@/types";
 import { createSlice } from '@reduxjs/toolkit';
-import {fetchFeaturedProducts,fetchProductById,fetchProducts,fetchPromotionalProducts,fetchNewProducts} from '@/utilities/productSlice';
+import {fetchFeaturedProducts,fetchProductById,fetchProducts,fetchPromotionalProducts,fetchNewProducts, fetchProductsByCategory} from '@/utilities/productSlice';
 const initialState: ProductsState = {
     products: [],
     featuredProducts: [],
     promotionalProducts: [],
     newProducts:[],
+    categoryProducts: [],
     currentProduct: null,
     status: 'idle',
     error: null,
@@ -14,7 +15,8 @@ const initialState: ProductsState = {
       new: undefined,
       featured: undefined,
       promotion: undefined,
-      singleProduct: undefined
+      singleProduct: undefined,
+      forCategory: undefined,
     } 
   };
   
@@ -50,7 +52,7 @@ export const productsSlice = createSlice({
           })
           .addCase(fetchFeaturedProducts.fulfilled, (state, action) => {
             state.status = 'succeeded';
-            state.featuredProducts = action.payload;
+            state.featuredProducts = action.payload as Product[];
             state.lastFetched.featured = Date.now();
           })
           .addCase(fetchFeaturedProducts.rejected, (state, action) => {
@@ -64,7 +66,7 @@ export const productsSlice = createSlice({
           })
           .addCase(fetchPromotionalProducts.fulfilled, (state, action) => {
             state.status = 'succeeded';
-            state.promotionalProducts = action.payload;
+            state.promotionalProducts = action.payload as Product[];
             state.lastFetched.promotion = Date.now();
           })
           .addCase(fetchPromotionalProducts.rejected, (state, action) => {
@@ -78,7 +80,7 @@ export const productsSlice = createSlice({
           })
           .addCase(fetchNewProducts.fulfilled, (state, action) => {
             state.status = 'succeeded';
-            state.newProducts = action.payload;
+            state.newProducts = action.payload as Product[];
             state.lastFetched.new = Date.now();
           })
           .addCase(fetchNewProducts.rejected, (state, action) => {
@@ -97,6 +99,20 @@ export const productsSlice = createSlice({
             state.lastFetched.singleProduct = Date.now();
           })
           .addCase(fetchProductById.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.payload as string;
+          })
+
+          // Product by Category
+          .addCase(fetchProductsByCategory.pending, (state) => {
+            state.status = 'loading';
+          })
+          .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+            state.status = 'succeeded';
+            state.categoryProducts = action.payload as Product[];
+            state.lastFetched.forCategory = Date.now();
+          })
+          .addCase(fetchProductsByCategory.rejected, (state, action) => {
             state.status = 'failed';
             state.error = action.payload as string;
           });
