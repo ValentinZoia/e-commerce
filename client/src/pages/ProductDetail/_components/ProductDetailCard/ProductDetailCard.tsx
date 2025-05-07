@@ -15,7 +15,7 @@ import {
 } from "@/utilities/cartSlice";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { formatPrice } from "@/utilities";
+import { capitalizeFirstLetter, formatPrice } from "@/utilities";
 import { Button } from "@/components/ui/button";
 import{ProductDetailImage} from '../ProductDetailImage'
 
@@ -30,6 +30,8 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
   const isDiscount = product.discountPercentage === undefined || product.discountPercentage === 0 ? false : true;
   
   const isCashDiscount = product.cashDiscountPercentage === undefined || product.cashDiscountPercentage === 0 ? false : true;
+
+
 
   const handleMouseEnter = (index: number) => {
     if (product.images.length > 1) {
@@ -70,10 +72,10 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
             </div>
             <div className="flex items-center">
               <Link
-                to={`/category/${product.categoryId.toLocaleLowerCase()}`}
+                to={`/categories/${product.categoryId.toLocaleLowerCase()}`}
                 className="text-celeste hover:underline"
               >
-                {product.categoryId}
+                {capitalizeFirstLetter(product.categoryId)}
               </Link>
               <ChevronRight className="h-3 w-3 mx-1 text-gray-400" />
             </div>
