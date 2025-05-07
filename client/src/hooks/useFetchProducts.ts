@@ -7,6 +7,7 @@ import {
   fetchNewProducts,
   fetchPromotionalProducts,
   fetchProductById,
+  fetchProductsByCategory,
 } from "@/utilities/productSlice";
 import { RootState, useAppDispatch } from "@/store/store";
 
@@ -21,6 +22,7 @@ export interface HookResponse {
 interface Props {
   productsStatus: ProductStatus;
   productId?: string;
+  categoryId?:string;
   forceRefresh?: boolean; //Para forzar la actualizacion cuando sea necesario (re-fetching de datos)
   cacheTime?: number; //Tiempo en milisegundos antes de considerar obsoletos los datos (default: 5 min)
 }
@@ -28,6 +30,7 @@ interface Props {
 export function useFetchProducts({
     productsStatus,
     productId,
+    categoryId,
     forceRefresh = false,
     cacheTime = 5 * 60 * 1000, // 5 minutos
 }: Props): HookResponse {
@@ -35,6 +38,7 @@ export function useFetchProducts({
 
   const {
     products,
+    categoryProducts,
     status,
     error,
     newProducts,
@@ -63,6 +67,8 @@ export function useFetchProducts({
         return featuredProducts;
       case ProductStatus.PROMOTION:
         return promotionalProducts;
+      case ProductStatus.FORCATEGORY:
+        return categoryProducts;
       case ProductStatus.All:
       default:
         return products;
@@ -73,7 +79,7 @@ export function useFetchProducts({
     const loadProducts = async () => {
       try {
         const currentProducts = getProductsByStatus();
-        const lastFetch = lastFetched?.[productsStatus] || 0;
+        const lastFetch:number = lastFetched?.[productsStatus] || 0;
 
         // Si ya tenemos productos y no necesitamos refrescar, no hacemos nada
         if (currentProducts && currentProducts.length > 0 && !shouldRefresh(lastFetch) && productsStatus !== ProductStatus.SINGLEPRODUCT) {
@@ -92,6 +98,10 @@ export function useFetchProducts({
             break;
           case ProductStatus.PROMOTION:
             await dispatch(fetchPromotionalProducts()).unwrap();
+            break;
+          case ProductStatus.FORCATEGORY:
+            if(!categoryId) return;
+            await dispatch(fetchProductsByCategory(categoryId)).unwrap();
             break;
           case ProductStatus.SINGLEPRODUCT:
             if (!productId) return;
