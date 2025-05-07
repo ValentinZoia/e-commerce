@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ProductService } from "../services/productService";
-import { Product } from "../generated/prisma";
+import {  Product } from "../generated/prisma";
 
 
 export interface ApiResponse<T> {
@@ -11,7 +11,7 @@ export interface ApiResponse<T> {
 }
 
 
-const handleError = (res: Response, error: any, message: string) => {
+export const handleError = (res: Response, error: any, message: string) => {
     console.error(`${message}:`, error);
     
     // Si es un error de Prisma, vamos a tratarlo de manera especial
@@ -112,13 +112,13 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
         const categoryId = req.params.categoryId;
         
         if (!categoryId) {
-            return res.status(400).json({
+             res.status(400).json({
                 success: false,
                 message: "Category ID is required"
             });
         }
         
-        const products: Product[] = await ProductService.getProductsByCategory(categoryId);
+        const products: Product[] = await ProductService.getProductsByCategory(categoryId.toLocaleLowerCase());
         
         res.status(200).json({
             success: true,
@@ -130,9 +130,36 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
     }
 };
 
+export const getProductsByCategoryV2 = async (req: Request, res: Response) => {
+    try {
+        const categoryId = req.params.categoryId;
+        
+        if (!categoryId) {
+             res.status(400).json({
+                success: false,
+                message: "Category ID is required"
+            });
+        }
+        
+        const products: Product[] = await ProductService.getProductsByCategoryV2(categoryId.toLocaleLowerCase());
+        
+        res.status(200).json({
+            success: true,
+            data:  products ,
+            message: "Products by category v2 retrieved successfully"
+        });
+    } catch (error) {
+        handleError(res, error, `Error fetching products for category v2 ${req.params.categoryId}`);
+    }
+};
+
+
+
+
+
 export const createProduct = async (req: Request, res: Response) => {
     try {
-        const productData = req.body;
+        const productData: Product = req.body;
         
         if (!productData || Object.keys(productData).length === 0) {
              res.status(400).json({
@@ -159,3 +186,6 @@ export const createProduct = async (req: Request, res: Response) => {
         handleError(res, error, "Error creating product");
     }
 };
+
+
+
