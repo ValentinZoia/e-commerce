@@ -10,7 +10,7 @@ import {
   REGISTER 
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Importación correcta
-import { cartSlice, productsSlice} from './states';
+import { cartSlice, productsSlice, categoriesSlice} from './states';
 import { useDispatch } from 'react-redux';
 
 
@@ -25,7 +25,7 @@ export const store = configureStore({
   reducer: {
     cart: persistReducer(cartPersistConfig, cartSlice.reducer),
     products: productsSlice.reducer,
-    // categories: categoriesSlice.reducer
+    categories: categoriesSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
