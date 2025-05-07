@@ -25,7 +25,7 @@ model Product {
   isPromotion            Boolean?       @default(false)
   isNew                  Boolean?       @default(false)
   categoryId             String
-  category               Category       @relation(fields: [categoryId], references: [id])
+  category               Category       @relation(fields: [categoryId], references: [name])
   installments           Installments[] // Relación 1-a-muchos
   images                 String[]
   createdAt              DateTime       @default(now())
