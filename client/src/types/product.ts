@@ -45,6 +45,7 @@ export interface Sizes  {
     featuredProducts: Product[];
     promotionalProducts: Product[];
     newProducts: Product[];
+    categoryProducts: Product[];
     currentProduct: Product | null;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
@@ -54,6 +55,7 @@ export interface Sizes  {
       featured: number | undefined;
       promotion: number | undefined;
       singleProduct: number | undefined;
+      forCategory: number | undefined
     } 
   }
 
@@ -63,4 +65,5 @@ export interface Sizes  {
     NEW = 'new',
     FEATURED = 'featured',
     PROMOTION = 'promotion',
+    FORCATEGORY = 'forCategory'
   }
