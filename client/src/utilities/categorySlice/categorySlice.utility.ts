@@ -30,7 +30,7 @@ export const fetchCategories = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await fetchAPI<ApiResponse<Category[]>>(CATEGORIES_URL);
-      console.log("data", data)
+      
       
 
       return data.data || []; 
