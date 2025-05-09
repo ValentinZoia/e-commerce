@@ -1,43 +1,33 @@
 import { type Product } from "@/types";
-import { Image } from "@/components/Image";
-import {
- 
-  ChevronRight,
-  RotateCcw,
-  ShieldCheck,
-} from "lucide-react";
-import { AddProductButton } from "@/components";
 
-import { cn } from "@/lib/utils";
+import { ChevronRight, RotateCcw, ShieldCheck } from "lucide-react";
+
 import {
   calculateItemCashPrice,
   calculateItemPrice,
 } from "@/utilities/cartSlice";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+
 import { capitalizeFirstLetter, formatPrice } from "@/utilities";
-import { Button } from "@/components/ui/button";
-import{ProductDetailImage} from '../ProductDetailImage'
+
+import { ProductDetailImage } from "../ProductDetailImage";
+import { ProductSizesHandler } from "../ProductSizesHandler";
 
 interface ProductDetailCardProps {
   product: Product;
 }
 
 const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedStock, setSelectedStock] = useState<number | null>(null);
-  const isDiscount = product.discountPercentage === undefined || product.discountPercentage === 0 ? false : true;
-  
-  const isCashDiscount = product.cashDiscountPercentage === undefined || product.cashDiscountPercentage === 0 ? false : true;
+  const isDiscount =
+    product.discountPercentage === undefined || product.discountPercentage === 0
+      ? false
+      : true;
 
-
-
-  const handleMouseEnter = (index: number) => {
-    if (product.images.length > 1) {
-      setCurrentImageIndex(index);
-    }
-  };
+  const isCashDiscount =
+    product.cashDiscountPercentage === undefined ||
+    product.cashDiscountPercentage === 0
+      ? false
+      : true;
 
   const renderStockMessage = () => {
     if (!product.stock) return;
@@ -56,8 +46,6 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
     }
     return null;
   };
-
-  const addProductButtonDisabled:boolean = (product.sizes ? selectedStock === 0 : false) || !product.sizes ? false : selectedSize === null
 
   return (
     <>
@@ -93,43 +81,7 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Parte izquierda - Imagenes */}
           <div className="space-y-4">
-            {/* TODO: SEPARAR TODO ESTO EN OTRO COMPONENTE PARA EVITAR UN RERENDER DER COMPONENTE COMPLETO */}
-            <div className="flex gap-4">
-              {/* VISTA DE IMAGENES PEQUEÑAS - SE VERA A PARTIR DE MD */}
-              {product.images.length > 1 && (
-                <div className="hidden md:flex flex-col gap-2">
-                  {product.images.slice(0, 4).map((image, index) => (
-                    <div
-                      key={index}
-                      className={cn(
-                        "w-20 h-20 border rounded cursor-pointer overflow-hidden",
-                        currentImageIndex === index &&
-                          "border-celeste border-2"
-                      )}
-                      // onClick={() => setCurrentImageIndex(index)}
-                      onMouseEnter={() => handleMouseEnter(index)}
-                    >
-                      <Image
-                        src={image}
-                        alt={`${product.name} - Vista ${index + 1}`}
-                        placeholderSrc="https://placehold.co/80"
-                        width={80}
-                        height={80}
-                        className="object-cover w-full h-full"
-                        lazy={true}
-                        aspectRatio={1}
-                        threshold={0.2}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* IMAGEN PRINCIPAL - SE VERA EN TODAS LAS RESOLUCIONES */}
-              <div className="relative  w-full overflow-hidden rouded-md border">
-                <ProductDetailImage product={product} currentImageIndex={currentImageIndex} setCurrentImageIndex={setCurrentImageIndex} isDiscounted={isDiscount}/>
-              </div>
-            </div>
+            <ProductDetailImage product={product} isDiscounted={isDiscount} />
           </div>
 
           {/* Parte derecha - Detalles */}
@@ -154,34 +106,29 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
 
                   {/* precio normal o con descuento fijo */}
                   <div className="flex items-center gap-2">
-                  <span className="text-4xl ">
-                    {formatPrice(calculateItemPrice(product))}
-                  </span>
+                    <span className="text-4xl ">
+                      {formatPrice(calculateItemPrice(product))}
+                    </span>
 
-                  { (isDiscount) && (
+                    {isDiscount && (
                       <span className="text-celeste font-semilight text-lg">
-                         {product.discountPercentage && product.discountPercentage * 100}% OFF
+                        {product.discountPercentage &&
+                          product.discountPercentage * 100}
+                        % OFF
                       </span>
-                        
-                      
                     )}
                   </div>
-                  
                 </div>
 
                 {/* Precio con descuento  por pagar en efectivo */}
                 {isCashDiscount && (
-                    <p className="text-celeste">
-                      <span className="text-2xl ">
-                        {formatPrice(calculateItemCashPrice(product))} {" "}
-                      </span>
-                      <span className="">
-                      con Efectivo o Transferencia
-                      
-                      </span>
-                       
-                    </p>
-                  )}
+                  <p className="text-celeste">
+                    <span className="text-2xl ">
+                      {formatPrice(calculateItemCashPrice(product))}{" "}
+                    </span>
+                    <span className="">con Efectivo o Transferencia</span>
+                  </p>
+                )}
 
                 {/* Cuotas */}
                 {product.installments && product.installments[0] && (
@@ -213,48 +160,8 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
               </div>
             )}
 
-            {/* Sizes - Talles */}
-            {product.sizes && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <p className="">Talle: <span className="font-medium">{selectedSize}</span></p>
-                  <p className="">
-                    Stock del talle: <span className="font-medium">{selectedStock}</span>
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size) => (
-                    <Button
-                      key={size.name}
-                      variant="outline"
-                      className={cn(
-                        "h-8 w-10 rounded-sm cursor-pointer border-[1px]",
-                        selectedSize === size.name
-                          ? "bg-gray-300 text-black border-black hover:bg-gray-300"
-                          : "bg-white"
-                      )}
-                      onClick={() => {
-                        setSelectedSize(size.name);
-                        setSelectedStock(size.stock);
-                      }}
-                      disabled={size.stock === 0}
-                    >
-                      {size.name}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Agregar al carrito */}
-            <div className="w-full flex items-center gap-4">
-              <AddProductButton
-                product={product}
-                disabled={addProductButtonDisabled}
-                size={selectedSize ? selectedSize : undefined}
-              />
-            </div>
+            {/* Sizes - Talles y  Button para agregar al carrito */}
+            <ProductSizesHandler product={product} />
 
             {/* Politicas - Datos sugeridos - Etc */}
             <div className="space-y-4 pt-4 border-t">
