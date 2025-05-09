@@ -18,10 +18,10 @@ const NavMenu = () => {
     categoriesStatus: CategoryStatus.All,
   });
 
-  if (status === "loading") return <LoaderCircle className="animate-spin" />;
-  if (error) return <p></p>;
+ 
+  
   if (!categories) return <p></p>;
-  console.log("categories", categories);
+  
 
   return (
     <NavigationMenu>
@@ -36,6 +36,9 @@ const NavMenu = () => {
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               <div className="flex flex-col">
+                {(status === "loading") && <LoaderCircle className="animate-spin" />}
+                {(error) && <p></p>}
+                {(!categories || categories.length === 0) && <li>No hay categorias</li>}
                 {categories.map((category) => (
                   <li key={category.id}>
                     <Link to={`/categories/${category.slug}`}>
