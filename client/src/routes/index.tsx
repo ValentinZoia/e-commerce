@@ -11,6 +11,9 @@ import {
   Error,
   ProductDetail,
   Cart,
+  NewProducts,
+  FeaturedProducts,
+  PromotionalProducts,
 } from "@/pages";
 
 {
@@ -22,6 +25,9 @@ import {
         /categories/:categoryId - Productos de una categoría específica
         /products - Listado de todos los productos
         /products/:productId - Detalle de un producto
+        /new - Productos nuevos
+        /featured - Productos destacados
+        /promotion - Productos en promoción
         /cart - Carrito de compras
         /about-us - Información sobre la tienda
         /login - Página de inicio de sesión
@@ -78,6 +84,18 @@ const router = createBrowserRouter([
             },
           },
         ],
+      },
+      {
+        path: "new",
+        element: <NewProducts />,
+      },
+      {
+        path: "featured",
+        element: <FeaturedProducts />,
+      },
+      {
+        path: "promotion",
+        element: <PromotionalProducts />,
       },
       {
         path: "cart",
