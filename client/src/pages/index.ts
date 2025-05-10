@@ -8,3 +8,6 @@ export * from './ProductDetail';
 export * from './Products';
 export * from './Register';
 export * from './Cart';
+export * from './NewProducts';
+export * from './FeaturedProducts';
+export * from './PromotionalProducts';
