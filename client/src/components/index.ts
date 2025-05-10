@@ -4,3 +4,4 @@ export * from './ShoppingCart';
 export * from './ProductsHeader';
 export * from './AddProductButton'
 export * from './Skeletons';
+export * from './ProductList';
