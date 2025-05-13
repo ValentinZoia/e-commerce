@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --watch src/server.ts",
+    "dev": "tsx --watch src/main/server.ts",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio"
   },
@@ -15,7 +15,10 @@
   "dependencies": {
     "@prisma/client": "^6.7.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
