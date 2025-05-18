@@ -5,12 +5,7 @@ import { Category } from "@/types";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 const CATEGORIES_URL = `${API_BASE_URL}/api/categories`;
 
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
-  error?: any;
-}
+
 
 
 // Función helper para manejar fetch requests
@@ -29,11 +24,11 @@ export const fetchCategories = createAsyncThunk(
   "categories/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await fetchAPI<ApiResponse<Category[]>>(CATEGORIES_URL);
+      const data = await fetchAPI<Category[]>(CATEGORIES_URL);
       
       
 
-      return data.data || []; 
+      return data || []; 
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
     }
@@ -46,11 +41,11 @@ export const fetchCategoryById = createAsyncThunk(
   "categories/fetchById",
   async (categoryId: string, { rejectWithValue }) => {
     try {
-      const data = await fetchAPI<ApiResponse<Category>>(`${CATEGORIES_URL}/${categoryId}`);
+      const data = await fetchAPI<Category>(`${CATEGORIES_URL}/${categoryId}`);
       
       
 
-      return data.data || null;
+      return data || null;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
     }
