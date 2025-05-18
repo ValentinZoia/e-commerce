@@ -143,6 +143,14 @@ exports.Prisma.CategoryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AdminScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -156,7 +164,8 @@ exports.Prisma.QueryMode = {
 
 exports.Prisma.ModelName = {
   Product: 'Product',
-  Category: 'Category'
+  Category: 'Category',
+  Admin: 'Admin'
 };
 
 /**
