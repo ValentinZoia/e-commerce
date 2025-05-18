@@ -8,7 +8,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
-  console.error(`[Error]: ${err.message}`, err);
+  
 
   //Error de validacion personalizado
   if (err instanceof ValidationError) {
@@ -27,7 +27,7 @@ export const errorHandler = (
       res.status(409).json({
         type: "UniqueConstraintError",
         message: "Ya existe un registro con este valor",
-        fields: err.meta?.target || [],
+        // fields: err.meta?.target || [],
       });
       return;
     }
@@ -37,7 +37,7 @@ export const errorHandler = (
       res.status(400).json({
         type: 'ForeignKeyConstraintError',
         message: 'El valor de referencia no existe',
-        field: err.meta?.field_name || ''
+        // field: err.meta?.field_name || ''
       });
       return;
     }
@@ -55,8 +55,8 @@ export const errorHandler = (
       res.status(404).json({
         type: 'InconsistentColumnData',
         message: 'Valor inválido de identificador',
-        field: err.meta?.modelName|| '',
-        dbMessage: `Inconsistent column data: ${err.meta?.message}` || 'Inconsistent column data',
+        // field: err.meta?.modelName|| '',
+        // dbMessage: `Inconsistent column data: ${err.meta?.message}` || 'Inconsistent column data',
       });
       return;
     }
@@ -73,7 +73,7 @@ export const errorHandler = (
   
   // Error general del servidor
   res.status(500).json({
-    message: `Error del Servidor: ${err.message}`
+    message: `Error del Servidor`
   });
 
 };

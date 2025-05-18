@@ -5,7 +5,11 @@ import rateLimit from 'express-rate-limit';
 import { setupDependencies } from './container';
 import { createProductRoutes } from '../presentation/routes/product.route';
 import { createCategoryRoutes } from '../presentation/routes/category.route';
+import { createAdminRoutes} from '../presentation/routes/admin.route';
 import { errorHandler } from '../presentation/middlewares/errorHandler';
+import cookieParser from 'cookie-parser';
+import prisma from '../infrastructure/database/prismaClient';
+
 
 const createServer = () => {
   const app = express();
@@ -18,6 +22,7 @@ const createServer = () => {
   }));
   app.use(helmet());
   app.use(express.json());
+  app.use(cookieParser());
   app.use(express.urlencoded({ extended: true }));
 
   // Limitador de solicitudes para prevenir ataques de fuerza bruta
@@ -28,11 +33,12 @@ const createServer = () => {
   app.use(limiter);
 
   // Inyección de dependencias
-  const { categoryController, productController } = setupDependencies();
+  const { categoryController, productController, adminController, authMiddleware } = setupDependencies();
 
   // Rutas
   app.use('/api/categories', createCategoryRoutes(categoryController));
   app.use('/api/products', createProductRoutes(productController));
+  app.use('/api/admin',createAdminRoutes(adminController, authMiddleware) )
 
   // Manejador de rutas no encontradas
   app.use((req, res, next) => {
@@ -84,6 +90,9 @@ async function main() {
 main().catch(async (e) => {
   console.error(e);
   process.exit(1);
-});
+}).finally(()=>{
+  prisma.$disconnect();
+})
+;
 
 export { createServer, startServer };
