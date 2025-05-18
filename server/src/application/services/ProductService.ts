@@ -113,7 +113,7 @@ export class ProductService {
   async getProductByName(name:string):Promise<Product>{
     const product = await this.productRepository.getByName(name);
     if(!product){
-        throw new Error("No se encontro un producto con ese nombre")
+        throw new Error("Producto no encontrado")
     }
 
     return product;
