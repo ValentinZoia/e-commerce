@@ -15,6 +15,7 @@ import {
 } from "@/pages";
 
 import {PrivateRoutes, PublicRoutes} from '@/types'
+import { AuthGuard } from "@/guards";
 
 {
   /*
@@ -33,7 +34,7 @@ import {PrivateRoutes, PublicRoutes} from '@/types'
         /login - Página de inicio de sesión - El unico que puede hacerlo es el admin.
 
         --------------- RUTAS PRIVADAS-------------------
-        /private* - realmente aqui no hay nada - redirigira a /private/admin
+        /private - realmente aqui no hay nada - redirigira a /private/admin
         /private/admin - panel de control del admin - para editar y crear productos.
         
     
@@ -106,8 +107,8 @@ const router = createBrowserRouter([
         element: <AboutUs />,
       },
       {
-        path:`${PrivateRoutes.PRIVATE}/*`,
-        
+        path:`${PrivateRoutes.PRIVATE}`,
+        element:<AuthGuard />,
         children:[
           {
             index:true,
