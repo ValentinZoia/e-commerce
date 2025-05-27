@@ -12,6 +12,7 @@ export class AdminService {
     private readonly jwtSecret: string
   ) {}
 
+  //como los datos que envia el usuario no estan validados. es de tipo unknown.
   async createAdmin(adminData: unknown): Promise<AdminPublic> {
     //Validar datos
     const validatedAdmin = await this.adminValidator.validate(adminData);
@@ -40,7 +41,7 @@ export class AdminService {
     const createdAdmin = await this.adminRepository.create(admin);
 
     const AdminPublicData: AdminPublic = {
-      id: createdAdmin.id,
+      id: createdAdmin.id as string,
       username: createdAdmin.username,
     };
     return AdminPublicData;
