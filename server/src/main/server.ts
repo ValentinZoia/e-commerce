@@ -18,7 +18,8 @@ const createServer = () => {
   app.use(cors({
     origin: process.env.CORS_ORIGIN || '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials:true, //para permitir el uso y guardado de cookies
   }));
   app.use(helmet());
   app.use(express.json());
@@ -50,6 +51,7 @@ const createServer = () => {
 
   // Middleware de manejo de errores (siempre al final)
   app.use(errorHandler);
+  // app.use(authMiddleware.authenticate)
 
   return app;
 };
