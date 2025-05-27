@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { MainLayout } from "@/layouts";
 import {
   Home,
@@ -7,19 +7,20 @@ import {
   Products,
   AboutUs,
   Login,
-  Register,
   Error,
   ProductDetail,
-  Cart,
   NewProducts,
   FeaturedProducts,
   PromotionalProducts,
 } from "@/pages";
 
+import {PrivateRoutes, PublicRoutes} from '@/types'
+
 {
   /*
 
     En esta app debo tener las siguientes rutas:
+    --------------- RUTAS PUBLICAS-------------------
         / - Página de inicio
         /categories - Listado de todas las categorías
         /categories/:categoryId - Productos de una categoría específica
@@ -28,10 +29,13 @@ import {
         /new - Productos nuevos
         /featured - Productos destacados
         /promotion - Productos en promoción
-        /cart - Carrito de compras
         /about-us - Información sobre la tienda
-        /login - Página de inicio de sesión
-        /register - Página de registro de usuario
+        /login - Página de inicio de sesión - El unico que puede hacerlo es el admin.
+
+        --------------- RUTAS PRIVADAS-------------------
+        /private* - realmente aqui no hay nada - redirigira a /private/admin
+        /private/admin - panel de control del admin - para editar y crear productos.
+        
     
     
 */
@@ -48,7 +52,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "categories",
+        path: PublicRoutes.CATEGORIES,
         children: [
           {
             index: true,
@@ -67,7 +71,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "products",
+        path: PublicRoutes.PRODUCTS,
         children: [
           {
             index: true,
@@ -86,35 +90,43 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "new",
+        path: PublicRoutes.NEW,
         element: <NewProducts />,
       },
       {
-        path: "featured",
+        path: PublicRoutes.FEATURED,
         element: <FeaturedProducts />,
       },
       {
-        path: "promotion",
+        path: PublicRoutes.PROMOTION,
         element: <PromotionalProducts />,
       },
       {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "about-us",
+        path: PublicRoutes.ABOUTUS,
         element: <AboutUs />,
       },
       {
-        path: "login",
-        element: <Login />,
+        path:`${PrivateRoutes.PRIVATE}/*`,
+        
+        children:[
+          {
+            index:true,
+            element:<Navigate to={`${PrivateRoutes.ADMIN}`} />
+          },
+          {
+            path:PrivateRoutes.ADMIN,
+            element:<>Solo un admin puede ver esto.</>
+          }
+        ]
       },
-      {
-        path: "register",
-        element: <Register />,
-      },
+     
     ],
   },
+  {
+    path: PublicRoutes.LOGIN,
+    element:<Login />,
+    errorElement:<Error />
+  }
 ]);
 
 export default router;
