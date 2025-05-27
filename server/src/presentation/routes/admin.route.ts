@@ -7,8 +7,10 @@ export function createAdminRoutes(adminController: AdminController, authMiddlewa
 
     router.post('/login', adminController.login.bind(adminController));
     router.post('/logout',authMiddleware.authenticate,  adminController.logout.bind(adminController));
-    router.post('/',  adminController.createAdmin.bind(adminController));
-    
+    router.post('/',authMiddleware.authenticate,  adminController.createAdmin.bind(adminController));
+    router.get('/', authMiddleware.authenticate,(req, res) =>{
+        res.json({user:req.admin})
+    })
 
     return router;
 
