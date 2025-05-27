@@ -33,7 +33,7 @@ export class AdminController {
       res.status(200).json({ 
         success: true, 
         message: 'Login exitoso',
-        token:token 
+        
       });
     } catch (error) {
         next(error);
