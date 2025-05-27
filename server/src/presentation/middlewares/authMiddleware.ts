@@ -26,7 +26,7 @@ export class AuthMiddleware {
     }
     
     // Añadir información del admin al objeto request
-    req.admin = { id: payload.id };
+    req.admin = { id: payload.id, username:payload.username };
     next();
   };
 }
@@ -37,6 +37,7 @@ declare global {
     interface Request {
       admin?: {
         id: string;
+        username:string;
       };
     }
   }
