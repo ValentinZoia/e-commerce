@@ -37,7 +37,7 @@ export class AdminService {
       hashedPassword,
     )
     
-    //crear producto
+    //crear admin
     const createdAdmin = await this.adminRepository.create(admin);
 
     const AdminPublicData: AdminPublic = {
@@ -54,7 +54,7 @@ export class AdminService {
     //busco si existe un usuario con ese username
     const adminFound = await this.adminRepository.findByUsername(validatedAdmin.username);
     
-    //si no existe el usuario o las contraseñas no coinciden devuelvo error
+    //si no existe el usuario devuelvo error
     if (!adminFound ) {
       const error: Record<string, string[]> = {
         credentials: ["Credenciales incorrectas"],
@@ -63,6 +63,7 @@ export class AdminService {
     }
     const isPasswordMacth = await adminFound.verifyPassword(validatedAdmin.password);
 
+    //si las contraseñas no coinciden devuelvo error
     if(!isPasswordMacth){
        const error: Record<string, string[]> = {
         credentials: ["Credenciales incorrectas"],
@@ -79,9 +80,9 @@ export class AdminService {
     );
     return token;
   }
-  async verify(token: string): Promise<{ id: string } | null> {
+  async verify(token: string): Promise<{ id: string, username:string; } | null> {
     try {
-      const payload = jwt.verify(token, this.jwtSecret) as { id: string };
+      const payload = jwt.verify(token, this.jwtSecret) as { id: string, username:string };
       return payload;
     } catch (error) {
       return null;
