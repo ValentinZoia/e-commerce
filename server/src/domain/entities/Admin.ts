@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 export class Admin {
     constructor(
-        public readonly id: string ,
+        public readonly id: string | null ,
         public readonly username: string,
         public readonly password: string,
         
