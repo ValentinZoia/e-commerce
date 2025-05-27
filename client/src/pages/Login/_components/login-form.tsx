@@ -20,11 +20,18 @@ import {
 } from "@/components/ui/form";
 import SubmitBtn from "./submit-btn";
 import useFetch from "@/hooks/useFetch";
+import { cn } from "@/lib/utils";
 
 interface ApiResponse {
   success: boolean;
   message: string;
   data?: any;
+  
+}
+
+interface Message {
+  success: string | null;
+  error: string | null;
 }
 
 const ADMIN_URL = import.meta.env.API_ADMIN_URL || "/api/admin";
@@ -34,7 +41,10 @@ const URL = `${API_BASE_URL}${ADMIN_URL}`;
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [responseMessage, setResponseMessage] = useState<Message | null>({
+    success: null,
+    error: null,
+  });
   const { post } = useFetch(`${URL}/login`);
 
   const form = useForm<FormValues>({
@@ -47,7 +57,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
-    setError(null);
+    setResponseMessage(null);
     try {
       //Crear FormData
       const formData = new FormData();
@@ -56,18 +66,27 @@ const LoginForm = () => {
 
       //Realizar peticion
       const response = await post<ApiResponse>(formData, {
-        headers: {},
+        headers: {
+          
+        },
+        credentials: 'include',
       });
 
+      //en caso de error, lo arrojo
       if (response.error) {
         throw new Error(response.error);
       }
 
+      //si todo salio bien
       if (response.data?.success) {
-        // ponse algun toast aca
-        console.log(response);
-        console.log(response.data);
-        console.log("Formulario enviado correctamente", response.data.message);
+        // poner algun toast aca
+        
+
+        //muestro mensaje de exito en el login
+        setResponseMessage({
+          success: response.data.message,
+          error: null,
+        });
       } else {
         throw new Error(
           response.data?.message || "Error al procesar la solicitud"
@@ -77,8 +96,11 @@ const LoginForm = () => {
       // ponse algun toast aca
       const errorMessage =
         error instanceof Error ? error.message : "Error desconocido";
-      setError(errorMessage);
-      console.error("Error en el envío del formulario:", errorMessage);
+      //muestro mensaje de error en el login
+      setResponseMessage({
+        success: null,
+        error: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -104,10 +126,19 @@ const LoginForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {error && (
+          {responseMessage && (
             <>
-              <CardDescription className="bg-destructive mb-2 text-white px-4 py-2 font-bold rounded-sm">
-                {error}
+              <CardDescription
+                className={cn(
+                  "mb-2 text-white px-4 py-2 font-bold rounded-sm",
+                  {
+                    "bg-destructive": responseMessage.error,
+                    "bg-green-500": responseMessage.success,
+                  }
+                )}
+              >
+                {responseMessage.error && responseMessage.error}
+                {responseMessage.success && responseMessage.success}
               </CardDescription>
             </>
           )}
