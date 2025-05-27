@@ -3,6 +3,7 @@ import { IAdminRepository } from "../../domain/Interfaces/IAdminRepository";
 import prisma from "../database/prismaClient";
 
 export class PrismaAdminRepository implements IAdminRepository{
+  //los datos que envia el usuario ya estan validados, asique ya espero que sean de tipo Admin y no de unknown
     async create(admin:Admin): Promise<Admin> {
          const createdAdmin = await prisma.admin.create({
             data:{
