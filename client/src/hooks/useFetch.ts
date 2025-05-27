@@ -3,6 +3,7 @@ import { useState, useCallback } from "react";
 interface FetchOptions {
   headers?: Record<string, string>;
   signal?: AbortSignal;
+  credentials?:RequestCredentials; // 🔑 Esto permite que el navegador guarde cookies del servidor
 }
 
 interface FetchResponse<T> {
@@ -29,12 +30,14 @@ const useFetch = (baseUrl: string): UseFetchReturn => {
     ): Promise<FetchResponse<T>> => {
       setIsLoading(true);
       try {
+
         const config: RequestInit = {
           method,
           signal: options.signal,
           headers: {
             ...options.headers,
           },
+          credentials: options.credentials
         };
 
         if (data && !(data instanceof FormData)) {
@@ -53,7 +56,7 @@ const useFetch = (baseUrl: string): UseFetchReturn => {
           };
           config.body = JSON.stringify(Object.fromEntries(data));
         }
-        console.log(config);
+        
         const response = await fetch(baseUrl, config);
 
         if (!response.ok) {
