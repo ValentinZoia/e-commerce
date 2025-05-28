@@ -61,9 +61,10 @@ export class AdminService {
       };
       throw new ValidationError(error);
     }
-    const isPasswordMacth = await adminFound.verifyPassword(validatedAdmin.password);
+    
 
     //si las contraseñas no coinciden devuelvo error
+    const isPasswordMacth = await adminFound.verifyPassword(validatedAdmin.password);
     if(!isPasswordMacth){
        const error: Record<string, string[]> = {
         credentials: ["Credenciales incorrectas"],
