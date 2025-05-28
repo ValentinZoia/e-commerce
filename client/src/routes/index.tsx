@@ -12,6 +12,7 @@ import {
   NewProducts,
   FeaturedProducts,
   PromotionalProducts,
+  AdminPage
 } from "@/pages";
 
 import {PrivateRoutes, PublicRoutes} from '@/types'
@@ -116,7 +117,7 @@ const router = createBrowserRouter([
           },
           {
             path:PrivateRoutes.ADMIN,
-            element:<>Solo un admin puede ver esto.</>
+            element:<AdminPage />
           }
         ]
       },
