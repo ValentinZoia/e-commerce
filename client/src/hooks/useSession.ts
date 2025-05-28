@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import useFetch from "./useFetch";
+import { RootState, useAppDispatch } from "@/store/store";
+import { createSession, deleteSession} from "@/store/states";
+import { useSelector } from "react-redux";
+import { User } from "@/types";
 
-interface User {
-    id:string;
-    username:string;
+
+interface ApiResponse {
+    user:User;
 }
-
 
 interface UseSessionReturn {
     user: User | null
@@ -22,9 +25,11 @@ const URL = `${API_BASE_URL}${ADMIN_URL}`;
 
 
 const useSession = (): UseSessionReturn => {
-const [user, setUser] = useState<User | null>(null);
+const dispatch = useAppDispatch();
+const {user, isAuthenticated} = useSelector((state: RootState) => state.auth)
 const [loading, setLoading] = useState<boolean>(true)
 const {get} = useFetch(URL)
+
 
 
 
@@ -32,7 +37,7 @@ useEffect(() => {
 const getSession = async ()=>{
     try {
         setLoading(true)
-        const response = await get<User>( {
+        const response = await get<ApiResponse>( {
         headers: {
           
         },
@@ -40,12 +45,15 @@ const getSession = async ()=>{
       });
 
       if(response.error)throw new Error('No session');
-      if(response.data) setUser(response.data)
+      if(response.data) dispatch(createSession(response.data.user))
+          
+          
+    
         setLoading(response.isLoading);
       
     } catch (error) {
         console.error(error);
-        setUser(null);
+        dispatch(deleteSession());
         setLoading(false)
     } finally{
         setLoading(false);
@@ -57,7 +65,7 @@ getSession();
     
     return{
         user,
-        isAuthenticated: !!user,
+        isAuthenticated,
         loading,
     }
 }
