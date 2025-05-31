@@ -38,7 +38,7 @@ const createServer = () => {
 
   // Rutas
   app.use('/api/categories', createCategoryRoutes(categoryController));
-  app.use('/api/products', createProductRoutes(productController));
+  app.use('/api/products', createProductRoutes(productController, authMiddleware));
   app.use('/api/admin',createAdminRoutes(adminController, authMiddleware) )
 
   // Manejador de rutas no encontradas
@@ -66,7 +66,7 @@ const startServer = () => {
     console.log(`Entorno: ${process.env.NODE_ENV || 'development'}`);
   });
 
-  // Manejo de apagado gracioso
+  // Manejo de apagado
   process.on('SIGTERM', () => {
     console.log('SIGTERM recibido. Cerrando servidor...');
     server.close(() => {
