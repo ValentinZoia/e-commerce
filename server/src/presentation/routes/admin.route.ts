@@ -6,6 +6,8 @@ export function createAdminRoutes(adminController: AdminController, authMiddlewa
     const router = Router();
 
     router.post('/login', adminController.login.bind(adminController));
+
+    // a estas rutas solo deberan acceder admins. por eso el uso del middleware para verificar su session.
     router.post('/logout',authMiddleware.authenticate,  adminController.logout.bind(adminController));
     router.post('/',authMiddleware.authenticate,  adminController.createAdmin.bind(adminController));
     router.get('/', authMiddleware.authenticate,(req, res) =>{
