@@ -62,6 +62,17 @@ export class ProductController {
         take,
         skip,
       } = req.query;
+      
+      /*
+      *la request se vera algo asi:
+       - /api/products?featured=true.
+       -/api/products?new=true.
+       -/api/products?promotion=true.
+       -/api/products?featured=true
+       -/api/products?category=${categoryId}.
+
+       dependiendo los productos que se quieran traer.
+      */ 
 
       const result = await this.productService.getAllProducts({
         category: category as string,
