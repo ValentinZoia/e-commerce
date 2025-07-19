@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --watch src/main/server.ts",
+    "dev": "tsx --watch src/app.ts",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio"
   },
@@ -17,6 +17,8 @@
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "env-var": "^7.5.0",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
