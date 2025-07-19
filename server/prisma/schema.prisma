@@ -20,10 +20,10 @@ model Product {
   sizes                    Sizes[]
   currentSize              String?
   freeShippingThreshold    Float?         //Si se supera este monto es envio gratis.
-  isFreeShipping           Boolean?       @default(false) // Tiene envio gratis?
-  isFeatured               Boolean?       @default(false)
-  isPromotion              Boolean?       @default(false)
-  isNew                    Boolean?       @default(false)
+  isFreeShipping           Boolean        @default(false) // Tiene envio gratis?
+  isFeatured               Boolean       @default(false)
+  isPromotion              Boolean       @default(false)
+  isNew                    Boolean       @default(false)
   categoryId               String         
   category                 Category       @relation(fields: [categoryId], references: [name])
   installments             Installments[] // Relación 1-a-muchos
@@ -67,4 +67,51 @@ model Admin {
   password    String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+
+model Order {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  // Datos del cliente
+  customerPhone  String      // WhatsApp phone (required)
+  customerEmail  String?
+  customerName   String      // "Nombre Apellido"
+  customerNotes  String?     // Comentarios del cliente
+
+  //Productos
+  products        OrderItem[]
+
+  //Flujo de compra/WhatsApp
+  whatsappMessage String?
+  whatsappStatus  String      @default("pending") //"pending" | "sent" | "responded" | "completed" | "expired"
+  paymentMethod   String?     //Se completa en WhatsApp
+
+  //Totales
+  subtotal        Float
+  shippingCost    Float?
+  total           Float
+  isFreeShipping  Boolean     @default(false)
+
+  //Fechas importantes
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  whatsappSentAt DateTime?   // Cuando se envió el mensaje
+  completedAt    DateTime?   // Cuando se completó
+  expiredAt      DateTime?   // Marcado cuando el sistema la expira
+
+  // Índices para búsquedas frecuentes
+  @@index([whatsappStatus])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     String   @db.ObjectId
+  productId   String   // Referencia al ID del producto (no como relación)
+  productName String   // Nombre en el momento de la compra
+  quantity    Int      @default(1)
+  size        String?
+  unitPrice   Float    // Precio en el momento de la compra
+  discount    Float?   @default(0)
+  imageUrl    String?  // URL de la imagen principal
 }
