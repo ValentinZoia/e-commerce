@@ -15,7 +15,7 @@ import { ValidationMiddleware } from "../../../shared/presentation/middlewares";
 import {CreateOrderDtoSchema} from "../../domain/dtos/OrderDataDto.dto";
 import { OrderController } from "../controllers/Order.controller";
 import { Router } from 'express';
-import { OrderSendMessageToCustomer } from '../../infrastructure/adapters/OrderSendMessageToCustomer';
+import { OrderSendMessageToCustomer } from '../../infrastructure/adapters/OrderSendMessageToCustomer.impl';
 
 
 export class OrderRoutes{
