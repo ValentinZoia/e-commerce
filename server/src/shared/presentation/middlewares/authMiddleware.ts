@@ -3,10 +3,10 @@ import { Request, Response, NextFunction } from "express";
 import { CustomError } from "../../domain/errors/custom.error";
 import { JwtAdapter } from "../../infrastructure/adapters";
 
-type JwtAdminPayload = {
+export type JwtAdminPayload = {
   id: string;
   username: string;
-}
+};
 
 export class AuthMiddleware {
   constructor(private readonly adminRespository: IAdminRepository) {}
@@ -37,13 +37,22 @@ export class AuthMiddleware {
         );
       }
 
-      const user = await this.adminRespository.findAdminByUsername(payload.username);
-      if(!user) throw CustomError.unauthorized("Token invalido - Usuario no encontrado.");
+      const user = await this.adminRespository.findAdminByUsername(
+        payload.username
+      );
+      if (!user)
+        throw CustomError.unauthorized(
+          `Token invalido - Usuario ${payload.username} no encontrado.`
+        );
 
       //Si todo es correcto, Añadir información del admin al objeto request (id, username).
-      req.admin = { id: payload.id, username: payload.username } as JwtAdminPayload;
+      req.admin = {
+        id: payload.id,
+        username: payload.username,
+      } as JwtAdminPayload;
       next();
-    } catch (error) {
+    } catch (error: Error | any) {
+      // console.log(error.message);
       next(error);
     }
   };
@@ -52,7 +61,7 @@ export class AuthMiddleware {
 declare global {
   namespace Express {
     interface Request {
-      admin?: JwtAdminPayload
+      admin?: JwtAdminPayload;
     }
   }
 }
