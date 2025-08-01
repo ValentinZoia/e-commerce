@@ -26,7 +26,10 @@ export const productSchema = z.object({
     message:
       "El nombre del producto debe tener por lo menos 3 caracteres/letras",
   }),
-  description: z.string().nullable(),
+  description: z.string().min(3, {
+    message:
+      "La descripcion del producto debe tener por lo menos 3 caracteres/letras",
+  }),
   price: z
     .number()
     .positive({ message: "El precio del producto debe ser positivo" }),
@@ -41,7 +44,9 @@ export const productSchema = z.object({
     .positive({
       message: "El precio en efectivo del producto debe ser positivo",
     })
-    .nullable(),
+    .optional()
+    .nullable()
+    .default(null),
   cashDiscountPercentage: z
     .number()
     .min(0, { message: "El descuento en efectivo debe ser positivo" })
@@ -55,11 +60,16 @@ export const productSchema = z.object({
     .int()
     .min(0, { message: "El stock debe ser mayor o igual a 0" })
     .optional()
-    .default(0),
-  sizes: z.array(sizeSchema).optional().default([]),
+    .default(1),
+  sizes: z.array(sizeSchema).default([]),
   installments: z.array(installmentSchema).optional().default([]),
-  currentSize: z.string().nullable(),
-  freeShippingThreshold: z.number().positive().nullable(),
+  currentSize: z.string().optional().nullable().default(null),
+  freeShippingThreshold: z
+    .number()
+    .positive()
+    .optional()
+    .nullable()
+    .default(null),
   isFreeShipping: z.boolean().default(false),
   isFeatured: z.boolean().optional().default(false),
   isPromotion: z.boolean().optional().default(false),
@@ -73,12 +83,10 @@ export const productSchema = z.object({
 
 export type ProductCreateDTO = z.infer<typeof productSchema>;
 
-
-
-export class CreateProductDto  {
+export class CreateProductDto {
   private constructor(
     public name: string,
-    public description: string | null,
+    public description: string,
     public price: number,
     public discountPercentage: number,
     public cashPrice: number | null,
@@ -86,19 +94,18 @@ export class CreateProductDto  {
     public stock: number,
     public sizes: { name: string; stock: number }[],
     public installments: { quantity: number; amount: number }[],
-    public currentSize: string | null ,
-    public freeShippingThreshold: number | null ,
+    public currentSize: string | null,
+    public freeShippingThreshold: number | null,
     public isFreeShipping: boolean,
     public isFeatured: boolean,
     public isPromotion: boolean,
     public isNew: boolean,
     public categoryId: string,
-    public images: string[],
-    
+    public images: string[]
   ) {}
 
-  static  create(data: unknown): CreateProductDto {
-    const parsedData:ProductCreateDTO = productSchema.parse(data);
+  static create(data: unknown): CreateProductDto {
+    const parsedData: ProductCreateDTO = productSchema.parse(data);
     const {
       name,
       description,
@@ -120,46 +127,48 @@ export class CreateProductDto  {
     } = parsedData;
 
     //--------Validaciones de negocio----------
-     if (
-            cashPrice &&
-            cashPrice >= price
-          ) {
-            throw new ValidationError({
-              cashPrice: [
-                "El precio en efectivo debe ser menor al precio normal",
-              ],
-            });
-          }
-    
-          //validar coherencia de stock
-          let totalSizesStock = 0;
-          sizes.forEach((size) => {
-            totalSizesStock += size.stock;
+
+    if (cashPrice && !cashDiscountPercentage) {
+      parsedData.cashDiscountPercentage = -(cashPrice / price) + 1;
+    }
+
+    if (
+      cashDiscountPercentage > 0 &&
+      cashPrice &&
+      cashPrice !== price * (1 - cashDiscountPercentage)
+    ) {
+      throw new ValidationError({
+        cashPrice: [
+          "Si existe descuento en efectivo, El precio en efectivo debe ser menor al precio normal e igual al precio normal * (1 - descuento en efectivo)",
+        ],
+      });
+    }
+
+    if (sizes.length > 0) {
+      //validar coherencia de stock
+      let totalSizesStock = 0;
+      sizes.forEach((size) => {
+        totalSizesStock += size.stock;
+      });
+
+      if (sizes.length > 0 && totalSizesStock !== stock) {
+        throw new ValidationError({
+          stock: [
+            "El stock total debe coincidir con la suma del stock de cada talle",
+          ],
+        });
+      }
+
+      //Si currentSize está definido, debe existir entre los sizes
+      if (currentSize) {
+        const sizeExists = sizes.some((size) => size.name == currentSize);
+        if (!sizeExists) {
+          throw new ValidationError({
+            currentSize: ["El size actual debe existir en la lista de sizes"],
           });
-    
-          if (
-            sizes.length > 0 &&
-            totalSizesStock !== stock
-          ) {
-            throw new ValidationError({
-              stock: [
-                "El stock total debe coincidir con la suma del stock de cada talle",
-              ],
-            });
-          }
-    
-          //Si currentSize está definido, debe existir entre los sizes
-          if (currentSize) {
-            const sizeExists = sizes.some(
-              (size) => size.name == currentSize
-            );
-            if (!sizeExists) {
-              throw new ValidationError({
-                currentSize: ["El size actual debe existir en la lista de sizes"],
-              });
-            }
-          }
-    
+        }
+      }
+    }
 
     return new CreateProductDto(
       name,
