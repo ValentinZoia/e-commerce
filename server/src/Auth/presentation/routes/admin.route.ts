@@ -1,5 +1,11 @@
-import { CreateAdminService, LogInAdminService } from "../../application/services";
-import { AuthMiddleware, ValidationMiddleware } from "../../../shared/presentation/middlewares";
+import {
+  CreateAdminService,
+  LogInAdminService,
+} from "../../application/services";
+import {
+  AuthMiddleware,
+  ValidationMiddleware,
+} from "../../../shared/presentation/middlewares";
 import { PrismaAdminRepositoryImpl } from "../../infrastructure/repositories";
 import { createAdminSchema, loginAdminSchema } from "../../domain/dtos";
 import { BcryptAdapter } from "../../../shared/infrastructure/adapters";
