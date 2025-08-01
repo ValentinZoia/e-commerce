@@ -1,22 +1,11 @@
-import prisma from "./shared/infrastructure/database/prismaClient"
-import { AppRoutes } from "./shared/presentation/routes";
 import { envs } from "./shared/infrastructure/adapters";
-import {Server} from "./server";
+import { createServer } from "./server";
 
-(()=> {
-  main().catch(async (e) => {
-  console.error(e);
-  process.exit(1);
-}).finally(()=>{
-  prisma.$disconnect();
+const server = createServer();
+
+server.listen(envs.PORT, () => {
+  if (process.env.NODE_ENV !== "test") {
+    console.log(`🚀 Servidor corriendo en puerto ${envs.PORT}`);
+    console.log(`Entorno: ${process.env.NODE_ENV || "development"}`);
+  }
 });
-})()
-
-async function main(){
-    new Server({
-        port:envs.PORT,
-        routes:AppRoutes.routes
-    }).start();
-}
-
-
