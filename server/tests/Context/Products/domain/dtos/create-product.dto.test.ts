@@ -42,7 +42,7 @@ describe("CreateProductDto - Unit Test", () => {
       const dto = CreateProductDto.create(
         validRequestProductDataWithMinimumRequairedFields
       );
-      console.log(dto);
+
       expect(dto).toBeInstanceOf(CreateProductDto);
       expect(dto.name).toBe(
         validRequestProductDataWithMinimumRequairedFields.name
@@ -75,12 +75,12 @@ describe("CreateProductDto - Unit Test", () => {
       ).toThrow(z.ZodError);
     });
 
-    test("should throw z.ZodError if it validation fails - stock sizes dont match with total stock", async () => {
+    test("should throw ValidationError if it validation fails - stock sizes dont match with total stock", async () => {
       expect(() =>
         CreateProductDto.create(
           mockInvalidProductDataDontMatchStockForSizesAndtotalStockRequest
         )
-      ).toThrow(z.ZodError);
+      ).toThrow(ValidationError);
     });
     test("should validate currentSize exists in sizes", () => {
       const invalidData = {
@@ -94,17 +94,17 @@ describe("CreateProductDto - Unit Test", () => {
       );
     });
 
-    test("should throw z.ZodError if it validation fails - exist a cashDiscountPercentage and the cashPrice is greater than price ", async () => {
+    test("should throw ValidationError if it validation fails - exist a cashDiscountPercentage and the cashPrice is greater than price ", async () => {
       expect(() =>
         CreateProductDto.create(mockInvalidProductDataCashPriceGreaterThanPrice)
-      ).toThrow(z.ZodError);
+      ).toThrow(ValidationError);
     });
-    test("should throw z.ZodError if it validation fails - exist a cashDiscountPercentage and the cashPrice dont match with price * (1 - cashDiscountPercentage) ", async () => {
+    test("should throw ValidationError if it validation fails - exist a cashDiscountPercentage and the cashPrice dont match with price * (1 - cashDiscountPercentage) ", async () => {
       expect(() =>
         CreateProductDto.create(
           mockInvalidProductDataCashPriceDontMatchWithPriceByCashDiscount
         )
-      ).toThrow(z.ZodError);
+      ).toThrow(ValidationError);
     });
   });
 

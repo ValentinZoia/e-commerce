@@ -6,6 +6,7 @@ import {
   ValidationError,
 } from "../../../../../src/shared/domain/errors";
 import { PrismaClientKnownRequestError } from "../../../../../src/generated/prisma/runtime/library";
+import { error } from "console";
 
 describe("ErrorHandler Middleware Unit test", () => {
   let mockRequest: Partial<Request>;
@@ -63,6 +64,7 @@ describe("ErrorHandler Middleware Unit test", () => {
         type: "CustomError",
         statusCode: 402,
         message: "402 error",
+        errors: { CustomError: ["402 error"] },
       });
     });
 
@@ -80,6 +82,7 @@ describe("ErrorHandler Middleware Unit test", () => {
         type: "BadRequestError",
         statusCode: 400,
         message: "Bad Request - error",
+        errors: { BadRequestError: ["Bad Request - error"] },
       });
     });
 
@@ -97,6 +100,7 @@ describe("ErrorHandler Middleware Unit test", () => {
         type: "UnauthorizedError",
         statusCode: 401,
         message: "Unauthorized - error",
+        errors: { UnauthorizedError: ["Unauthorized - error"] },
       });
     });
 
@@ -114,6 +118,7 @@ describe("ErrorHandler Middleware Unit test", () => {
         type: "ForbiddenError",
         statusCode: 403,
         message: "ForBidden - error",
+        errors: { ForbiddenError: ["ForBidden - error"] },
       });
     });
 
@@ -131,6 +136,7 @@ describe("ErrorHandler Middleware Unit test", () => {
         type: "NotFoundError",
         statusCode: 404,
         message: "Not Found - error",
+        errors: { NotFoundError: ["Not Found - error"] },
       });
     });
 
@@ -148,6 +154,7 @@ describe("ErrorHandler Middleware Unit test", () => {
         type: "InternalServerError",
         statusCode: 500,
         message: "Internal Server Error",
+        errors: { InternalServerError: ["Internal Server Error"] },
       });
     });
   });
@@ -199,6 +206,10 @@ describe("ErrorHandler Middleware Unit test", () => {
       expect(mockResponse.json).toHaveBeenCalledWith({
         type: "UniqueConstraintError",
         message: "Ya existe un registro con este valor",
+        statusCode: 409,
+        errors: {
+          UniqueConstraintError: ["Ya existe un registro con este valor"],
+        },
       });
     });
 
@@ -223,6 +234,10 @@ describe("ErrorHandler Middleware Unit test", () => {
       expect(mockResponse.json).toHaveBeenCalledWith({
         type: "ForeignKeyConstraintError",
         message: "El valor de referencia no existe",
+        statusCode: 400,
+        errors: {
+          ForeignKeyConstraintError: ["El valor de referencia no existe"],
+        },
       });
     });
 
@@ -247,6 +262,8 @@ describe("ErrorHandler Middleware Unit test", () => {
       expect(mockResponse.json).toHaveBeenCalledWith({
         type: "InconsistentColumnData",
         message: "Valor inválido de identificador",
+        statusCode: 404,
+        errors: { InconsistentColumnData: ["Valor inválido de identificador"] },
       });
     });
 
@@ -268,6 +285,8 @@ describe("ErrorHandler Middleware Unit test", () => {
       expect(mockResponse.json).toHaveBeenCalledWith({
         type: "NotFoundError",
         message: "Recurso no encontrado",
+        statusCode: 404,
+        errors: { NotFoundError: ["Recurso no encontrado"] },
       });
     });
   });
@@ -286,6 +305,8 @@ describe("ErrorHandler Middleware Unit test", () => {
       expect(mockResponse.json).toHaveBeenCalledWith({
         type: "InternalServerError",
         message: `Error del Servidor`,
+        statusCode: 500,
+        errors: { InternalServerError: ["Error del Servidor"] },
       });
     });
   });
