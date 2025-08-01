@@ -1,4 +1,3 @@
-import { Response, Request } from "express";
 import { ProductController } from "../../../../../src/Products/presentation/controllers";
 
 export const mockProductController: jest.Mocked<ProductController> = {
