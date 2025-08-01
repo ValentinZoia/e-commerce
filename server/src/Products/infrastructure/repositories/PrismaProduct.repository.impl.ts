@@ -1,11 +1,13 @@
-import { IProductRepository } from "../../domain/interfaces";
-import prisma from "../../../shared/infrastructure/database/prismaClient.js";
+import {
+  GetAllQueryOptions,
+  IProductRepository,
+} from "../../domain/interfaces";
+import prisma from "../../../shared/infrastructure/database/prismaClient";
 import { Product } from "../../domain/entities";
 import { Product as ProductPrisma } from "../../../generated/prisma";
 
 export class PrismaProductRepositoryImpl implements IProductRepository {
   async create(product: Product): Promise<Product> {
-    
     const createdProduct: ProductPrisma = await prisma.product.create({
       data: {
         name: product.name,
@@ -25,14 +27,16 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
         categoryId: product.categoryId,
         installments: product.installments,
         images: product.images,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
       },
     });
-    
+
     return this.mapPrismaToProduct(createdProduct);
   }
 
   async update(id: string, product: Product): Promise<Product> {
-    const updatedProduct:ProductPrisma = await prisma.product.update({
+    const updatedProduct: ProductPrisma = await prisma.product.update({
       where: { id },
       data: {
         name: product.name,
@@ -65,14 +69,7 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
     });
   }
 
-  async getAll(options?: {
-    category?: string;
-    featured?: boolean;
-    promotion?: boolean;
-    new?: boolean;
-    skip?: number;
-    take?: number;
-  }): Promise<Product[]> {
+  async getAll(options?: GetAllQueryOptions): Promise<Product[]> {
     const where: any = {};
 
     if (options?.category) {
@@ -91,7 +88,7 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
       where.isNew = options.new;
     }
 
-    const products:ProductPrisma[] = await prisma.product.findMany({
+    const products: ProductPrisma[] = await prisma.product.findMany({
       where,
       take: options?.take,
       skip: options?.skip,
@@ -102,7 +99,7 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
   }
 
   async getById(id: string): Promise<Product | null> {
-    const product:ProductPrisma|null = await prisma.product.findUnique({
+    const product: ProductPrisma | null = await prisma.product.findUnique({
       where: { id },
     });
     if (!product) return null;
@@ -110,7 +107,7 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
     return this.mapPrismaToProduct(product);
   }
   async getByName(name: string): Promise<Product | null> {
-    const product:ProductPrisma|null = await prisma.product.findFirst({
+    const product: ProductPrisma | null = await prisma.product.findFirst({
       where: { name },
     });
     if (!product) return null;
@@ -144,4 +141,3 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
     );
   }
 }
-
