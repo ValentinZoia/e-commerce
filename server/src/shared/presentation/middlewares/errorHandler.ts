@@ -67,7 +67,9 @@ export const errorHandler = (
         type: "UniqueConstraintError",
         message: "Ya existe un registro con este valor",
         statusCode: 409,
-        errors: {},
+        errors: {
+          UniqueConstraintError: ["Ya existe un registro con este valor"],
+        },
       });
       return;
     }
@@ -78,7 +80,9 @@ export const errorHandler = (
         type: "ForeignKeyConstraintError",
         message: "El valor de referencia no existe",
         statusCode: 400,
-        errors: {},
+        errors: {
+          ForeignKeyConstraintError: ["El valor de referencia no existe"],
+        },
       });
       return;
     }
@@ -89,7 +93,7 @@ export const errorHandler = (
         type: "NotFoundError",
         message: "Recurso no encontrado",
         statusCode: 404,
-        errors: {},
+        errors: { NotFoundError: ["Recurso no encontrado"] },
       });
       return;
     }
@@ -99,7 +103,7 @@ export const errorHandler = (
         type: "InconsistentColumnData",
         message: "Valor inválido de identificador",
         statusCode: 404,
-        errors: {},
+        errors: { InconsistentColumnData: ["Valor inválido de identificador"] },
       });
       return;
     }
@@ -113,6 +117,6 @@ export const errorHandler = (
     type: "InternalServerError",
     message: `Error del Servidor`,
     statusCode: 500,
-    errors: {},
+    errors: { InternalServerError: ["Error del Servidor"] },
   });
 };
