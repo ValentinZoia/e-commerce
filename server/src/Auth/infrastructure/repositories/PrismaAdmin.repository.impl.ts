@@ -28,6 +28,9 @@ export class PrismaAdminRepositoryImpl implements IAdminRepository {
     //Mapear el objeto encontrado a la entidad Admin
     return this.mapPrismaToAdmin(existingUser);
   }
+  async deleteByUsername(username: string): Promise<void> {
+    await prisma.admin.delete({ where: { username } });
+  }
 
   private mapPrismaToAdmin(object: { [key: string]: any }): Admin {
     const { id, _id, username, password } = object;
