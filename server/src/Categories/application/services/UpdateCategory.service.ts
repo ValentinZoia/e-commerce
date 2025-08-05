@@ -29,8 +29,14 @@ export class UpdateCategoryService extends Service<
         name: ["Ya existe una categoria con ese nombre"],
       });
     }
+    const updatedCategory = new Category(
+      id,
+      data.name,
+      data.slug,
+      data.description
+    );
 
     //3. Actualizar Categoria
-    return await this.categoryRepository.update(id, data);
+    return await this.categoryRepository.update(id, updatedCategory);
   }
 }
