@@ -12,7 +12,7 @@ import {
   mockValidProductDataRequestConvertedToProductType,
 } from "../../../../helpers/factories/product-mocks";
 import { Product } from "../../../../../src/Products/domain/entities";
-import { mockCategoryData } from "../../../../helpers/factories/category-mocks";
+import { mockValidCategoryDataResponse } from "../../../../helpers/factories/category-mocks";
 
 describe("UpdateProductService - Unit Test", () => {
   let updateProductService: UpdateProductService;
@@ -32,7 +32,9 @@ describe("UpdateProductService - Unit Test", () => {
         mockProductRepository.getById.mockResolvedValue(
           mockValidProductDataResponse
         );
-        mockCategoryRepository.getByName.mockResolvedValue(mockCategoryData);
+        mockCategoryRepository.getByName.mockResolvedValue(
+          mockValidCategoryDataResponse
+        );
         mockProductRepository.getByName.mockResolvedValue(null);
         mockProductRepository.update.mockResolvedValue(
           mockValidProductDataResponse
@@ -103,7 +105,9 @@ describe("UpdateProductService - Unit Test", () => {
           mockProductRepository.getById.mockResolvedValue(
             mockValidProductDataResponse
           );
-          mockCategoryRepository.getByName.mockResolvedValue(mockCategoryData);
+          mockCategoryRepository.getByName.mockResolvedValue(
+            mockValidCategoryDataResponse
+          );
           mockProductRepository.getByName.mockResolvedValue(
             mockValidProductDataResponseV2
           );

@@ -7,7 +7,7 @@ import {
   mockValidProductDataResponse,
   mockValidProductDataRequestConvertedToProductType,
 } from "../../../../helpers/factories/product-mocks";
-import { mockCategoryData } from "../../../../helpers/factories/category-mocks";
+import { mockValidCategoryDataResponse as mockCategoryData } from "../../../../helpers/factories/category-mocks";
 import { Product } from "../../../../../src/Products/domain/entities";
 
 describe("CreateProductService", () => {
