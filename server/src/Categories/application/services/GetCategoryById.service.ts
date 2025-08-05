@@ -10,7 +10,7 @@ export class GetCategoryByIdService extends Service<[string], Category> {
 
   async execute(id: string): Promise<Category> {
     const category = await this.categoryRepository.getById(id);
-    if (!category) {
+    if (!category || category === null) {
       throw CustomError.notFound(`Categoria con id: ${id} no encontrada`);
     }
     return category;
