@@ -1,6 +1,7 @@
 import {
   CreateAdminService,
   LogInAdminService,
+  DeleteAdminService,
 } from "../../application/services";
 import {
   AuthMiddleware,
@@ -24,10 +25,14 @@ export class AuthAdminRoutes {
       adminRepository,
       BcryptAdapter.compare
     );
+
+    const deleteAdminService = new DeleteAdminService(adminRepository);
+
     const authMiddleware = new AuthMiddleware(adminRepository);
     const controller = new AdminController(
       createAdminService,
-      logInAdminService
+      logInAdminService,
+      deleteAdminService
     );
 
     router.post(
@@ -48,6 +53,13 @@ export class AuthAdminRoutes {
       ValidationMiddleware.validateBody(createAdminSchema),
       controller.createAdmin.bind(controller)
     );
+
+    router.delete(
+      "/:username",
+      authMiddleware.authenticate,
+      controller.deleteAdmin.bind(controller)
+    );
+
     router.get("/", authMiddleware.authenticate, (req, res) => {
       res.json({ user: req.admin });
     });

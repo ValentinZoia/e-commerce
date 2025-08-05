@@ -1,6 +1,7 @@
 import {
   CreateAdminService,
   LogInAdminService,
+  DeleteAdminService,
 } from "../../application/services";
 import { CreateAdminDto } from "../../domain/dtos";
 import { LoginAdminDto } from "../../domain/dtos";
@@ -10,7 +11,8 @@ export class AdminController {
   // DI
   constructor(
     private readonly createAdminService: CreateAdminService,
-    private readonly logInAdminService: LogInAdminService
+    private readonly logInAdminService: LogInAdminService,
+    private readonly deleteAdminService: DeleteAdminService
   ) {}
 
   createAdmin = async (
@@ -62,4 +64,17 @@ export class AdminController {
       message: "Logout exitoso",
     });
   }
+  deleteAdmin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { username } = req.params;
+      const deletedAdmin = await this.deleteAdminService.execute(username);
+      res.status(200).json(deletedAdmin);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
