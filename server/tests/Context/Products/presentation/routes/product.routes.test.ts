@@ -1,5 +1,5 @@
 import { createServer } from "../../../../../src/server";
-import e, { Express } from "express";
+import { Express } from "express";
 import { AuthenticatedRequestHelper } from "../../../../helpers/auth/authenticatedRequestHelper";
 import { PrismaClient } from "../../../../../src/generated/prisma";
 import {
