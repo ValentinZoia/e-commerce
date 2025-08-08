@@ -5,7 +5,7 @@ import { CreateAdminDTO } from "../../domain/dtos";
 import { Admin } from "../../domain/entities";
 
 export class PrismaAdminRepositoryImpl implements IAdminRepository {
-  async create(admin: CreateAdminDTO): Promise<Admin> {
+  async create(admin: Admin): Promise<Admin> {
     const { username, password } = admin;
 
     const createdAdmin = await prisma.admin.create({
