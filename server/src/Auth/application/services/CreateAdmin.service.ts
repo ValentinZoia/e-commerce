@@ -4,7 +4,7 @@ import { BcryptAdapter } from "../../../shared/infrastructure/adapters";
 import { CreateAdminDto } from "../../domain/dtos";
 import { Service } from "../../../shared/application/base";
 
-interface PublicUserResponse {
+export interface PublicUserResponse {
   id: string;
   username: string;
 }
@@ -32,9 +32,13 @@ export class CreateAdminService extends Service<
 
     // 2. Hashear contraseña
     const hashedPassword = this.hashPassword(password);
+    if (!hashedPassword) {
+      throw new ValidationError({ password: ["Error al hashear contraseña"] });
+    }
 
     //3. Crear admin
     const createdAdmin = await this.adminRepository.create({
+      id: null,
       username: username,
       password: hashedPassword,
     });
