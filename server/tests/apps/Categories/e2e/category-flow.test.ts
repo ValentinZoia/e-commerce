@@ -14,20 +14,27 @@ describe("Category E2E Flow", () => {
   let categoryId: string;
   let categoryName: string;
   let existsTheCategory: boolean = false;
+  let existsTheAdmin: boolean = false;
 
   beforeAll(async () => {
     app = createServer();
+    existsTheAdmin = false;
+    existsTheCategory = false;
 
     //Autenticar usuario
     //Crear usuario
     const createUser = await request(app)
       .post("/api/admin")
-      .send({ username: "admintest", password: "Password1" });
+      .send({ username: "e2ecatadmintest", password: "Password1" });
+
+    if (createUser.status === 201) {
+      existsTheAdmin = true;
+    }
 
     //Logear
     const loginRes = await request(app)
       .post("/api/admin/login")
-      .send({ username: "admintest", password: "Password1" });
+      .send({ username: "e2ecatadmintest", password: "Password1" });
 
     authToken = loginRes.header["set-cookie"][0]
       .split("access_token=")[1]
@@ -35,12 +42,20 @@ describe("Category E2E Flow", () => {
   });
   afterAll(async () => {
     // Limpieza
+    await request(app)
+      .delete("/api/admin/logout")
+      .set("Cookie", [`access_token=${authToken}`]);
     if (existsTheCategory) {
       await categoryRepository.delete(categoryId);
     }
 
-    await adminRepository.deleteByUsername("admintest");
+    if (existsTheAdmin) {
+      await adminRepository.deleteByUsername("e2ecatadmintest");
+    }
+
     await prisma.$disconnect();
+    existsTheAdmin = false;
+    existsTheCategory = false;
   });
 
   test("should complete full category lifecycle", async () => {

@@ -15,19 +15,25 @@ describe("category Black Box Tests", () => {
   let authToken: string;
   let categoryId: string;
   let categoryName: string;
+  let existsTheAdmin: boolean = false;
+  let existsTheCategory: boolean = false;
 
   beforeAll(async () => {
     app = createServer();
-
+    existsTheAdmin = false;
     // Setup inicial de prueba
     // Crear y autenticar usuario de prueba
-    await request(app)
+    const createAdminRes = await request(app)
       .post("/api/admin")
-      .send({ username: "blackboxtest", password: "Password1" });
+      .send({ username: "bbcatadmintest", password: "Password1" });
+
+    if (createAdminRes.status === 201) {
+      existsTheAdmin = true;
+    }
 
     const loginRes = await request(app)
       .post("/api/admin/login")
-      .send({ username: "blackboxtest", password: "Password1" });
+      .send({ username: "bbcatadmintest", password: "Password1" });
 
     authToken = loginRes.header["set-cookie"][0]
       .split("access_token=")[1]
@@ -36,9 +42,15 @@ describe("category Black Box Tests", () => {
 
   afterAll(async () => {
     // Limpieza
-    await categoryRepository.delete(categoryId);
-    await adminRepository.deleteByUsername("blackboxtest");
+    await request(app)
+      .delete("/api/admin/logout")
+      .set("Cookie", [`access_token=${authToken}`]);
+    if (existsTheCategory) await categoryRepository.delete(categoryId);
+    if (existsTheAdmin) {
+      await adminRepository.deleteByUsername("bbcatadmintest");
+    }
     await prisma.$disconnect();
+    existsTheAdmin = false;
   });
 
   describe("POST /api/categories", () => {
@@ -59,6 +71,8 @@ describe("category Black Box Tests", () => {
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty("id");
         expect(response.body.name).toBe("category-test-id");
+
+        existsTheCategory = true;
       });
     });
 
@@ -225,33 +239,21 @@ describe("category Black Box Tests", () => {
   describe("DELETE /api/categories/:id", () => {
     let deletedCategoryId: string;
 
-    beforeAll(async () => {
-      // Crear category para eliminar
-      const createRes = await request(app)
-        .post("/api/categories")
-        .set("Cookie", [`access_token=${authToken}`])
-        .send({
-          name: "[BlackBox] Delete Test category",
-          slug: "[BlackBox] Delete Test category",
-          description: "[BlackBox] Delete Test category",
-        });
-      deletedCategoryId = createRes.body.id;
-    });
-
     describe("Success", () => {
       test("should delete category (200)", async () => {
         const response = await request(app)
-          .delete(`/api/categories/${deletedCategoryId}`)
+          .delete(`/api/categories/${categoryId}`)
           .set("Cookie", [`access_token=${authToken}`]);
 
         expect(response.status).toBe(200);
 
         // Verificar que el categoryfue eliminado
         const verifyRes = await request(app)
-          .get(`/api/categories/${deletedCategoryId}`)
+          .get(`/api/categories/${categoryId}`)
           .set("Cookie", [`access_token=${authToken}`]);
 
         expect(verifyRes.status).toBe(404);
+        existsTheCategory = false;
       });
     });
 
@@ -266,7 +268,7 @@ describe("category Black Box Tests", () => {
 
       test("should return 401 when not authenticated", async () => {
         const response = await request(app).delete(
-          `/api/categories/${deletedCategoryId}`
+          `/api/categories/${categoryId}`
         );
 
         expect(response.status).toBe(401);
