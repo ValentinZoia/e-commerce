@@ -5,11 +5,13 @@ import { OrderBuilder } from "../../domain/entities/Order.builder";
 import { OrderItem } from "../../domain/entities/OrderItem.entity";
 import { CustomError } from "../../../shared/domain/errors";
 import { Service } from "../../../shared/application/base";
-import { Order} from "../../domain/entities/Order.entity";
+import { Order } from "../../domain/entities/Order.entity";
+import e from "express";
 
-export class UpdateOrderService
-  extends Service<[string, CreateOrderDto], Order>
-{
+export class UpdateOrderService extends Service<
+  [string, CreateOrderDto],
+  Order
+> {
   constructor(private orderRepository: IOrderRepository) {
     super();
   }
@@ -24,7 +26,7 @@ export class UpdateOrderService
     const items: OrderItem[] = data.products.map((item) =>
       new OrderItemBuilder()
         .setId(null)
-        .setOrderId(null)
+        .setOrderId(existingOrder.id)
         .setProductId(item.productId)
         .setProductName(item.productName)
         .setQuantity(item.quantity)
@@ -37,7 +39,7 @@ export class UpdateOrderService
 
     // crear la orden con OrderBuilder y asignar los OrderItems
     const updatedOrder = new OrderBuilder()
-      .setId(null)
+      .setId(existingOrder.id)
       .setCustomerPhone(data.customerPhone)
       .setCustomerEmail(data.customerEmail)
       .setCustomerName(data.customerName)
@@ -55,6 +57,6 @@ export class UpdateOrderService
     // Calcular totales
     updatedOrder.calculateTotals();
 
-    return await  this.orderRepository.update(id,updatedOrder);
+    return await this.orderRepository.update(id, updatedOrder);
   }
 }
