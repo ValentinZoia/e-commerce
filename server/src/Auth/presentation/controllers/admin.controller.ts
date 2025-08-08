@@ -1,3 +1,4 @@
+import { CustomError } from "../../../shared/domain/errors";
 import {
   CreateAdminService,
   LogInAdminService,
@@ -71,8 +72,14 @@ export class AdminController {
   ): Promise<void> => {
     try {
       const { username } = req.params;
+      if (!username) {
+        throw CustomError.badRequest("username is required");
+      }
       const deletedAdmin = await this.deleteAdminService.execute(username);
-      res.status(200).json(deletedAdmin);
+      res.status(200).json({
+        success: true,
+        message: "Admin deleted successfully",
+      });
     } catch (error) {
       next(error);
     }
