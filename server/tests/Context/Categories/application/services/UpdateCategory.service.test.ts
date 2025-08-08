@@ -10,7 +10,6 @@ import {
   mockValidCategoryDataResponse,
   mockValidCategoryDataResponseV2,
 } from "../../../../helpers/factories/category-mocks";
-import e from "express";
 
 describe("UpdateCategoryService - Unit Test", () => {
   let updateCategoryService: UpdateCategoryService;
@@ -119,7 +118,9 @@ describe("UpdateCategoryService - Unit Test", () => {
               mockValidCategoryDataResponse.id as string,
               mockValidCategoryDataRequest
             )
-          ).rejects.toThrow(CustomError);
+          ).rejects.toThrow(
+            CustomError.notFound("Categoria a actualizar no encontrada")
+          );
 
           expect(mockCategoryRepository.getById).toHaveBeenCalledWith(
             mockValidCategoryDataResponse.id as string
