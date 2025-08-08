@@ -78,7 +78,7 @@ model Order {
   customerNotes  String?     // Comentarios del cliente
 
   //Productos
-  products        OrderItem[]
+  products        OrderItem[] 
 
   //Flujo de compra/WhatsApp
   whatsappMessage String?
@@ -105,7 +105,7 @@ model Order {
 
 model OrderItem {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  order       Order    @relation(fields: [orderId], references: [id])
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId     String   @db.ObjectId
   productId   String   // Referencia al ID del producto (no como relación)
   productName String   // Nombre en el momento de la compra
