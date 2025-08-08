@@ -19,8 +19,11 @@ describe("Product E2E Flow", () => {
   let productId: string;
   let productName: string;
   let existsTheProduct: boolean = false;
+  let existsTheAdmin: boolean = false;
 
   beforeAll(async () => {
+    existsTheAdmin = false;
+    existsTheProduct = false;
     app = createServer();
 
     //Crear datos de prueba directamente en DB
@@ -37,12 +40,16 @@ describe("Product E2E Flow", () => {
     //Crear usuario
     const createUser = await request(app)
       .post("/api/admin")
-      .send({ username: "admintest", password: "Password1" });
+      .send({ username: "e2epradmintest", password: "Password1" });
+
+    if (createUser.status === 201) {
+      existsTheAdmin = true;
+    }
 
     //Logear
     const loginRes = await request(app)
       .post("/api/admin/login")
-      .send({ username: "admintest", password: "Password1" });
+      .send({ username: "e2epradmintest", password: "Password1" });
 
     authToken = loginRes.header["set-cookie"][0]
       .split("access_token=")[1]
@@ -51,13 +58,20 @@ describe("Product E2E Flow", () => {
 
   afterAll(async () => {
     // Limpieza
+    await request(app)
+      .delete("/api/admin/logout")
+      .set("Cookie", [`access_token=${authToken}`]);
     await categoryRepository.delete(categoryId);
     if (existsTheProduct) {
       await productRepository.delete(productId);
     }
 
-    await adminRepository.deleteByUsername("admintest");
+    if (existsTheAdmin) {
+      await adminRepository.deleteByUsername("e2epradmintest");
+    }
     await prisma.$disconnect();
+    existsTheAdmin = false;
+    existsTheProduct = false;
   });
 
   test("should complete full product lifecycle", async () => {

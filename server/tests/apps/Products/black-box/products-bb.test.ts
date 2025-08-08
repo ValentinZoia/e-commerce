@@ -23,6 +23,9 @@ describe("Product Black Box Tests", () => {
   let categoryName: string;
   let productId: string;
   let productName: string;
+  let existsTheProduct: boolean = false;
+  let existsTheCategory: boolean = false;
+  let existsTheAdmin: boolean = false;
 
   beforeAll(async () => {
     app = createServer();
@@ -37,15 +40,18 @@ describe("Product Black Box Tests", () => {
 
     categoryId = category.id as string;
     categoryName = category.name;
+    if (category !== null) existsTheCategory = true;
 
     // Crear y autenticar usuario de prueba
-    await request(app)
+    const createAdminRes = await request(app)
       .post("/api/admin")
-      .send({ username: "blackboxtest", password: "Password1" });
+      .send({ username: "bbpradmintest", password: "Password1" });
+
+    if (createAdminRes.status === 201) existsTheAdmin = true;
 
     const loginRes = await request(app)
       .post("/api/admin/login")
-      .send({ username: "blackboxtest", password: "Password1" });
+      .send({ username: "bbpradmintest", password: "Password1" });
 
     authToken = loginRes.header["set-cookie"][0]
       .split("access_token=")[1]
@@ -55,11 +61,19 @@ describe("Product Black Box Tests", () => {
   afterAll(async () => {
     // Limpieza
 
-    await productRepository.delete(productId);
-    await categoryRepository.delete(categoryId);
-    await adminRepository.deleteByUsername("blackboxtest");
+    await request(app)
+      .delete("/api/admin/logout")
+      .set("Cookie", [`access_token=${authToken}`]);
+
+    if (existsTheProduct) await productRepository.delete(productId);
+    if (existsTheCategory) await categoryRepository.delete(categoryId);
+
+    if (existsTheAdmin) await adminRepository.deleteByUsername("bbpradmintest");
 
     await prisma.$disconnect();
+    existsTheAdmin = false;
+    existsTheCategory = false;
+    existsTheProduct = false;
   });
 
   describe("POST /api/products", () => {
@@ -81,6 +95,8 @@ describe("Product Black Box Tests", () => {
         expect(response.body).toHaveProperty("id");
         expect(response.body.name).toBe("[BlackBox] Test Product");
         expect(response.body.categoryId).toBe(categoryName);
+
+        existsTheProduct = true;
       });
     });
 
@@ -321,34 +337,21 @@ describe("Product Black Box Tests", () => {
   });
 
   describe("DELETE /api/products/:id", () => {
-    let productToDeleteId: string;
-    beforeAll(async () => {
-      const productToDelete = await request(app)
-        .post("/api/products")
-        .set("Cookie", [`access_token=${authToken}`])
-        .send({
-          ...mockValidProductDataRequest,
-          name: "[BlackBox] Product to delete",
-          categoryId: categoryName,
-        });
-
-      productToDeleteId = productToDelete.body.id;
-    });
-
     describe("Success", () => {
       test("should delete product (200)", async () => {
         const response = await request(app)
-          .delete(`/api/products/${productToDeleteId}`)
+          .delete(`/api/products/${productId}`)
           .set("Cookie", [`access_token=${authToken}`]);
 
         expect(response.status).toBe(200);
 
         // Verificar que el producto fue eliminado
         const verifyRes = await request(app)
-          .get(`/api/products/${productToDeleteId}`)
+          .get(`/api/products/${productId}`)
           .set("Cookie", [`access_token=${authToken}`]);
 
         expect(verifyRes.status).toBe(404);
+        existsTheProduct = false;
       });
     });
 
@@ -363,7 +366,7 @@ describe("Product Black Box Tests", () => {
 
       test("should return 401 when not authenticated", async () => {
         const response = await request(app).delete(
-          `/api/products/${productToDeleteId}`
+          `/api/products/${productId}`
         );
 
         expect(response.status).toBe(401);
