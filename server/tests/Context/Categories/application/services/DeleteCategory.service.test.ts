@@ -2,7 +2,6 @@ import { DeleteCategoryService } from "../../../../../src/Categories/application
 import { mockCategoryRepository } from "../../__mocks__/repositories/MockCategoryRepository";
 import { CustomError } from "../../../../../src/shared/domain/errors";
 import { mockValidCategoryDataResponse } from "../../../../helpers/factories/category-mocks";
-import { mock } from "node:test";
 
 describe("DeleteCategoryService - Unit Test", () => {
   let deleteCategoryService: DeleteCategoryService;
