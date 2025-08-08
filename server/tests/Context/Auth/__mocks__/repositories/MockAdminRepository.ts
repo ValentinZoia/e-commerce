@@ -3,4 +3,5 @@ import { PrismaAdminRepositoryImpl } from "../../../../../src/Auth/infrastructur
 export const mockAdminRepository: jest.Mocked<PrismaAdminRepositoryImpl> = {
   create: jest.fn(),
   findAdminByUsername: jest.fn(),
+  deleteByUsername: jest.fn(),
 } as unknown as jest.Mocked<PrismaAdminRepositoryImpl>;
