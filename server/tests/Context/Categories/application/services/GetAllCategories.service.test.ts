@@ -18,7 +18,7 @@ describe("GetAllCategoriesService - Unit Test", () => {
 
   describe("execute", () => {
     describe("Success", () => {
-      test("should delete a category successfully", async () => {
+      test("should get all categories successfully", async () => {
         mockCategoryRepository.getAll.mockResolvedValue([
           mockValidCategoryDataResponse,
           mockValidCategoryDataResponseV2,
