@@ -2,7 +2,7 @@ import { CreateAdminDto } from "../dtos/CreateAdmin.dto";
 import { Admin } from "../entities/Admin.entity";
 
 export interface IAdminRepository {
-  create(admin: CreateAdminDto): Promise<Admin>;
+  create(admin: Admin): Promise<Admin>;
 
   findAdminByUsername(username: string): Promise<Admin | null>;
 
