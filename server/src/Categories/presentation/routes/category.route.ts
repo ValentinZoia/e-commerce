@@ -1,4 +1,7 @@
+import { PrismaAdminRepositoryImpl } from "../../../Auth/infrastructure/repositories";
 import { PrismaCategoryRepositoryImpl } from "../../infrastructure/repositories";
+import { CategoryController } from "../controllers";
+import { categorySchema } from "../../domain/dtos";
 import {
   AuthMiddleware,
   ValidationMiddleware,
@@ -11,10 +14,8 @@ import {
   GetCategoryByIdService,
   GetCategoryByNameService,
 } from "../../application/services";
-import { CategoryController } from "../controllers";
-import { categorySchema } from "../../domain/dtos";
+
 import { Router } from "express";
-import { PrismaAdminRepositoryImpl } from "../../../Auth/infrastructure/repositories";
 
 export class CategoryRoutes {
   static get routes(): Router {

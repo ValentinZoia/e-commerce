@@ -1,7 +1,7 @@
-import { IOrderRepository } from "../../domain/interfaces/IOrderRepository.interface";
 import { CustomError } from "../../../shared/domain/errors";
+import { IOrderRepository } from "../../domain/interfaces";
 import { Service } from "../../../shared/application/base";
-import { Order } from "../../domain/entities/Order.entity";
+import { Order } from "../../domain/entities";
 
 export class GetOrdersByCustomerNameService extends Service<[string], Order[]> {
   constructor(private orderRepository: IOrderRepository) {

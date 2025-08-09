@@ -1,10 +1,10 @@
+import prisma from "../../../shared/infrastructure/database/prismaClient";
+import { Product as ProductPrisma } from "../../../generated/prisma";
+import { Product } from "../../domain/entities";
 import {
   GetAllQueryOptions,
   IProductRepository,
 } from "../../domain/interfaces";
-import prisma from "../../../shared/infrastructure/database/prismaClient";
-import { Product } from "../../domain/entities";
-import { Product as ProductPrisma } from "../../../generated/prisma";
 
 export class PrismaProductRepositoryImpl implements IProductRepository {
   async create(product: Product): Promise<Product> {

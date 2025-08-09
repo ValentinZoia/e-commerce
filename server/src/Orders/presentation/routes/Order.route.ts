@@ -1,3 +1,12 @@
+import { PrismaAdminRepositoryImpl } from "../../../Auth/infrastructure/repositories";
+import { PrismaOrderRepositoryImpl } from "../../infrastructure/repositories";
+import { OrderSendMessageToCustomer } from "../../infrastructure/adapters";
+import { CreateOrderDtoSchema } from "../../domain/dtos";
+import {
+  AuthMiddleware,
+  ValidationMiddleware,
+} from "../../../shared/presentation/middlewares";
+import { OrderController } from "../controllers";
 import {
   CreateOrderService,
   UpdateOrderService,
@@ -9,16 +18,7 @@ import {
   GetOrdersByCustomerPhoneService,
   GetOrdersByProductIdService,
 } from "../../application/services";
-import { PrismaOrderRepositoryImpl } from "../../infrastructure/repositories/PrismaOrder.repository.impl";
-import {
-  AuthMiddleware,
-  ValidationMiddleware,
-} from "../../../shared/presentation/middlewares";
-import { CreateOrderDtoSchema } from "../../domain/dtos/OrderDataDto.dto";
-import { OrderController } from "../controllers/Order.controller";
 import { Router } from "express";
-import { OrderSendMessageToCustomer } from "../../infrastructure/adapters/OrderSendMessageToCustomer.impl";
-import { PrismaAdminRepositoryImpl } from "../../../Auth/infrastructure/repositories";
 
 export class OrderRoutes {
   static get routes(): Router {

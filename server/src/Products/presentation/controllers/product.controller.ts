@@ -1,3 +1,6 @@
+import { CustomError } from "../../../shared/domain/errors";
+import { Request, Response, NextFunction } from "express";
+import { CreateProductDto } from "../../domain/dtos";
 import {
   CreateProductService,
   UpdateProductService,
@@ -6,10 +9,6 @@ import {
   GetProductByIdService,
   DeleteProductService,
 } from "../../application/services";
-import { Request, Response, NextFunction } from "express";
-import { CreateProductDto } from "../../domain/dtos";
-import { CustomError } from "../../../shared/domain/errors";
-import { GetAllQueryOptions } from "../../domain/interfaces";
 
 export class ProductController {
   constructor(

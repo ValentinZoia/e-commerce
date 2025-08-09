@@ -1,6 +1,6 @@
+import { WhatsAppStatusNames } from "../entities";
 import { z } from "zod";
-import { WhatsAppStatus, WhatsAppStatusNames } from "../entities/Order.entity";
-import { parse } from "path";
+
 const OrderItemSchema = z.object({
   productId: z.string().min(1),
   productName: z.string().min(1),

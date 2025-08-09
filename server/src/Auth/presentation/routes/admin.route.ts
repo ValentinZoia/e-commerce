@@ -1,16 +1,17 @@
+import { PrismaAdminRepositoryImpl } from "../../infrastructure/repositories";
+import { createAdminSchema, loginAdminSchema } from "../../domain/dtos";
+import { BcryptAdapter } from "../../../shared/infrastructure/adapters";
+import {
+  AuthMiddleware,
+  ValidationMiddleware,
+} from "../../../shared/presentation/middlewares";
+import { AdminController } from "../controllers";
 import {
   CreateAdminService,
   LogInAdminService,
   DeleteAdminService,
 } from "../../application/services";
-import {
-  AuthMiddleware,
-  ValidationMiddleware,
-} from "../../../shared/presentation/middlewares";
-import { PrismaAdminRepositoryImpl } from "../../infrastructure/repositories";
-import { createAdminSchema, loginAdminSchema } from "../../domain/dtos";
-import { BcryptAdapter } from "../../../shared/infrastructure/adapters";
-import { AdminController } from "../controllers";
+
 import { Router } from "express";
 
 export class AuthAdminRoutes {

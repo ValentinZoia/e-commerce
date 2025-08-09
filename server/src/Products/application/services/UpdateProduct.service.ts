@@ -1,10 +1,9 @@
 import { CustomError, ValidationError } from "../../../shared/domain/errors";
 import { ICategoryRepository } from "../../../Categories/domain/interfaces";
-import { ProductBuilder } from "../../domain/entities/product.builder";
+import { ProductBuilder, Product } from "../../domain/entities";
 import { IProductRepository } from "../../domain/interfaces";
 import { Service } from "../../../shared/application/base";
 import { CreateProductDto } from "../../domain/dtos";
-import { Product } from "../../domain/entities";
 
 export class UpdateProductService extends Service<
   [string, CreateProductDto],

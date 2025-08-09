@@ -1,12 +1,13 @@
-import { IOrderRepository } from "../../domain/interfaces/IOrderRepository.interface";
-import { OrderItemBuilder } from "../../domain/entities/OrderItem.builder";
-import { CreateOrderDto } from "../../domain/dtos/OrderDataDto.dto";
-import { OrderBuilder } from "../../domain/entities/Order.builder";
-import { OrderItem } from "../../domain/entities/OrderItem.entity";
+import { IOrderRepository } from "../../domain/interfaces";
+import {
+  OrderItemBuilder,
+  Order,
+  OrderBuilder,
+  OrderItem,
+} from "../../domain/entities";
+import { CreateOrderDto } from "../../domain/dtos";
 import { CustomError } from "../../../shared/domain/errors";
 import { Service } from "../../../shared/application/base";
-import { Order } from "../../domain/entities/Order.entity";
-import e from "express";
 
 export class UpdateOrderService extends Service<
   [string, CreateOrderDto],

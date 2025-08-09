@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { ValidationError } from "../../../shared/domain/errors";
+import { z } from "zod";
 //Schema para los talles - sizes
 const sizeSchema = z.object({
   name: z.string().min(1, { message: "El nombre del talle es requerido" }),

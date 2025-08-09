@@ -1,10 +1,10 @@
+import { CustomError } from "../../../shared/domain/errors";
+import { Service } from "../../../shared/application/base";
+import { Product } from "../../domain/entities";
 import {
   GetAllQueryOptions,
   IProductRepository,
 } from "../../domain/interfaces";
-import { Product } from "../../domain/entities";
-import { Service } from "../../../shared/application/base";
-import { CustomError } from "../../../shared/domain/errors";
 
 export class GetAllProductsService extends Service<
   [GetAllQueryOptions],

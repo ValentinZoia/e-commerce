@@ -1,5 +1,5 @@
-import { Order } from "../entities/Order.entity";
+import { Order } from "../entities";
 
 export interface IOrderSendMessage {
-    sendMessage(order:Order):Promise<boolean>;
+  sendMessage(order: Order): Promise<boolean>;
 }

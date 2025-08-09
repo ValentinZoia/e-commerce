@@ -1,7 +1,7 @@
 import { ICategoryRepository } from "../../domain/interfaces";
 import { CustomError } from "../../../shared/domain/errors";
-import { Category } from "../../domain/entities";
 import { Service } from "../../../shared/application/base";
+import { Category } from "../../domain/entities";
 
 export class GetCategoryByNameService extends Service<[string], Category> {
   constructor(private readonly categoryRepository: ICategoryRepository) {

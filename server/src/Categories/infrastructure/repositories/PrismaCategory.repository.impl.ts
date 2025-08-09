@@ -1,8 +1,7 @@
-import { ICategoryRepository } from "../../domain/interfaces";
 import prisma from "../../../shared/infrastructure/database/prismaClient";
-
-import { Category } from "../../domain/entities";
 import { Category as CategoryPrisma } from "../../../generated/prisma";
+import { ICategoryRepository } from "../../domain/interfaces";
+import { Category } from "../../domain/entities";
 
 export class PrismaCategoryRepositoryImpl implements ICategoryRepository {
   async create(category: Category): Promise<Category> {

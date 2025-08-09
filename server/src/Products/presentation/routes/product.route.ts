@@ -1,3 +1,12 @@
+import { PrismaCategoryRepositoryImpl } from "../../../Categories/infrastructure/repositories";
+import { PrismaAdminRepositoryImpl } from "../../../Auth/infrastructure/repositories";
+import { PrismaProductRepositoryImpl } from "../../infrastructure/repositories";
+import {
+  ValidationMiddleware,
+  AuthMiddleware,
+} from "../../../shared/presentation/middlewares";
+import { ProductController } from "../controllers";
+import { productSchema } from "../../domain/dtos";
 import {
   CreateProductService,
   UpdateProductService,
@@ -6,16 +15,8 @@ import {
   GetProductByIdService,
   GetProductByNameService,
 } from "../../application/services";
-import { PrismaCategoryRepositoryImpl } from "../../../Categories/infrastructure/repositories";
-import { PrismaProductRepositoryImpl } from "../../infrastructure/repositories";
-import {
-  ValidationMiddleware,
-  AuthMiddleware,
-} from "../../../shared/presentation/middlewares";
-import { ProductController } from "../controllers";
-import { productSchema } from "../../domain/dtos";
+
 import { Router } from "express";
-import { PrismaAdminRepositoryImpl } from "../../../Auth/infrastructure/repositories";
 
 export class ProductRoutes {
   static get routes(): Router {

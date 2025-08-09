@@ -1,8 +1,8 @@
 import { CustomError, ValidationError } from "../../../shared/domain/errors";
 import { ICategoryRepository } from "../../domain/interfaces";
+import { Service } from "../../../shared/application/base";
 import { CategoryDataDto } from "../../domain/dtos";
 import { Category } from "../../domain/entities";
-import { Service } from "../../../shared/application/base";
 
 export class UpdateCategoryService extends Service<
   [string, CategoryDataDto],

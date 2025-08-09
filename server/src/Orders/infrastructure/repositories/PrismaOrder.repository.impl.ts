@@ -1,13 +1,13 @@
-import { OrderBuilder } from "../../domain/entities/Order.builder";
+import prisma from "../../../shared/infrastructure/database/prismaClient";
+import { Order as OrderPrisma, Prisma } from "../../../generated/prisma";
+import { IOrderRepository } from "../../domain/interfaces";
 import {
   Order,
+  OrderBuilder,
+  OrderItemBuilder,
   WhatsAppStatusNames,
   WhatsAppStatus,
-} from "../../domain/entities/Order.entity";
-import { OrderItemBuilder } from "../../domain/entities/OrderItem.builder";
-import { IOrderRepository } from "../../domain/interfaces/IOrderRepository.interface";
-import { Order as OrderPrisma, Prisma } from "../../../generated/prisma";
-import prisma from "../../../shared/infrastructure/database/prismaClient";
+} from "../../domain/entities";
 
 type OrderPrismaWithItems = Prisma.OrderGetPayload<{
   include: { products: true };

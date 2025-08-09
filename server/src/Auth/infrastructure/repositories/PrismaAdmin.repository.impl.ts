@@ -1,7 +1,6 @@
 import prisma from "../../../shared/infrastructure/database/prismaClient";
-import { IAdminRepository } from "../../domain/interfaces";
 import { ValidationError } from "../../../shared/domain/errors";
-import { CreateAdminDTO } from "../../domain/dtos";
+import { IAdminRepository } from "../../domain/interfaces";
 import { Admin } from "../../domain/entities";
 
 export class PrismaAdminRepositoryImpl implements IAdminRepository {

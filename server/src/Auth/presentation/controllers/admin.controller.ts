@@ -1,12 +1,11 @@
+import { CreateAdminDto, LoginAdminDto } from "../../domain/dtos";
 import { CustomError } from "../../../shared/domain/errors";
+import { Request, Response, NextFunction } from "express";
 import {
   CreateAdminService,
   LogInAdminService,
   DeleteAdminService,
 } from "../../application/services";
-import { CreateAdminDto } from "../../domain/dtos";
-import { LoginAdminDto } from "../../domain/dtos";
-import { Request, Response, NextFunction } from "express";
 
 export class AdminController {
   // DI

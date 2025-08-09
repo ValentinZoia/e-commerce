@@ -1,3 +1,6 @@
+import { CustomError } from "../../../shared/domain/errors";
+import { Request, Response, NextFunction } from "express";
+import { CreateOrderDTO } from "../../domain/dtos";
 import {
   CreateOrderService,
   UpdateOrderService,
@@ -9,9 +12,6 @@ import {
   GetOrdersByCustomerPhoneService,
   GetOrdersByProductIdService,
 } from "../../application/services";
-import { Request, Response, NextFunction } from "express";
-import { CreateOrderDTO } from "../../domain/dtos/OrderDataDto.dto";
-import { CustomError } from "../../../shared/domain/errors";
 
 export class OrderController {
   constructor(

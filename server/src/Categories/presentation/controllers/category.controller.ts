@@ -1,4 +1,6 @@
+import { CustomError } from "../../../shared/domain/errors";
 import { Request, Response, NextFunction } from "express";
+import { CategoryDataDto } from "../../domain/dtos";
 import {
   CreateCategoryService,
   UpdateCategoryService,
@@ -7,8 +9,6 @@ import {
   GetCategoryByIdService,
   GetCategoryByNameService,
 } from "../../application/services";
-import { CategoryDataDto } from "../../domain/dtos";
-import { CustomError } from "../../../shared/domain/errors";
 
 export class CategoryController {
   constructor(
