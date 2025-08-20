@@ -1,47 +1,31 @@
 import { Product, ProductStatus } from "@/types";
-
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Image } from "@/components/Image";
-import { useState } from "react";
 import {
   calculateItemCashPrice,
   calculateItemPrice,
 } from "@/utilities/cartSlice";
-import { Link } from "react-router-dom";
 import { formatPrice } from "@/utilities";
-
-// import { cn } from "@/lib/utils";
-// import { calculateItemPrice } from "@/utilities/cartSlice";
-// import { Link } from "react-router-dom";
-// import { AddProductButton } from "@/components";
+import ProductCardImage from "./ProductCardIamge/ProductCardImage";
 
 interface ProductCardProps {
   product: Product;
   productsStatus?: ProductStatus;
 }
 
-
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const isDiscount = product.discountPercentage === undefined || product.discountPercentage === 0 ? false : true;
-  const isCashDiscount = product.cashDiscountPercentage === undefined || product.cashDiscountPercentage === 0 ? false : true;
-  
+  const isDiscount =
+    product.discountPercentage === undefined || product.discountPercentage === 0
+      ? false
+      : true;
+  const isCashDiscount =
+    product.cashDiscountPercentage === undefined ||
+    product.cashDiscountPercentage === 0
+      ? false
+      : true;
+
   const discountText = product.discountPercentage
     ? `${product.discountPercentage * 100}% OFF`
     : null;
-
-  
-
-  const handleMouseEnter = () => {
-    if (product.images.length > 1) {
-      setCurrentImageIndex(1);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setCurrentImageIndex(0);
-  };
 
   const renderStockMessage = () => {
     if (!product.stock) return;
@@ -63,48 +47,24 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Card className="overflow-hidden border-none shadow-sm">
-      <Link to={`/products/${product.id}`} className="w-full">
-      <div
-        className="relative aspect-square overflow-hidden"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <Image
-          src={product.images[currentImageIndex]}
-          alt={product.name}
-          className="object-cover transition-transform duration-300 hover:scale-105"
-          placeholderSrc="https://placehold.co/300"
-          errorSrc="https://placehold.co/300"
-          lazy={true}
-          aspectRatio={1}
-          threshold={0.2}
-        />
-        {product.discountPercentage && product.discountPercentage > 0 && (
-          <Badge className="absolute top-2 right-2 bg-celeste/95 hover:bg-celeste">
-            -{discountText}
-          </Badge>
-        )}
-      </div>
-      </Link>
-      <CardContent className="p-4">
+      <ProductCardImage product={product} discountText={discountText} />
+      <CardContent className="px-4 min-h-[180px] flex flex-col">
         <h3 className="text-base font-medium text-gray-800 mb-2">
           {product.name}
         </h3>
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col items-start gap-0">
-            { isDiscount &&  (
-              <span className="text-gray-500 line-through text-sm">
-              {formatPrice(product.price)}
-              
-              
-            </span>
+        <div className="flex-1 flex flex-col justify-between gap-2">
+          <div className=" flex flex-col justify-between items-start gap-0">
+            {isDiscount && (
+              <span className="text-gray-500 line-through text-sm md:text-md">
+                {formatPrice(product.price)}
+              </span>
             )}
-            
+
             <div className="flex items-center gap-2">
-              <span className="font-bold text-xl">
+              <span className="font-bold text-xl md:text-xl lg:text-xl xl:text-2xl">
                 {formatPrice(calculateItemPrice(product))}
               </span>
-              <span className="text-md  font-normal text-celeste">
+              <span className="text-md  md:text-md lg:text-xs xl:text-lg font-normal text-celeste">
                 {discountText}
               </span>
             </div>
@@ -118,12 +78,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
 
           {isCashDiscount && (
-              <p className="text-sm text-celeste font-semibold">
-                {formatPrice(calculateItemCashPrice(product))} con Efectivo o
-                Transferencia
-                
-              </p>
-            )}
+            <p className="text-sm text-celeste font-semibold">
+              {formatPrice(calculateItemCashPrice(product))} con Efectivo o
+              Transferencia
+            </p>
+          )}
 
           {renderStockMessage()}
         </div>
