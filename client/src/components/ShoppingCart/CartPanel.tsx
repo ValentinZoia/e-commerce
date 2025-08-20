@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import {  ShoppingBag,  } from "lucide-react";
+import { ShoppingBag, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-
 
 import { Separator } from "@/components/ui/separator";
 import { RootState, useAppDispatch } from "@/store/store";
@@ -24,7 +23,6 @@ import {
 } from "@/components/ui/sheet";
 import { formatPrice } from "@/utilities";
 
-
 const CartPanel = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -43,24 +41,23 @@ const CartPanel = () => {
   };
 
   //remover item individual
-  const removeItem = (productId: string) => {
-    dispatch(removeItemFromCart(productId));
+  const removeItem = (productId: string, size?: string) => {
+    dispatch(removeItemFromCart({ id: productId, size }));
   };
 
-  const plusItem = (productId: string) => {
-    dispatch(plusItemFromCart(productId));
-  }
+  const plusItem = (productId: string, size?: string) => {
+    dispatch(plusItemFromCart({ id: productId, size: size }));
+  };
 
   //remover item completo
-  const removeProduct = (productId: string) => {
-    dispatch(removeProductFromCart(productId));
+  const removeProduct = (productId: string, size?: string) => {
+    dispatch(removeProductFromCart({ id: productId, size: size }));
   };
 
   if (loading) return <div>Loading...</div>;
   if (error) console.log(error);
 
   return (
-    
     <div className="p-6">
       <Sheet>
         <SheetTrigger asChild>
@@ -86,7 +83,7 @@ const CartPanel = () => {
           <SheetHeader className="flex flex-row items-center justify-between">
             <SheetTitle>Carrito de compras</SheetTitle>
 
-            {/* {cartItems.length > 0 && (
+            {cartItems.length >= 0 && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -96,7 +93,7 @@ const CartPanel = () => {
                 <Trash2 className="h-4 w-4 mr-1" />
                 Vaciar carrito
               </Button>
-            )} */}
+            )}
           </SheetHeader>
 
           {cartItems.length === 0 ? (
@@ -108,7 +105,7 @@ const CartPanel = () => {
               <div className="space-y-3 max-h-[300px] overflow-auto">
                 {cartItems.map((item) => (
                   <CartItemCard
-                    key={item.productId}
+                    key={`${item.productId}-${item.size}`}
                     item={item}
                     removeItem={removeItem}
                     removeProduct={removeProduct}
@@ -123,26 +120,31 @@ const CartPanel = () => {
                 <span className="">Total:</span>
                 <div className="flex flex-col items-end gap-0">
                   <span className="text-lg">{formatPrice(totalPrice)}</span>
-                {cartItems[0].product?.cashDiscountPercentage &&
-                  cartItems[0].product?.cashDiscountPercentage > 0 && (
-                    <p className="text-celeste text-sm font-light">
-                      <span className=" ">
-                        O {formatPrice(
-                          totalPrice - cartItems[0].product?.cashDiscountPercentage * totalPrice)}
-                        {" "}
-                      </span>
-                      <span className="">con Efectivo o Transferencia</span>
-                    </p>
-                  )}
+                  {cartItems[0].product?.cashDiscountPercentage &&
+                    cartItems[0].product?.cashDiscountPercentage > 0 && (
+                      <p className="text-celeste text-sm font-light">
+                        <span className=" ">
+                          O{" "}
+                          {formatPrice(
+                            totalPrice -
+                              cartItems[0].product?.cashDiscountPercentage *
+                                totalPrice
+                          )}{" "}
+                        </span>
+                        <span className="">con Efectivo o Transferencia</span>
+                      </p>
+                    )}
                 </div>
-                
               </div>
 
               {/* <div className=" w-full flex items-center justify-center"> */}
-                <Button variant="outline" className=" h-12 cursor-pointer text-md bg-addCart hover:bg-addCart/80 font-light" >
-                  Iniciar compra
-                </Button>
-                
+              <Button
+                variant="outline"
+                className=" h-12 cursor-pointer text-md bg-addCart hover:bg-addCart/80 font-light"
+              >
+                Iniciar compra
+              </Button>
+
               {/* </div> */}
             </>
           )}
