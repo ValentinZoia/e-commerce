@@ -1,11 +1,17 @@
-import { ProductList } from "@/components"
-import { ProductStatus } from "@/types"
-
+import { ProductsList } from "@/components";
+import LoaderPage from "@/components/LoaderPage/LoaderPage";
+import { ProductStatus } from "@/types";
+import { Suspense } from "react";
 
 const NewProducts = () => {
   return (
-    <ProductList  title={`Productos Nuevos`} productsStatus={ProductStatus.NEW} />
-  )
-}
+    <Suspense fallback={<LoaderPage />}>
+      <ProductsList
+        title={`Productos Nuevos`}
+        productsStatus={ProductStatus.NEW}
+      />
+    </Suspense>
+  );
+};
 
-export default NewProducts
+export default NewProducts;

@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { MainLayout } from "@/layouts";
+import { MainLayout, AdminLayout } from "@/layouts";
 import {
   Home,
   Categories,
@@ -12,10 +12,17 @@ import {
   NewProducts,
   FeaturedProducts,
   PromotionalProducts,
-  AdminPage
+  AdminPage,
+  PrivateAdminsPage,
+  PrivateCategoriesPage,
+  PrivateOrdersPage,
+  PrivateProductsPage,
+  PrivateSettingsPage,
+  PrivateAnalyticsPage,
+  SearchPage,
 } from "@/pages";
 
-import {PrivateRoutes, PublicRoutes} from '@/types'
+import { PrivateRoutes, PublicRoutes } from "@/types";
 import { AuthGuard } from "@/guards";
 
 {
@@ -64,7 +71,7 @@ const router = createBrowserRouter([
             path: ":categoryId",
             element: <CategoryProducts />,
             loader: async ({ params }) => {
-              if (!params.categoryId ) {
+              if (!params.categoryId) {
                 throw new Response("Invalid category ID", { status: 400 });
               }
               return { categoryId: params.categoryId };
@@ -83,7 +90,7 @@ const router = createBrowserRouter([
             path: ":productId",
             element: <ProductDetail />,
             loader: async ({ params }) => {
-              if (!params.productId ) {
+              if (!params.productId) {
                 throw new Response("Invalid product ID", { status: 400 });
               }
               return { productId: params.productId };
@@ -108,27 +115,61 @@ const router = createBrowserRouter([
         element: <AboutUs />,
       },
       {
-        path:`${PrivateRoutes.PRIVATE}`,
-        element:<AuthGuard />,
-        children:[
-          {
-            index:true,
-            element:<Navigate to={`${PrivateRoutes.ADMIN}`} />
-          },
-          {
-            path:PrivateRoutes.ADMIN,
-            element:<AdminPage />
-          }
-        ]
+        path: PublicRoutes.SEARCH,
+        element: <SearchPage />,
       },
-     
     ],
   },
   {
     path: PublicRoutes.LOGIN,
-    element:<Login />,
-    errorElement:<Error />
-  }
+    element: <Login />,
+    errorElement: <Error />,
+  },
+  {
+    path: `${PrivateRoutes.PRIVATE}`,
+    element: <AuthGuard />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to={`${PrivateRoutes.ADMIN}`} />,
+      },
+      {
+        path: PrivateRoutes.ADMIN,
+        element: <AdminLayout />,
+        errorElement: <Error />,
+        children: [
+          {
+            index: true,
+            element: <AdminPage />,
+          },
+          {
+            path: PrivateRoutes.PRODUCTS,
+            element: <PrivateProductsPage />,
+          },
+          {
+            path: PrivateRoutes.CATEGORIES,
+            element: <PrivateCategoriesPage />,
+          },
+          {
+            path: PrivateRoutes.ORDERS,
+            element: <PrivateOrdersPage />,
+          },
+          {
+            path: PrivateRoutes.ADMINS,
+            element: <PrivateAdminsPage />,
+          },
+          {
+            path: PrivateRoutes.SETTINGS,
+            element: <PrivateSettingsPage />,
+          },
+          {
+            path: PrivateRoutes.ANALYTICS,
+            element: <PrivateAnalyticsPage />,
+          },
+        ],
+      },
+    ],
+  },
 ]);
 
 export default router;

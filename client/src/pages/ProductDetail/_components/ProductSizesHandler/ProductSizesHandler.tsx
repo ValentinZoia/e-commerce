@@ -12,13 +12,11 @@ const ProductSizesHandler = ({ product }: Props) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedStock, setSelectedStock] = useState<number | null>(null);
   const addProductButtonDisabled: boolean =
-    (product.sizes ? selectedStock === 0 : false) || !product.sizes
-      ? false
-      : selectedSize === null;
+    product.sizes && product.sizes.length > 0 ? selectedStock === null : false;
 
   return (
     <>
-      {product.sizes && (
+      {product.sizes && product.sizes.length > 0 && (
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
             <p className="">

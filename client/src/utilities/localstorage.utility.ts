@@ -1,11 +1,11 @@
-export const setLocalStorage = (key:string, value:any) =>{
-    localStorage.setItem(key, JSON.stringify(value));
-}
+export const setLocalStorage = <T>(key: string, value: T) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
 
-export const getLocalStorage = (key:string) =>{
-    const value = localStorage.getItem(key);
-    if(value){
-        return JSON.parse(value);
-    }
-    return null;
-}
+export const getLocalStorage = <T>(key: string): T | null => {
+  const value = localStorage.getItem(key);
+  if (value) {
+    return JSON.parse(value) as T;
+  }
+  return null;
+};
