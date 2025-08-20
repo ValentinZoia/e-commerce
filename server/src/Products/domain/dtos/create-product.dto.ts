@@ -38,7 +38,8 @@ export const productSchema = z.object({
     .min(0, { message: "El descuento debe ser positivo" })
     .max(1, { message: "El descuento debe ser mayor a 0 y menor a 1" })
     .optional()
-    .default(0),
+    .nullable()
+    .default(null),
   cashPrice: z
     .number()
     .positive({
@@ -54,7 +55,8 @@ export const productSchema = z.object({
       message: "El descuento en efectivo debe ser mayor a 0 y menor a 1",
     })
     .optional()
-    .default(0),
+    .nullable()
+    .default(null),
   stock: z
     .number()
     .int()
@@ -88,9 +90,9 @@ export class CreateProductDto {
     public name: string,
     public description: string,
     public price: number,
-    public discountPercentage: number,
+    public discountPercentage: number | null,
     public cashPrice: number | null,
-    public cashDiscountPercentage: number,
+    public cashDiscountPercentage: number | null,
     public stock: number,
     public sizes: { name: string; stock: number }[],
     public installments: { quantity: number; amount: number }[],
@@ -133,6 +135,7 @@ export class CreateProductDto {
     }
 
     if (
+      cashDiscountPercentage &&
       cashDiscountPercentage > 0 &&
       cashPrice &&
       cashPrice !== price * (1 - cashDiscountPercentage)

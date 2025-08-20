@@ -2,7 +2,8 @@ import prisma from "../../../shared/infrastructure/database/prismaClient";
 import { Product as ProductPrisma } from "../../../generated/prisma";
 import { Product } from "../../domain/entities";
 import {
-  GetAllQueryOptions,
+  GetAllItemsResult,
+  ProductsGetAllQueryOptions,
   IProductRepository,
 } from "../../domain/interfaces";
 
@@ -69,11 +70,36 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
     });
   }
 
-  async getAll(options?: GetAllQueryOptions): Promise<Product[]> {
+  async getAll(
+    options?: ProductsGetAllQueryOptions
+  ): Promise<GetAllItemsResult<Product>> {
     const where: any = {};
+    const orderBy = options?.sortBy
+      ? { [options.sortBy]: options.sortDir || "desc" }
+      : { ["createdAt"]: options?.sortDir || "desc" };
 
     if (options?.category) {
       where.categoryId = options.category;
+    }
+
+    if (options?.priceMax !== undefined) {
+      where.price = { lte: options.priceMax };
+    }
+
+    if (options?.priceMin !== undefined) {
+      where.price = { gte: options.priceMin };
+    }
+
+    if (options?.inStock !== undefined) {
+      where.stock = { gte: options.inStock };
+    }
+
+    if (options?.freeShipping !== undefined) {
+      where.isFreeShipping = options.freeShipping;
+    }
+
+    if (options?.size) {
+      where.sizes = { some: { name: options.size } };
     }
 
     if (options?.featured !== undefined) {
@@ -88,14 +114,33 @@ export class PrismaProductRepositoryImpl implements IProductRepository {
       where.isNew = options.new;
     }
 
-    const products: ProductPrisma[] = await prisma.product.findMany({
-      where,
-      take: options?.take,
-      skip: options?.skip,
-      orderBy: { createdAt: "desc" },
-    });
+    if (options?.search) {
+      where.OR = [
+        { name: { contains: options.search, mode: "insensitive" } },
+        { description: { contains: options.search, mode: "insensitive" } },
+        {
+          category: { name: { contains: options.search, mode: "insensitive" } },
+        },
+      ];
+    }
 
-    return products.map((product) => this.mapPrismaToProduct(product));
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        take: options?.take,
+        skip: options?.skip,
+        orderBy: orderBy,
+        include: { category: true },
+      }),
+      prisma.product.count({
+        where,
+      }),
+    ]);
+
+    return {
+      items: products.map((product) => this.mapPrismaToProduct(product)),
+      total,
+    };
   }
 
   async getById(id: string): Promise<Product | null> {

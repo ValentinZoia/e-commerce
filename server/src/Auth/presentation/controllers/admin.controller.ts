@@ -51,6 +51,7 @@ export class AdminController {
       res.status(200).json({
         success: true,
         message: "Login exitoso",
+        data: {},
       });
     } catch (error) {
       next(error);
@@ -62,6 +63,7 @@ export class AdminController {
     res.status(200).json({
       success: true,
       message: "Logout exitoso",
+      data: {},
     });
   }
   deleteAdmin = async (
@@ -78,6 +80,7 @@ export class AdminController {
       res.status(200).json({
         success: true,
         message: "Admin deleted successfully",
+        data: deletedAdmin,
       });
     } catch (error) {
       next(error);

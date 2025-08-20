@@ -50,7 +50,7 @@ export class AuthAdminRoutes {
     );
     router.post(
       "/",
-      // authMiddleware.authenticate,
+      authMiddleware.authenticate, //comentar esta linea para los test
       ValidationMiddleware.validateBody(createAdminSchema),
       controller.createAdmin.bind(controller)
     );

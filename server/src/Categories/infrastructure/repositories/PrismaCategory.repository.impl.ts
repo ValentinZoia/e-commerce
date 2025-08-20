@@ -2,6 +2,10 @@ import prisma from "../../../shared/infrastructure/database/prismaClient";
 import { Category as CategoryPrisma } from "../../../generated/prisma";
 import { ICategoryRepository } from "../../domain/interfaces";
 import { Category } from "../../domain/entities";
+import {
+  GetAllItemsResult,
+  GetAllQueryOptionsBase,
+} from "../../../Products/domain/interfaces";
 
 export class PrismaCategoryRepositoryImpl implements ICategoryRepository {
   async create(category: Category): Promise<Category> {
@@ -33,12 +37,33 @@ export class PrismaCategoryRepositoryImpl implements ICategoryRepository {
     return this.mapPrismaToCategory(updatedCategory);
   }
 
-  async getAll(): Promise<Category[]> {
-    const categories: CategoryPrisma[] = await prisma.category.findMany({
-      orderBy: { name: "asc" },
-    });
+  async getAll(
+    options?: GetAllQueryOptionsBase
+  ): Promise<GetAllItemsResult<Category>> {
+    const where: any = {};
+    const orderBy = options?.sortBy
+      ? { [options.sortBy]: options.sortDir || "desc" }
+      : { ["createdAt"]: options?.sortDir || "desc" };
 
-    return categories.map((category) => this.mapPrismaToCategory(category));
+    if (options?.search) {
+      where.name = { contains: options.search, mode: "insensitive" };
+    }
+
+    const [categories, total] = await Promise.all([
+      prisma.category.findMany({
+        where,
+        take: options?.take,
+        skip: options?.skip,
+        orderBy: orderBy,
+        include: { products: true },
+      }),
+      prisma.category.count(),
+    ]);
+
+    return {
+      items: categories.map((category) => this.mapPrismaToCategory(category)),
+      total,
+    };
   }
 
   async getById(categoryId: string): Promise<Category | null> {

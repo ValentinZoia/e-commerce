@@ -12,6 +12,8 @@ import {
   GetOrdersByCustomerPhoneService,
   GetOrdersByProductIdService,
 } from "../../application/services";
+import { WhatsAppStatusNames } from "../../domain/entities";
+import { SortDir } from "../../../Products/domain/interfaces";
 
 export class OrderController {
   constructor(
@@ -34,7 +36,11 @@ export class OrderController {
     try {
       const createdOrderDto = CreateOrderDTO.create(req.body);
       const order = await this.createOrderService.execute(createdOrderDto);
-      res.status(201).json(order);
+      res.status(201).json({
+        success: true,
+        message: "Orden Creada Exitosamente",
+        data: order,
+      });
     } catch (error) {
       next(error);
     }
@@ -47,11 +53,17 @@ export class OrderController {
     try {
       const { id } = req.params;
       if (!id) {
-        throw CustomError.badRequest("id is required to update order");
+        throw CustomError.badRequest(
+          "id es requerido para actualizar la order"
+        );
       }
       const updatedOrderDto = CreateOrderDTO.create(req.body);
       const order = await this.updateOrderService.execute(id, updatedOrderDto);
-      res.status(200).json(order);
+      res.status(200).json({
+        success: true,
+        message: "Orden Actualizada Exitosamente",
+        data: order,
+      });
     } catch (error) {
       next(error);
     }
@@ -60,18 +72,62 @@ export class OrderController {
     try {
       const { id } = req.params;
       if (!id) {
-        throw CustomError.badRequest("id is required to delete order");
+        throw CustomError.badRequest("id es requerido para eliminar la order");
       }
       await this.deleteOrderService.execute(id);
-      res.status(200).json({ message: "Order deleted successfully" });
+      res.status(200).json({
+        success: true,
+        message: "Orden Eliminada Exitosamente",
+        data: {},
+      });
     } catch (error) {
       next(error);
     }
   };
   getAllOrders = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const orders = await this.getAllOrdersService.execute();
-      res.status(200).json(orders);
+      const {
+        customerEmail,
+        customerName,
+        customerPhone,
+        productId,
+        status,
+        take,
+        skip,
+        sortBy,
+        sortDir,
+      } = req.query;
+
+      const limit = take ? parseInt(take as string) : 10;
+      const offset = skip ? parseInt(skip as string) : 0;
+      const currentPage = Math.floor(offset / limit) + 1;
+      console.log(productId);
+      const result = await this.getAllOrdersService.execute({
+        customerEmail: customerEmail as string,
+        customerName: customerName as string,
+        customerPhone: customerPhone as string,
+        productId: productId as string,
+        status: status as WhatsAppStatusNames,
+        take: limit,
+        skip: offset,
+        sortBy: sortBy ? (sortBy as string) : undefined,
+        sortDir: sortDir ? (sortDir as SortDir) : undefined,
+      });
+
+      // Calcular información de paginación
+      const totalPages = Math.ceil(result.total / limit);
+      const hasNextPage = currentPage < totalPages;
+      const hasPreviousPage = currentPage > 1;
+
+      res.status(200).json({
+        data: result.items,
+        total: result.total, // Total real de la base de datos
+        page: currentPage, // Página actual
+        limit: limit, // Límite usado
+        totalPages, // Total de páginas
+        hasNextPage, // Si hay página siguiente
+        hasPreviousPage, // Si hay página anterior
+      });
     } catch (error) {
       next(error);
     }
@@ -80,7 +136,7 @@ export class OrderController {
     try {
       const { id } = req.params;
       if (!id) {
-        throw CustomError.badRequest("id is required to get order");
+        throw CustomError.badRequest("id es requerido para obtener la order");
       }
       const order = await this.getOrderByIdService.execute(id);
       res.status(200).json(order);
@@ -96,7 +152,9 @@ export class OrderController {
     try {
       const { customerEmail } = req.params;
       if (!customerEmail) {
-        throw CustomError.badRequest("customerEmail is required to get orders");
+        throw CustomError.badRequest(
+          "customerEmail es requerido para obtener orders"
+        );
       }
       const orders = await this.getOrdersByCustomerEmailService.execute(
         customerEmail
@@ -114,7 +172,9 @@ export class OrderController {
     try {
       const { customerName } = req.params;
       if (!customerName) {
-        throw CustomError.badRequest("customerName is required to get orders");
+        throw CustomError.badRequest(
+          "customerName es requerido para obtener orders"
+        );
       }
       const orders = await this.getOrdersByCustomerNameService.execute(
         customerName
@@ -132,7 +192,9 @@ export class OrderController {
     try {
       const { customerPhone } = req.params;
       if (!customerPhone) {
-        throw CustomError.badRequest("customerPhone is required to get orders");
+        throw CustomError.badRequest(
+          "customerPhone es requerido para obtener orders"
+        );
       }
       const orders = await this.getOrdersByCustomerPhoneService.execute(
         customerPhone
@@ -150,7 +212,9 @@ export class OrderController {
     try {
       const { productId } = req.params;
       if (!productId) {
-        throw CustomError.badRequest("productId is required to get orders");
+        throw CustomError.badRequest(
+          "productId es requerido para obtener orders"
+        );
       }
       const orders = await this.getOrdersByProductIdService.execute(productId);
       res.status(200).json(orders);

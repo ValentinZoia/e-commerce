@@ -1,6 +1,9 @@
 import prisma from "../../../shared/infrastructure/database/prismaClient";
 import { Order as OrderPrisma, Prisma } from "../../../generated/prisma";
-import { IOrderRepository } from "../../domain/interfaces";
+import {
+  IOrderRepository,
+  OrdersGetAllQueryOptions,
+} from "../../domain/interfaces";
 import {
   Order,
   OrderBuilder,
@@ -8,6 +11,10 @@ import {
   WhatsAppStatusNames,
   WhatsAppStatus,
 } from "../../domain/entities";
+import {
+  GetAllItemsResult,
+  GetAllQueryOptionsBase,
+} from "../../../Products/domain/interfaces";
 
 type OrderPrismaWithItems = Prisma.OrderGetPayload<{
   include: { products: true };
@@ -104,13 +111,69 @@ export class PrismaOrderRepositoryImpl implements IOrderRepository {
       where: { id },
     });
   }
-  async findAll(): Promise<Order[]> {
-    const orders = await prisma.order.findMany({
-      include: {
-        products: true,
-      },
-    });
-    return orders.map((order) => this.mapPrismaToOrder(order));
+  async findAll(
+    options?: OrdersGetAllQueryOptions
+  ): Promise<GetAllItemsResult<Order>> {
+    const where: any = {};
+    if (options?.customerPhone) {
+      where.customerPhone = {
+        contains: options.customerPhone,
+        mode: "insensitive",
+      };
+    }
+    if (options?.customerEmail) {
+      where.customerEmail = {
+        contains: options.customerEmail,
+        mode: "insensitive",
+      };
+    }
+    if (options?.customerName) {
+      where.customerName = {
+        contains: options.customerName,
+        mode: "insensitive",
+      };
+    }
+    if (options?.status) {
+      where.whatsappStatus = options.status;
+    }
+    if (options?.productId) {
+      where.products = {
+        some: {
+          productId: options.productId,
+        },
+      };
+    }
+
+    if (options?.search) {
+      where.OR = [
+        { customerName: { contains: options.search, mode: "insensitive" } },
+        { customerEmail: { contains: options.search, mode: "insensitive" } },
+        { customerPhone: { contains: options.search, mode: "insensitive" } },
+      ];
+    }
+
+    const orderBy = options?.sortBy
+      ? { [options.sortBy]: options.sortDir || "desc" }
+      : { ["createdAt"]: options?.sortDir || "desc" };
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
+        where,
+        take: options?.take,
+        skip: options?.skip,
+        orderBy: orderBy,
+        include: {
+          products: true,
+        },
+      }),
+      prisma.order.count({
+        where,
+      }),
+    ]);
+
+    return {
+      items: orders.map((order) => this.mapPrismaToOrder(order)),
+      total,
+    };
   }
   async findByCustomerEmail(email: string): Promise<Order[] | null> {
     const orders = await prisma.order.findMany({

@@ -1,6 +1,7 @@
 import { errorHandler } from "./shared/presentation/middlewares";
 import rateLimit from "express-rate-limit";
-import express, { Router } from "express";
+import express from "express";
+import multer from "multer";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import cors from "cors";
@@ -8,6 +9,7 @@ import { AppRoutes } from "./shared/presentation/routes";
 
 export const createServer = () => {
   const app = express();
+  const upload = multer();
   app.use(
     cors({
       origin: process.env.CORS_ORIGIN || "*",
@@ -20,6 +22,7 @@ export const createServer = () => {
   app.use(express.json());
   app.use(cookieParser());
   app.use(express.urlencoded({ extended: true }));
+  app.use(upload.any());
 
   // Limitador de solicitudes para prevenir ataques de fuerza bruta
   const limiter = rateLimit({

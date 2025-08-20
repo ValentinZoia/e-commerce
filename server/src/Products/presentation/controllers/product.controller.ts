@@ -9,6 +9,7 @@ import {
   GetProductByIdService,
   DeleteProductService,
 } from "../../application/services";
+import { SortDir } from "../../domain/interfaces";
 
 export class ProductController {
   constructor(
@@ -28,7 +29,11 @@ export class ProductController {
     try {
       const createProductDto = CreateProductDto.create(req.body);
       const product = await this.createProductService.execute(createProductDto);
-      res.status(201).json(product);
+      res.status(201).json({
+        success: true,
+        message: "Producto Creado Exitosamente",
+        data: product,
+      });
     } catch (error) {
       next(error);
     }
@@ -49,7 +54,11 @@ export class ProductController {
         id,
         updateProductDto
       );
-      res.status(200).json(updatedProduct);
+      res.status(200).json({
+        success: true,
+        message: "Producto Actualizado Exitosamente",
+        data: updatedProduct,
+      });
     } catch (error) {
       next(error);
     }
@@ -66,7 +75,10 @@ export class ProductController {
         throw CustomError.badRequest("Product id is required");
       }
       await this.deleteProductService.execute(id);
-      res.status(200).json({ message: "Product deleted" }).end();
+      res
+        .status(200)
+        .json({ success: true, message: "Product deleted", data: {} })
+        .end();
     } catch (error) {
       next(error);
     }
@@ -83,8 +95,16 @@ export class ProductController {
         featured,
         promotion,
         new: isNew,
+        priceMax,
+        priceMin,
+        inStock,
+        freeShipping,
+        size,
         take,
         skip,
+        sortBy,
+        sortDir,
+        search,
       } = req.query;
 
       /*
@@ -97,8 +117,12 @@ export class ProductController {
 
        dependiendo los productos que se quieran traer.
       */
+      const limit = take ? parseInt(take as string) : 10;
+      const offset = skip ? parseInt(skip as string) : 0;
+      const currentPage = Math.floor(offset / limit) + 1;
 
       const result = await this.getAllProductsService.execute({
+        search: search ? (search as string) : undefined,
         category: category as string,
         featured:
           featured === "true" ? true : featured === "false" ? false : undefined,
@@ -109,11 +133,37 @@ export class ProductController {
             : promotion === "false"
             ? false
             : undefined,
-        take: take ? parseInt(take as string) : undefined,
-        skip: skip ? parseInt(skip as string) : undefined,
+        inStock:
+          inStock === "true" ? true : inStock === "false" ? false : undefined,
+        freeShipping:
+          freeShipping === "true"
+            ? true
+            : freeShipping === "false"
+            ? false
+            : undefined,
+        size: size as string,
+        priceMax: priceMax ? parseInt(priceMax as string) : undefined,
+        priceMin: priceMin ? parseInt(priceMin as string) : undefined,
+        take: limit,
+        skip: offset,
+        sortBy: sortBy ? (sortBy as string) : undefined,
+        sortDir: sortDir ? (sortDir as SortDir) : undefined,
       });
 
-      res.status(200).json(result);
+      // Calcular información de paginación
+      const totalPages = Math.ceil(result.total / limit);
+      const hasNextPage = currentPage < totalPages;
+      const hasPreviousPage = currentPage > 1;
+
+      res.status(200).json({
+        data: result.items,
+        total: result.total, // Total real de la base de datos
+        page: currentPage, // Página actual
+        limit: limit, // Límite usado
+        totalPages, // Total de páginas
+        hasNextPage, // Si hay página siguiente
+        hasPreviousPage, // Si hay página anterior
+      });
     } catch (error) {
       next(error);
     }
