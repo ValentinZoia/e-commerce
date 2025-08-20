@@ -6,23 +6,14 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { useFetchCategories } from "@/hooks/useFetchCategories";
-import { CategoryStatus } from "@/types";
-import { capitalizeFirstLetter } from "@/utilities";
-import { LoaderCircle } from "lucide-react";
+import { Suspense } from "react";
 
 import { Link } from "react-router-dom";
+import CategoriesList from "../CategoriesList/CategoriesList";
+
+import { LoaderCircle } from "lucide-react";
 
 const NavMenu = () => {
-  const { status, error, categories } = useFetchCategories({
-    categoriesStatus: CategoryStatus.All,
-  });
-
- 
-  
-  if (!categories) return <p></p>;
-  
-
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -35,47 +26,34 @@ const NavMenu = () => {
           <NavigationMenuTrigger>PRODUCTOS</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              <div className="flex flex-col">
-                {(status === "loading") && <LoaderCircle className="animate-spin" />}
-                {(error) && <p></p>}
-                {(!categories || categories.length === 0) && <li>No hay categorias</li>}
-                {categories.map((category) => (
-                  <li key={category.id}>
-                    <Link to={`/categories/${category.slug}`}>
-                      <NavigationMenuLink>{capitalizeFirstLetter(category.name)}</NavigationMenuLink>
-                    </Link>
-                  </li>
-                ))}
-              </div>
+              <Suspense
+                fallback={
+                  <LoaderCircle className="h-4 w-4 animate-spin text-blue-500" />
+                }
+              >
+                <CategoriesList />
+              </Suspense>
               <div className="flex flex-col">
                 <li>
-                  
-                    <Link to="/products">
-                      <NavigationMenuLink>Todos los Productos</NavigationMenuLink>
-                    </Link>
-                  
+                  <Link to="/products">
+                    <NavigationMenuLink>Todos los Productos</NavigationMenuLink>
+                  </Link>
                 </li>
                 <li>
-                  
-                    <Link to="/promotion">
-                      <NavigationMenuLink>Promoción</NavigationMenuLink>
-                    </Link>
-                  
+                  <Link to="/promotion">
+                    <NavigationMenuLink>Promoción</NavigationMenuLink>
+                  </Link>
                 </li>
                 <li>
-                  
-                    <Link to="/featured">
-                      <NavigationMenuLink>Destacado</NavigationMenuLink>
-                    </Link>
-                  
+                  <Link to="/featured">
+                    <NavigationMenuLink>Destacado</NavigationMenuLink>
+                  </Link>
                 </li>
                 <li>
-                  
                   <Link to="/new">
                     <NavigationMenuLink>Nuevo</NavigationMenuLink>
                   </Link>
-                
-              </li>
+                </li>
               </div>
             </ul>
           </NavigationMenuContent>
