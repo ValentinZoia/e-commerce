@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { 
+import { configureStore } from "@reduxjs/toolkit";
+import {
   persistReducer,
   persistStore,
   FLUSH,
@@ -7,26 +7,30 @@ import {
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER 
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // Importación correcta
-import { cartSlice, productsSlice, categoriesSlice, authSlice} from './states';
-import { useDispatch } from 'react-redux';
-
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage"; // Importación correcta
+import {
+  cartSlice,
+  //  productsSlice,
+  //  categoriesSlice,
+  authSlice,
+} from "./states";
+import { useDispatch } from "react-redux";
 
 // Configuración de persistencia
 const cartPersistConfig = {
-  key: 'cart',
+  key: "cart",
   storage, // Usa el storage importado de redux-persist
-  whitelist: ['items', 'totalItems', 'totalPrice'] // Especifica qué campos persistir
+  whitelist: ["items", "totalItems", "totalPrice"], // Especifica qué campos persistir
 };
 
 export const store = configureStore({
   reducer: {
     cart: persistReducer(cartPersistConfig, cartSlice.reducer),
-    products: productsSlice.reducer,
-    categories: categoriesSlice.reducer,
-    auth: authSlice.reducer
+    // products: productsSlice.reducer,
+    // categories: categoriesSlice.reducer,
+    auth: authSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
