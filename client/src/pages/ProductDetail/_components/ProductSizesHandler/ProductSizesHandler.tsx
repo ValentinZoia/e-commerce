@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Product } from "@/types";
 import { cn } from "@/lib/utils";
 import { AddProductButton } from "@/components";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+import { findCartItem } from "@/utilities/cartSlice";
+import { Check } from "lucide-react";
 
 interface Props {
   product: Product;
@@ -13,6 +17,9 @@ const ProductSizesHandler = ({ product }: Props) => {
   const [selectedStock, setSelectedStock] = useState<number | null>(null);
   const addProductButtonDisabled: boolean =
     product.sizes && product.sizes.length > 0 ? selectedStock === null : false;
+
+  const { items } = useSelector((state: RootState) => state.cart);
+  const existingItem = findCartItem(items, product.id, selectedSize as string);
 
   return (
     <>
@@ -51,7 +58,14 @@ const ProductSizesHandler = ({ product }: Props) => {
           </div>
         </div>
       )}
-
+      {existingItem && (
+        <div className="flex items-center gap-2 transition-all duration-300 ease-in-out transform opacity-0 translate-y-2 animate-fade-in">
+          <Check className="size-3 text-green-500" />
+          <span className="text-sm text-gray-400 ">
+            Ya agregaste este producto
+          </span>
+        </div>
+      )}
       {/* Agregar al carrito */}
       <div className="w-full flex items-center gap-4">
         <AddProductButton
