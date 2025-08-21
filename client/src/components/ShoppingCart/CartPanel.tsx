@@ -1,8 +1,4 @@
 import { useState, useEffect } from "react";
-import { ShoppingBag, Trash2 } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-
 import { Separator } from "@/components/ui/separator";
 import { RootState, useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
@@ -13,18 +9,22 @@ import {
   clearCart,
   plusItemFromCart,
 } from "@/store/states/cart";
-import { CartItemCard } from "./_components";
 import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  // CartTriggerButton,
+  CartCheckoutButton,
+  CartHeader,
+  CartItemList,
+  CartSummary,
+  EmptyCartMessage,
+} from "./_components";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "../ui/button";
+import { ShoppingBag } from "lucide-react";
 import { formatPrice } from "@/utilities";
 
 const CartPanel = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const { totalItems, totalPrice, items, loading, error } = useSelector(
@@ -45,6 +45,7 @@ const CartPanel = () => {
     dispatch(removeItemFromCart({ id: productId, size }));
   };
 
+  //incrementar item individual
   const plusItem = (productId: string, size?: string) => {
     dispatch(plusItemFromCart({ id: productId, size: size }));
   };
@@ -53,20 +54,24 @@ const CartPanel = () => {
   const removeProduct = (productId: string, size?: string) => {
     dispatch(removeProductFromCart({ id: productId, size: size }));
   };
+  const closeSheet = () => {
+    setIsOpen(false);
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) console.log(error);
-
+  const hasItems = cartItems.length > 0;
   return (
     <div className="p-6">
-      <Sheet>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
+          {/* <CartTriggerButton totalItems={totalItems} totalPrice={totalPrice} /> */}
           <Button
             variant="ghost"
             className="relative cursor-pointer hover:bg-transparent"
           >
             <div className="bg-lime-100 rounded-full p-2">
-              <ShoppingBag className="h-5 w-5 " />
+              <ShoppingBag className="h-5 w-5" />
             </div>
             <div className="flex flex-col items-start gap-0">
               <span className="text-xs">Carrito ({totalItems})</span>
@@ -74,78 +79,29 @@ const CartPanel = () => {
                 {formatPrice(totalPrice)}
               </span>
             </div>
-
             <span className="sr-only">Shopping Cart</span>
           </Button>
         </SheetTrigger>
 
         <SheetContent side="right" className="px-6">
-          <SheetHeader className="flex flex-row items-center justify-between">
-            <SheetTitle>Carrito de compras</SheetTitle>
+          <CartHeader hasItems={hasItems} onEmptyCart={emptyCart} />
 
-            {cartItems.length >= 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={emptyCart}
-                className="h-8 cursor-pointer text-xs text-destructive hover:text-destructive"
-              >
-                <Trash2 className="h-4 w-4 mr-1" />
-                Vaciar carrito
-              </Button>
-            )}
-          </SheetHeader>
-
-          {cartItems.length === 0 ? (
-            <div className="text-center py-6 text-muted-foreground">
-              Tu carrito esta vacio
-            </div>
+          {!hasItems ? (
+            <EmptyCartMessage />
           ) : (
             <>
-              <div className="space-y-3 max-h-[300px] overflow-auto">
-                {cartItems.map((item) => (
-                  <CartItemCard
-                    key={`${item.productId}-${item.size}`}
-                    item={item}
-                    removeItem={removeItem}
-                    removeProduct={removeProduct}
-                    plusItem={plusItem}
-                  />
-                ))}
-              </div>
+              <CartItemList
+                items={cartItems}
+                onRemoveItem={removeItem}
+                onRemoveProduct={removeProduct}
+                onPlusItem={plusItem}
+              />
 
               <Separator className="my-4" />
 
-              <div className="flex items-start justify-between">
-                <span className="">Total:</span>
-                <div className="flex flex-col items-end gap-0">
-                  <span className="text-lg">{formatPrice(totalPrice)}</span>
-                  {cartItems[0].product?.cashDiscountPercentage &&
-                    cartItems[0].product?.cashDiscountPercentage > 0 && (
-                      <p className="text-celeste text-sm font-light">
-                        <span className=" ">
-                          O{" "}
-                          {formatPrice(
-                            totalPrice -
-                              cartItems[0].product?.cashDiscountPercentage *
-                                totalPrice
-                          )}{" "}
-                        </span>
-                        <span className="">con Efectivo o Transferencia</span>
-                      </p>
-                    )}
-                </div>
-              </div>
+              <CartSummary totalPrice={totalPrice} items={cartItems} />
 
-              {/* <div className=" w-full flex items-center justify-center"> */}
-              <Button
-                variant="outline"
-                className=" h-12 cursor-pointer text-md bg-addCart hover:bg-addCart/80 font-light"
-              >
-                Iniciar compra
-              </Button>
-
-              {/* </div> */}
+              <CartCheckoutButton hasItems={hasItems} onClose={closeSheet} />
             </>
           )}
         </SheetContent>
