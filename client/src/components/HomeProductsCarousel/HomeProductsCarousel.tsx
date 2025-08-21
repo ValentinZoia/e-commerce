@@ -21,9 +21,13 @@ function HomeProductsCarousel({ productsStatus }: HomeProductsCarouselProps) {
       {data.data.map((product) => (
         <CarouselItem
           key={product.id}
-          className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/2 lg:basis-1/4 xl:basis-1/3 2xl:basis-1/4"
+          className="pl-2 md:pl-4 basis-full sm:basis-1/2  lg:basis-1/3 xl:basis-1/4"
         >
-          <ProductCard product={product} productsStatus={productsStatus} />
+          <ProductCard
+            product={product}
+            productsStatus={productsStatus}
+            isForCarousel={true}
+          />
         </CarouselItem>
       ))}
     </>

@@ -67,7 +67,7 @@ function ProductsList({
   const activeFiltersCount = getActiveFiltersCount();
 
   return (
-    <div className="container px-0 py-10">
+    <div className="container px-0 py-10 ">
       <div className="grid md:grid-cols-4">
         {/* Desktop Filters */}
         <div className="hidden md:block mr-4">
@@ -80,7 +80,7 @@ function ProductsList({
           />
         </div>
 
-        <div className="col-span-3">
+        <div className="col-span-3 ">
           {/* Header with mobile filters */}
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-3xl font-bold">{title}</h1>

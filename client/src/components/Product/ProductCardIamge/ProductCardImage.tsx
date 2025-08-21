@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Image } from "@/components/Image";
+import { calculateItemPrice } from "@/utilities/cartSlice";
+import { Shield } from "lucide-react";
 
 interface ProductCardImageProps {
   product: Product;
@@ -41,8 +43,14 @@ function ProductCardImage({ product, discountText }: ProductCardImageProps) {
           threshold={0.2}
         />
         {product.discountPercentage && product.discountPercentage > 0 && (
-          <Badge className="absolute top-2 right-2 bg-celeste/95 hover:bg-celeste">
+          <Badge className="absolute top-3 right-3 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold px-3 py-1 text-xs shadow-lg">
             -{discountText}
+          </Badge>
+        )}
+        {calculateItemPrice(product) > 100000 && (
+          <Badge className="absolute top-3 left-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold px-2 py-1 text-xs">
+            <Shield className="w-3 h-3 mr-1" />
+            Premium
           </Badge>
         )}
       </div>

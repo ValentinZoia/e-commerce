@@ -6,13 +6,16 @@ import {
 } from "@/utilities/cartSlice";
 import { formatPrice } from "@/utilities";
 import ProductCardImage from "./ProductCardIamge/ProductCardImage";
+import { AddProductButton } from "../AddProductButton";
+import { Star, Truck } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
   productsStatus?: ProductStatus;
+  isForCarousel?: boolean;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, isForCarousel = false }: ProductCardProps) => {
   const isDiscount =
     product.discountPercentage === undefined || product.discountPercentage === 0
       ? false
@@ -31,60 +34,101 @@ const ProductCard = ({ product }: ProductCardProps) => {
     if (!product.stock) return;
     if (product.stock === 1) {
       return (
-        <p className="text-amber-600 font-medium text-sm mt-1">
-          ¡No te lo pierdas es el último!
-        </p>
+        <div className="flex items-center gap-1 mt-2">
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+          <p className="text-red-600 font-medium text-xs">
+            ¡Último disponible!
+          </p>
+        </div>
       );
     } else if (product.stock < 5) {
       return (
-        <p className="text-amber-600 font-medium text-sm mt-1">
-          ¡Solo quedan {product.stock} en stock!
-        </p>
+        <div className="flex items-center gap-1 mt-2">
+          <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+          <p className="text-orange-600 font-medium text-xs">
+            Solo {product.stock} en stock
+          </p>
+        </div>
       );
     }
     return null;
   };
 
   return (
-    <Card className="overflow-hidden border-none shadow-sm">
-      <ProductCardImage product={product} discountText={discountText} />
-      <CardContent className="px-4 min-h-[180px] flex flex-col">
-        <h3 className="text-base font-medium text-gray-800 mb-2">
-          {product.name}
-        </h3>
-        <div className="flex-1 flex flex-col justify-between gap-2">
-          <div className=" flex flex-col justify-between items-start gap-0">
-            {isDiscount && (
-              <span className="text-gray-500 line-through text-sm md:text-md">
-                {formatPrice(product.price)}
-              </span>
-            )}
+    <Card
+      className={`group hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md hover:scale-[1.02] bg-white overflow-hidden flex flex-col ${
+        isForCarousel && "min-h-[652px]"
+      }`}
+    >
+      <div className="relative flex-shrink-0">
+        <ProductCardImage product={product} discountText={discountText} />
+      </div>
 
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-xl md:text-xl lg:text-xl xl:text-2xl">
+      <CardContent className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+        <div className="space-y-3">
+          <h3 className="font-semibold text-gray-800 text-sm leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors">
+            {product.name}
+          </h3>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-3 h-3 ${
+                    i < 4 ? "text-yellow-400 fill-current" : "text-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-xs text-gray-500">(4.2)</span>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold text-gray-900">
                 {formatPrice(calculateItemPrice(product))}
               </span>
-              <span className="text-md  md:text-md lg:text-xs xl:text-lg font-normal text-celeste">
-                {discountText}
-              </span>
+              {isDiscount && (
+                <span className="text-sm text-gray-400 line-through">
+                  {formatPrice(product.price)}
+                </span>
+              )}
             </div>
 
             {product.installments && product.installments[0] && (
-              <p className="text-xs text-gray-600">
-                {product.installments[0].quantity} x{" "}
-                {formatPrice(product.installments[0].amount)} sin interés
-              </p>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-2">
+                <p className="text-xs text-green-700 font-meduim">
+                  💳 {product.installments[0].quantity} cuotas de
+                  {formatPrice(product.installments[0].amount)} sin interés
+                </p>
+              </div>
+            )}
+
+            {isCashDiscount && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                <p className="text-sm text-blue-700 font-semibold">
+                  💰 Efectivo : {formatPrice(calculateItemCashPrice(product))}
+                </p>
+                <p className="text-xs text-blue-600">
+                  Ahorrás{" "}
+                  {formatPrice(
+                    calculateItemPrice(product) -
+                      calculateItemCashPrice(product)
+                  )}
+                </p>
+              </div>
             )}
           </div>
-
-          {isCashDiscount && (
-            <p className="text-sm text-celeste font-semibold">
-              {formatPrice(calculateItemCashPrice(product))} con Efectivo o
-              Transferencia
-            </p>
+          {product.isFreeShipping && (
+            <div className="flex items-center gap-1 text-green-600">
+              <Truck className="w-4 h-4" />
+              <span className="text-xs font-medium">Envío gratis</span>
+            </div>
           )}
-
           {renderStockMessage()}
+        </div>
+
+        <div className="pt-2">
+          <AddProductButton product={product} disabled={false} />
         </div>
       </CardContent>
     </Card>

@@ -30,17 +30,26 @@ const ProductsHeader = ({ title, productsStatus }: PoductsHeaderProps) => {
             <ChevronRight className="h-4 w-4 ml-1" />
           </Link>
         </div>
-        <Carousel className="w-full">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
           <CarouselContent className="-ml-2 md:-ml-4">
             <Suspense fallback={<ProductsCarouselSkeleton />}>
               <HomeProductsCarousel productsStatus={productsStatus} />
             </Suspense>
           </CarouselContent>
-          <div className="flex justify-end gap-2 mt-8">
-            <CarouselPrevious className="static transform-none" />
-            <CarouselNext className="static transform-none" />
-          </div>
+          <CarouselPrevious className="hidden md:flex -left-12 bg-white shadow-lg border-2 hover:bg-gray-50" />
+          <CarouselNext className="hidden md:flex -right-12 bg-white shadow-lg border-2 hover:bg-gray-50" />
         </Carousel>
+        <div className="flex justify-center mt-6 md:hidden">
+          <p className="text-sm text-gray-500">
+            Desliza para ver más productos
+          </p>
+        </div>
       </div>
     </section>
   );
