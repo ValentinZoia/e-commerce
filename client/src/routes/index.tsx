@@ -20,6 +20,7 @@ import {
   PrivateSettingsPage,
   PrivateAnalyticsPage,
   SearchPage,
+  Checkout,
 } from "@/pages";
 
 import { PrivateRoutes, PublicRoutes } from "@/types";
@@ -43,7 +44,13 @@ import { AuthGuard } from "@/guards";
 
         --------------- RUTAS PRIVADAS-------------------
         /private - realmente aqui no hay nada - redirigira a /private/admin
-        /private/admin - panel de control del admin - para editar y crear productos.
+        /private/admin - panel de control del admin 
+        /private/admin/products - Tabla de todos los productos - para editar, eliminar y crear productos.
+        /private/admin/categories - Tabla de todas las categorías - para editar, eliminar y crear categorias.
+        /private/admin/orders - Tabla de todas las ordenes - para editar, eliminar y crear ordenes.
+        /private/admin/admins - Listado de todos los admins/empleados
+        /private/admin/settings - Configuraciones de la tienda
+        /private/admin/analytics - Estadísticas de la tienda
         
     
     
@@ -117,6 +124,10 @@ const router = createBrowserRouter([
       {
         path: PublicRoutes.SEARCH,
         element: <SearchPage />,
+      },
+      {
+        path: PublicRoutes.CHECKOUT,
+        element: <Checkout />,
       },
     ],
   },

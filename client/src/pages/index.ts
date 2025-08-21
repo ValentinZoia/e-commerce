@@ -1,6 +1,6 @@
 export * from "./AboutUs";
 export * from "./Admin";
-export * from "./Cart";
+export * from "./Checkout";
 export * from "./Categories";
 export * from "./CategoryProducts";
 export * from "./Error";

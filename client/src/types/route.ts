@@ -7,6 +7,7 @@ export enum PublicRoutes {
   ABOUTUS = "aboutus",
   LOGIN = "login",
   SEARCH = "search",
+  CHECKOUT = "checkout",
 }
 
 export enum PrivateRoutes {
