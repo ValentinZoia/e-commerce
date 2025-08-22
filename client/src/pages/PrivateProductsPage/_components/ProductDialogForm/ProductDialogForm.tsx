@@ -26,6 +26,8 @@ import { Suspense, useState } from "react";
 import { SubmitBtn } from "@/pages/Login/_components";
 import CategorySelect from "../CategorySelect/CategorySelect";
 import LoaderPage from "@/components/LoaderPage/LoaderPage";
+import { ProductImagesInput } from "../ProductImagesInput";
+import { transformImageToWebp, uploadToCloudinary } from "@/utilities/Images";
 
 interface ProductDialogFormProps {
   item: Product | null;
@@ -45,6 +47,13 @@ function ProductDialogForm({
   );
   const [newSize, setNewSize] = useState({ name: "", stock: 0 });
 
+  // URLs ya persistidas (si estás editando un producto existente)
+  const [existingUrls, setExistingUrls] = useState<string[]>(
+    product?.images ?? []
+  );
+  // Archivos locales recortados aún NO subidos
+  const [localFiles, setLocalFiles] = useState<File[]>([]);
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: product || defaultValues,
@@ -60,10 +69,36 @@ function ProductDialogForm({
   function removeSize(index: number) {
     setSizes(sizes.filter((_, i) => i !== index));
   }
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    const values = form.getValues();
+
+    // 1) Subir solo las nuevas (localFiles) — las existingUrls ya están en Cloudinary
+    const uploadedUrls: string[] = [];
+    for (const file of localFiles) {
+      // Convertir a WEBP
+      const webpFile = await transformImageToWebp(file);
+      if (!webpFile) {
+        console.error("No se pudo transformar a WebP");
+        continue;
+      }
+
+      // Subir a Cloudinary
+      const { data, error } = await uploadToCloudinary(webpFile);
+      if (error || !data) {
+        console.error("Error subiendo a Cloudinary", error);
+        continue;
+      }
+      uploadedUrls.push(data);
+    }
+
+    // 2) Combinar con existentes y respetar máximo (ej. 5)
+    const finalImages = [...existingUrls, ...uploadedUrls].slice(0, 5);
+
+    // 3) Enviar a onSave con las URLs finales
     onSave({
-      ...form.getValues(),
+      ...values,
       sizes,
+      images: finalImages, // <- string[]
     });
   };
 
@@ -296,6 +331,18 @@ function ProductDialogForm({
                 />
               )
             )}
+          </div>
+          {/* Imágenes (control local, subir en submit) */}
+          <div className="space-y-2">
+            <FormLabel>Imágenes (máx 5)</FormLabel>
+            <ProductImagesInput
+              max={5}
+              localFiles={localFiles}
+              setLocalFiles={setLocalFiles}
+              existingUrls={existingUrls}
+              setExistingUrls={setExistingUrls}
+            />
+            <FormMessage />
           </div>
         </div>
 
