@@ -5,10 +5,14 @@ import { buildProductColumns } from "./columns";
 import { Product } from "@/types/product";
 import DataTable from "@/components/PrivateItemPage/DataTable/BodyTable/data-table";
 
-interface DataTableProductsProps {
-  onEdit: (item: Product) => void;
-  onDelete: (item: Product) => void;
+export interface DataTableBasicProps<T> {
+  onEdit: (item: T) => void;
+  onDelete: (item: T) => void;
   search: string;
+  pageSizeProp?: number;
+}
+
+interface DataTableProductsProps extends DataTableBasicProps<Product> {
   categoryFilter: string;
   featuredFilter: string;
   promotionFilter: string;
@@ -23,6 +27,7 @@ function DataTableProducts({
   featuredFilter,
   promotionFilter,
   newFilter,
+  pageSizeProp,
 }: DataTableProductsProps) {
   const {
     pageIndex,
@@ -32,7 +37,7 @@ function DataTableProducts({
     setSorting,
     sortBy,
     sortDir,
-  } = useDataTablePagination({ pageSize: 10 });
+  } = useDataTablePagination({ pageSize: pageSizeProp ? pageSizeProp : 10 });
 
   // 🔹 Datos traidos con react-query.
   const { data } = useProductsSuspense({

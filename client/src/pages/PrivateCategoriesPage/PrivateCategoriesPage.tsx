@@ -4,7 +4,7 @@ import { CategoryFormValues } from "@/lib/zod-schemas/categorySchema";
 import { Category } from "@/types/category";
 import DataTableCategories from "./_components/CategoriesTable/DataTableCategories";
 import CategoryDialogForm from "./_components/CategoryDialogForm/CategoryDialogForm";
-
+const PAGESIZE = import.meta.env.VITE_CATEGORY_TABLE_PAGESIZE;
 function PrivateCategoriesPage() {
   return (
     <PrivateItemPage<Category, CategoryFormValues>
@@ -14,6 +14,7 @@ function PrivateCategoriesPage() {
       TableComponent={DataTableCategories}
       FormComponent={CategoryDialogForm}
       extraDeleteMessage="Si eliminas una categoria, recuerda que eliminas todos los productos dentro de ella."
+      pageSizeProp={PAGESIZE}
     />
   );
 }

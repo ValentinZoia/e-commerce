@@ -1,15 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Trash2 } from "lucide-react";
-import { Cropper } from "react-cropper";
-import "cropperjs/dist/cropper.css";
+import { ProductImagePreview } from "../ProductImagesPreview";
+import { DialogCropper } from "../DialogCropper";
 
 interface ProductImagesInputProps {
   max?: number;
@@ -103,79 +95,35 @@ export function ProductImagesInput({
       <div className="flex flex-wrap gap-3">
         {/* Previews de URLs existentes */}
         {existingUrls.map((url, i) => (
-          <div key={`existing-${i}`} className="relative">
-            <img src={url} className="w-32 h-32 object-cover rounded-md" />
-            <Button
-              type="button"
-              size="icon"
-              variant="destructive"
-              className="absolute top-1 right-1"
-              onClick={() => removeExisting(i)}
-              aria-label="Eliminar imagen existente"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
+          <ProductImagePreview
+            url={url}
+            i={i}
+            removeImage={removeExisting}
+            existingOrLocal="existente"
+          />
         ))}
 
         {/* Previews de archivos locales aún no subidos */}
         {localFiles.map((file, i) => {
           const preview = URL.createObjectURL(file);
           return (
-            <div key={`local-${i}`} className="relative">
-              <img
-                src={preview}
-                className="w-32 h-32 object-cover rounded-md"
-              />
-              <Button
-                type="button"
-                size="icon"
-                variant="destructive"
-                className="absolute top-1 right-1"
-                onClick={() => removeLocal(i)}
-                aria-label="Eliminar imagen local"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+            <ProductImagePreview
+              url={preview}
+              i={i}
+              removeImage={removeLocal}
+              existingOrLocal="local"
+            />
           );
         })}
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Ajustar imagen</DialogTitle>
-          </DialogHeader>
-          {srcToCrop && (
-            <div className="space-y-3">
-              <Cropper
-                src={srcToCrop}
-                ref={cropperRef}
-                style={{ height: 350, width: "100%" }}
-                aspectRatio={1}
-                viewMode={1}
-                guides={false}
-                dragMode="move"
-                background={false}
-                autoCropArea={1}
-              />
-              <div className="flex justify-end gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancelar
-                </Button>
-                <Button type="button" onClick={confirmCrop}>
-                  Recortar
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <DialogCropper
+        open={open}
+        setOpen={setOpen}
+        srcToCrop={srcToCrop!}
+        confirmCrop={confirmCrop}
+        cropperRef={cropperRef}
+      />
     </div>
   );
 }

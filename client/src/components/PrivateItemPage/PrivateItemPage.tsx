@@ -25,6 +25,7 @@ interface PrivateItemPageProps<TFormValues> {
   defaultFilters?: Record<string, any>;
   skeletonRows?: number;
   skeletonColumns?: number;
+  pageSizeProp?: number;
 }
 
 export function PrivateItemPage<TItem extends { id: string }, TFormValues>({
@@ -38,6 +39,7 @@ export function PrivateItemPage<TItem extends { id: string }, TFormValues>({
   defaultFilters = {},
   skeletonColumns,
   skeletonRows,
+  pageSizeProp,
 }: PrivateItemPageProps<TFormValues>) {
   const [searchFilter, setSearchFilter] = useState<string>("");
   const [filters, setFilters] = useState(defaultFilters);
@@ -100,6 +102,7 @@ export function PrivateItemPage<TItem extends { id: string }, TFormValues>({
             {...debouncedFilters}
             onEdit={onEdit}
             onDelete={onDelete}
+            pageSizeProp={pageSizeProp}
           />
         </Suspense>
       </div>

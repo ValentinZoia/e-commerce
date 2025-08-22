@@ -6,6 +6,8 @@ import ProductDataTableFilters from "./_components/ProductsTable/data-table-filt
 import DataTableProducts from "./_components/ProductsTable/DataTableProducts";
 import { ProductDialogForm } from "./_components/ProductDialogForm";
 
+const PAGESIZE = import.meta.env.VITE_PRODUCT_TABLE_PAGESIZE;
+
 function PrivateProductsPage() {
   return (
     <PrivateItemPage<Product, ProductFormValues>
@@ -21,6 +23,7 @@ function PrivateProductsPage() {
         promotionFilter: "all",
         newFilter: "all",
       }}
+      pageSizeProp={PAGESIZE}
     />
   );
 }

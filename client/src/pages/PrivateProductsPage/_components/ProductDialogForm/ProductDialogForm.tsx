@@ -22,7 +22,6 @@ import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Trash2 } from "lucide-react";
 import { Suspense, useState } from "react";
-
 import { SubmitBtn } from "@/pages/Login/_components";
 import CategorySelect from "../CategorySelect/CategorySelect";
 import LoaderPage from "@/components/LoaderPage/LoaderPage";
@@ -54,6 +53,8 @@ function ProductDialogForm({
   // Archivos locales recortados aún NO subidos
   const [localFiles, setLocalFiles] = useState<File[]>([]);
 
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: product || defaultValues,
@@ -70,6 +71,7 @@ function ProductDialogForm({
     setSizes(sizes.filter((_, i) => i !== index));
   }
   const onSubmit = async () => {
+    setIsLoadingImages(true);
     const values = form.getValues();
 
     // 1) Subir solo las nuevas (localFiles) — las existingUrls ya están en Cloudinary
@@ -86,6 +88,7 @@ function ProductDialogForm({
       const { data, error } = await uploadToCloudinary(webpFile);
       if (error || !data) {
         console.error("Error subiendo a Cloudinary", error);
+        setIsLoadingImages(false);
         continue;
       }
       uploadedUrls.push(data);
@@ -100,6 +103,8 @@ function ProductDialogForm({
       sizes,
       images: finalImages, // <- string[]
     });
+
+    setIsLoadingImages(false);
   };
 
   return (
@@ -351,7 +356,9 @@ function ProductDialogForm({
             Cancelar
           </Button>
           <SubmitBtn
-            isLoading={isLoading}
+            isLoading={
+              isLoading || form.formState.isSubmitting || isLoadingImages
+            }
             name={product ? "Guardar" : "Crear"}
           />
         </DialogFooter>

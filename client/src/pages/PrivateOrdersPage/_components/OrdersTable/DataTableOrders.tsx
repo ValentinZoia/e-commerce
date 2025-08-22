@@ -4,16 +4,14 @@ import { Order, WhatsAppStatus } from "@/types/order";
 import { useMemo } from "react";
 import { buildOrderColumns } from "./OrdersColumns";
 import { useDataTablePagination } from "@/hooks/GenericTABLE/useDataTablePagination";
+import { DataTableBasicProps } from "@/pages/PrivateProductsPage/_components/ProductsTable/DataTableProducts";
 
-interface DataTableOrdersProps {
+interface DataTableOrdersProps extends DataTableBasicProps<Order> {
   customerEmailFilter: string;
   customerNameFilter: string;
   customerPhoneFilter: string;
   statusFilter: string;
   productIdFilter: string;
-  onEdit: (item: Order) => void;
-  onDelete: (item: Order) => void;
-  search: string;
 }
 
 function DataTableOrders({
@@ -25,6 +23,7 @@ function DataTableOrders({
   onEdit,
   onDelete,
   search,
+  pageSizeProp,
 }: DataTableOrdersProps) {
   const {
     pageIndex,
@@ -34,7 +33,7 @@ function DataTableOrders({
     setSorting,
     sortBy,
     sortDir,
-  } = useDataTablePagination({ pageSize: 10 });
+  } = useDataTablePagination({ pageSize: pageSizeProp ? pageSizeProp : 10 });
 
   const { data } = useOrdersSuspense({
     page: pageIndex + 1,

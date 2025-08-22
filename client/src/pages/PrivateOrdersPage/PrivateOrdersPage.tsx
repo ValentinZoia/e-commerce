@@ -5,6 +5,7 @@ import { useOrderMutations } from "@/hooks/Orders/useOrderMutations";
 import OrdersDataTableFilters from "./_components/OrdersTable/OrdersDataTableFilters";
 import DataTableOrders from "./_components/OrdersTable/DataTableOrders";
 import OrdersDialogForm from "./_components/OrdersDialogForm/OrdersDialogForm";
+const PAGESIZE = import.meta.env.VITE_ORDER_TABLE_PAGESIZE;
 
 function PrivateOrdersPage() {
   return (
@@ -22,6 +23,7 @@ function PrivateOrdersPage() {
         statusFilter: "all" as WhatsAppStatusNames | string,
         productIdFilter: "",
       }}
+      pageSizeProp={PAGESIZE}
     />
   );
 }

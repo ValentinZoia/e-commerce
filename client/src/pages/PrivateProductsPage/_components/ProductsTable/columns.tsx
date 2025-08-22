@@ -97,19 +97,19 @@ export function buildProductColumns(
       cell: ({ row }) => {
         const product = row.original;
         const isDiscount =
-          product.discountPercentage === undefined ||
+          product.discountPercentage === null ||
           product.discountPercentage === 0
             ? false
             : true;
         const isCashDiscount =
-          product.cashDiscountPercentage === undefined ||
+          product.cashDiscountPercentage === null ||
           product.cashDiscountPercentage === 0
             ? false
             : true;
         return (
           <div className="">
             {isDiscount && (
-              <div className="flex items-center gap-1">
+              <div className="flex gap-2">
                 <div className="text-sm text-muted-foreground line-through">
                   {formatPrice(product.price)}
                 </div>
@@ -134,7 +134,7 @@ export function buildProductColumns(
     {
       accessorKey: "stock",
       header: ({ column }) => (
-        <div className="flex justify-center">
+        <div className="">
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -157,7 +157,7 @@ export function buildProductColumns(
           product.sizes?.reduce((acc, s) => acc + s.stock, 0) || 0;
 
         return (
-          <div className="flex gap-2 items-center justify-center">
+          <div className="">
             <div className="font-medium">{product.stock}</div>
             {product.sizes && product.sizes.length > 0 && (
               <div className="text-xs text-muted-foreground">
@@ -198,25 +198,37 @@ export function buildProductColumns(
               </Badge>
             )}
             {product.isFeatured && (
-              <Badge variant="outline" className="text-xs">
+              <Badge
+                variant="outline"
+                className="text-xs bg-yellow-50 border-yellow-200 text-yellow-700"
+              >
                 <Star className="w-3 h-3 mr-1" />
                 Destacado
               </Badge>
             )}
             {product.isNew && (
-              <Badge variant="outline" className="text-xs">
+              <Badge
+                variant="outline"
+                className="text-xs bg-blue-50 border-blue-200 text-blue-700"
+              >
                 <Sparkles className="w-3 h-3 mr-1" />
                 Nuevo
               </Badge>
             )}
             {product.isPromotion && (
-              <Badge variant="outline" className="text-xs">
+              <Badge
+                variant="outline"
+                className="text-xs bg-red-50 border-red-200 text-red-700"
+              >
                 <Tag className="w-3 h-3 mr-1" />
                 Promo
               </Badge>
             )}
             {product.isFreeShipping && (
-              <Badge variant="outline" className="text-xs">
+              <Badge
+                variant="outline"
+                className="text-xs bg-green-50 border-green-200 text-green-700"
+              >
                 <Truck className="w-3 h-3 mr-1" />
                 Envío Gratis
               </Badge>

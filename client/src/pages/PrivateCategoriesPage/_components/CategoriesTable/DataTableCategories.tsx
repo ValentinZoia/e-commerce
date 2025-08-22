@@ -4,18 +4,14 @@ import { useMemo } from "react";
 import { buildCategoryColumns } from "./CategoriesColumns";
 import { useCategoriesSuspense } from "@/hooks/Categories/useCategories";
 import { useDataTablePagination } from "@/hooks/GenericTABLE/useDataTablePagination";
-
-interface DataTableCategoriesProps {
-  search: string;
-  onEdit: (item: Category) => void;
-  onDelete: (item: Category) => void;
-}
+import { DataTableBasicProps } from "@/pages/PrivateProductsPage/_components/ProductsTable/DataTableProducts";
 
 function DataTableCategories({
   search,
   onEdit,
   onDelete,
-}: DataTableCategoriesProps) {
+  pageSizeProp,
+}: DataTableBasicProps<Category>) {
   const {
     pageIndex,
     setPageIndex,
@@ -24,7 +20,7 @@ function DataTableCategories({
     setSorting,
     sortBy,
     sortDir,
-  } = useDataTablePagination({ pageSize: 10 });
+  } = useDataTablePagination({ pageSize: pageSizeProp ? pageSizeProp : 10 });
 
   const { data } = useCategoriesSuspense({
     page: pageIndex + 1,
