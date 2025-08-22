@@ -1,6 +1,4 @@
-// components/Image.tsx
-import React, { useState, useEffect, useRef } from 'react';
-
+import React, { useState, useEffect, useRef } from "react";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -16,11 +14,11 @@ export const Image: React.FC<ImageProps> = ({
   src,
   alt,
   placeholderSrc,
-  errorSrc = '/default-error-image.jpg',
+  errorSrc = "/default-error-image.jpg",
   lazy = true,
   aspectRatio,
   threshold = 0.1,
-  className = '',
+  className = "",
   style = {},
   ...props
 }) => {
@@ -41,6 +39,7 @@ export const Image: React.FC<ImageProps> = ({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             loadImage();
+            console.log("se ve la imagen");
             observer.unobserve(entry.target);
           }
         });
@@ -70,30 +69,30 @@ export const Image: React.FC<ImageProps> = ({
 
   const finalSrc = hasError ? errorSrc : src;
   const showPlaceholder = !isLoaded && placeholderSrc;
-  const aspectRatioStyle = aspectRatio 
-    ? { paddingBottom: `${(1 / aspectRatio) * 100}%` } 
+  const aspectRatioStyle = aspectRatio
+    ? { paddingBottom: `${(1 / aspectRatio) * 100}%` }
     : {};
 
   return (
-    <div 
+    <div
       className={`image-container ${className}`}
-      style={{ ...style, position: 'relative', overflow: 'hidden' }}
+      style={{ ...style, position: "relative", overflow: "hidden" }}
     >
       {showPlaceholder && (
-        <Placeholder 
-          src={placeholderSrc} 
-          alt={`${alt} placeholder`} 
+        <Placeholder
+          src={placeholderSrc}
+          alt={`${alt} placeholder`}
           aspectRatio={aspectRatio}
         />
       )}
 
       {aspectRatio && (
-        <div 
-          style={{ 
-            width: '100%',
+        <div
+          style={{
+            width: "100%",
             ...aspectRatioStyle,
-            position: 'relative'
-          }} 
+            position: "relative",
+          }}
         />
       )}
 
@@ -101,16 +100,16 @@ export const Image: React.FC<ImageProps> = ({
         ref={imgRef}
         src={isLoaded ? finalSrc : undefined}
         alt={alt}
-        loading={lazy ? 'lazy' : 'eager'}
+        loading={lazy ? "lazy" : "eager"}
         style={{
-          position: aspectRatio ? 'absolute' : 'static',
+          position: aspectRatio ? "absolute" : "static",
           top: 0,
           left: 0,
-          width: '100%',
-          height: aspectRatio ? '100%' : 'auto',
-          objectFit: 'cover',
+          width: "100%",
+          height: aspectRatio ? "100%" : "auto",
+          objectFit: "cover",
           opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out',
+          transition: "opacity 0.3s ease-in-out",
         }}
         onError={() => setHasError(true)}
         {...props}
@@ -129,14 +128,14 @@ export const Placeholder: React.FC<{
     src={src}
     alt={alt}
     style={{
-      position: 'absolute',
+      position: "absolute",
       top: 0,
       left: 0,
-      width: '100%',
-      height: aspectRatio ? '100%' : 'auto',
-      objectFit: 'cover',
-      filter: 'blur(10px)',
-      transform: 'scale(1.1)',
+      width: "100%",
+      height: aspectRatio ? "100%" : "auto",
+      objectFit: "cover",
+      filter: "blur(10px)",
+      transform: "scale(1.1)",
     }}
   />
 );

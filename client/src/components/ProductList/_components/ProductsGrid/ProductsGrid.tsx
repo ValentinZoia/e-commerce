@@ -1,6 +1,8 @@
 import { ProductCard } from "@/components";
 import { Product } from "@/types";
 import { Button } from "@/components/ui/button";
+import { Lazy } from "@/components/Lazy";
+import { SkeletonProductCard } from "@/components/Skeletons/SkeletonProductCard";
 
 interface ProductsGridProps {
   products: Product[];
@@ -47,7 +49,12 @@ export const ProductsGrid = ({
       {/* Products Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <Lazy
+            key={product.id}
+            placeholder={<SkeletonProductCard />} /* ajustá a tu card */
+          >
+            <ProductCard product={product} />
+          </Lazy>
         ))}
       </div>
     </>
