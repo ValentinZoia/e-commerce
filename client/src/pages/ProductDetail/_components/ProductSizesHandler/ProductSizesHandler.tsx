@@ -58,14 +58,17 @@ const ProductSizesHandler = ({ product }: Props) => {
           </div>
         </div>
       )}
-      {existingItem && (
-        <div className="flex items-center gap-2 transition-all duration-300 ease-in-out transform opacity-0 translate-y-2 animate-fade-in">
-          <Check className="size-3 text-green-500" />
-          <span className="text-sm text-gray-400 ">
-            Ya agregaste este producto
-          </span>
-        </div>
-      )}
+      <div className="h-[15px]">
+        {existingItem && (
+          <div className="flex items-center gap-2 transition-all duration-300 ease-in-out transform opacity-0 translate-y-2 animate-fade-in">
+            <Check className="size-3 text-green-500" />
+            <span className="text-sm text-gray-400 ">
+              Ya agregaste este producto
+            </span>
+          </div>
+        )}
+      </div>
+
       {/* Agregar al carrito */}
       <div className="w-full flex items-center gap-4">
         <AddProductButton
