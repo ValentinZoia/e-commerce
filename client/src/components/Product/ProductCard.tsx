@@ -16,7 +16,7 @@ interface ProductCardProps {
   isForCarousel?: boolean;
 }
 
-const ProductCard = ({ product, isForCarousel = false }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const isDiscount =
     product.discountPercentage === null || product.discountPercentage === 0
       ? false
@@ -33,9 +33,7 @@ const ProductCard = ({ product, isForCarousel = false }: ProductCardProps) => {
 
   return (
     <Card
-      className={`group hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md hover:scale-[1.02] bg-white overflow-hidden flex flex-col ${
-        isForCarousel && "min-h-[652px]"
-      }`}
+      className={`group h-full hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md hover:scale-[1.02] bg-white overflow-hidden flex flex-col`}
     >
       <div className="relative flex-shrink-0">
         <ProductCardImage product={product} discountText={discountText} />

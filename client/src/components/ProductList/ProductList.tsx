@@ -67,7 +67,7 @@ function ProductsList({
   const activeFiltersCount = getActiveFiltersCount();
 
   return (
-    <div className="container px-0 py-10 ">
+    <div className=" px-0 py-10 ">
       <div className="grid md:grid-cols-4">
         {/* Desktop Filters */}
         <div className="hidden md:block mr-4">
