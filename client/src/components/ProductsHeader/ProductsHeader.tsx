@@ -14,12 +14,17 @@ import {
 interface PoductsHeaderProps {
   title: string;
   productsStatus: ProductStatus;
+  categoryId?: string;
 }
 
-const ProductsHeader = ({ title, productsStatus }: PoductsHeaderProps) => {
+const ProductsHeader = ({
+  title,
+  productsStatus,
+  categoryId,
+}: PoductsHeaderProps) => {
   return (
     <section className="py-10">
-      <div className="container">
+      <div className="">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">{title}</h2>
           <Link
@@ -39,7 +44,10 @@ const ProductsHeader = ({ title, productsStatus }: PoductsHeaderProps) => {
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             <Suspense fallback={<ProductsCarouselSkeleton />}>
-              <HomeProductsCarousel productsStatus={productsStatus} />
+              <HomeProductsCarousel
+                productsStatus={productsStatus}
+                categoryId={categoryId}
+              />
             </Suspense>
           </CarouselContent>
           <CarouselPrevious className="hidden md:flex -left-12 bg-white shadow-lg border-2 hover:bg-gray-50" />

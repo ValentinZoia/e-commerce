@@ -5,13 +5,19 @@ import ProductCard from "@/components/Product/ProductCard";
 
 interface HomeProductsCarouselProps {
   productsStatus: ProductStatus;
+  categoryId?: string;
 }
 
-function HomeProductsCarousel({ productsStatus }: HomeProductsCarouselProps) {
+function HomeProductsCarousel({
+  productsStatus,
+  categoryId,
+}: HomeProductsCarouselProps) {
   const { data } = useProductsSuspense({
-    featured: productsStatus === ProductStatus.FEATURED ? true : false,
-    promotion: productsStatus === ProductStatus.PROMOTION ? true : false,
-    new: productsStatus === ProductStatus.NEW ? true : false,
+    featured: productsStatus === ProductStatus.FEATURED ? true : undefined,
+    promotion: productsStatus === ProductStatus.PROMOTION ? true : undefined,
+    new: productsStatus === ProductStatus.NEW ? true : undefined,
+    category:
+      productsStatus === ProductStatus.FORCATEGORY ? categoryId : undefined,
     page: 1,
     limit: 10,
   });
@@ -21,7 +27,7 @@ function HomeProductsCarousel({ productsStatus }: HomeProductsCarouselProps) {
       {data.data.map((product) => (
         <CarouselItem
           key={product.id}
-          className="pl-2 md:pl-4 basis-full sm:basis-1/2  lg:basis-1/3 xl:basis-1/4"
+          className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3  lg:basis-1/4 xl:basis-1/5"
         >
           <ProductCard
             product={product}
