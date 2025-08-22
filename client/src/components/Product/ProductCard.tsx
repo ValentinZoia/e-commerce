@@ -8,6 +8,7 @@ import { formatPrice } from "@/utilities";
 import ProductCardImage from "./ProductCardIamge/ProductCardImage";
 import { AddProductButton } from "../AddProductButton";
 import { Star, Truck } from "lucide-react";
+import { renderStockMessage } from "./RenderStockMessage";
 
 interface ProductCardProps {
   product: Product;
@@ -17,11 +18,11 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, isForCarousel = false }: ProductCardProps) => {
   const isDiscount =
-    product.discountPercentage === undefined || product.discountPercentage === 0
+    product.discountPercentage === null || product.discountPercentage === 0
       ? false
       : true;
   const isCashDiscount =
-    product.cashDiscountPercentage === undefined ||
+    product.cashDiscountPercentage === null ||
     product.cashDiscountPercentage === 0
       ? false
       : true;
@@ -29,30 +30,6 @@ const ProductCard = ({ product, isForCarousel = false }: ProductCardProps) => {
   const discountText = product.discountPercentage
     ? `${product.discountPercentage * 100}% OFF`
     : null;
-
-  const renderStockMessage = () => {
-    if (!product.stock) return;
-    if (product.stock === 1) {
-      return (
-        <div className="flex items-center gap-1 mt-2">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-          <p className="text-red-600 font-medium text-xs">
-            ¡Último disponible!
-          </p>
-        </div>
-      );
-    } else if (product.stock < 5) {
-      return (
-        <div className="flex items-center gap-1 mt-2">
-          <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-          <p className="text-orange-600 font-medium text-xs">
-            Solo {product.stock} en stock
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <Card
@@ -124,7 +101,7 @@ const ProductCard = ({ product, isForCarousel = false }: ProductCardProps) => {
               <span className="text-xs font-medium">Envío gratis</span>
             </div>
           )}
-          {renderStockMessage()}
+          {renderStockMessage(product)}
         </div>
 
         <div className="pt-2">
