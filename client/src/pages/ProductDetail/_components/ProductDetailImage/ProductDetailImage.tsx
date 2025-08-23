@@ -3,7 +3,7 @@ import { Product } from "@/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Image } from "@/components/Image";
-import { Badge } from "@/components/ui/badge";
+import { BadgeProductDiscount } from "@/components/BadgeProductDiscount";
 
 interface Props {
   product: Product;
@@ -13,7 +13,9 @@ interface Props {
 
 const ProductDetailImage = ({ product, isDiscounted }: Props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const discountText = product.discountPercentage
+    ? `${product.discountPercentage * 100}% OFF`
+    : null;
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowLeft") {
@@ -61,7 +63,7 @@ const ProductDetailImage = ({ product, isDiscounted }: Props) => {
                   width={80}
                   height={80}
                   className="object-cover w-full h-full"
-                  lazy={true}
+                  lazy={false}
                   aspectRatio={1}
                   threshold={0.2}
                 />
@@ -71,7 +73,7 @@ const ProductDetailImage = ({ product, isDiscounted }: Props) => {
         )}
 
         {/* IMAGEN PRINCIPAL - SE VERA EN TODAS LAS RESOLUCIONES */}
-        <div className="relative  w-full overflow-hidden rouded-md border">
+        <div className="relative  aspect-square w-full overflow-hidden rouded-md border">
           <ChevronLeft
             className={cn(
               "md:hidden w-8 h-8 absolute top-1/2 left-0 z-10 text-white cursor-pointer  hover:bg-gradient-to-r hover:from-transparent hover:to-black  transition-transform duration-300 rounded-[inherit] ",
@@ -99,12 +101,7 @@ const ProductDetailImage = ({ product, isDiscounted }: Props) => {
             lazy={true}
             threshold={0.2}
           />
-          {isDiscounted && (
-            <Badge className="absolute top-3 right-3 bg-celeste/95 hover:bg-celeste">
-              {product.discountPercentage && product.discountPercentage * 100}%
-              OFF
-            </Badge>
-          )}
+          {isDiscounted && <BadgeProductDiscount discountText={discountText} />}
           {product.images.length > 1 && (
             <div className="absolute bottom-3 right-3 text-xs bg-white/80 px-2 py-1 rounded-full">
               {currentImageIndex + 1}/{product.images.length}
