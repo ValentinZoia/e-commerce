@@ -4,8 +4,8 @@ import { Product } from "./product";
 export interface Category extends BaseEntity {
   name: string;
   slug: string;
-  description?: string;
-  products?: Product[];
+  description: string | null;
+  products: Product[] | null;
 }
 
 export interface CategoriesState {

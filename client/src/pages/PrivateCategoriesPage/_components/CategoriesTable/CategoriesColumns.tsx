@@ -108,7 +108,9 @@ export function buildCategoryColumns(
 
         return (
           <div className="flex justify-center">
-            <div className="font-medium">{category.description}</div>
+            <div className="font-medium">
+              {category.description || "No especificada"}
+            </div>
           </div>
         );
       },
