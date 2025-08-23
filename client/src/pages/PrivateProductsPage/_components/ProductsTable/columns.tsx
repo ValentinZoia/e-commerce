@@ -60,7 +60,7 @@ export function buildProductColumns(
           <div className="flex flex-col justify-start">
             <div className="font-medium">{product.name}</div>
             {product.description && (
-              <div className="text-sm text-muted-foreground line-clamp-2">
+              <div className="text-sm text-muted-foreground line-clamp-2 truncate max-w-50">
                 {product.description}
               </div>
             )}

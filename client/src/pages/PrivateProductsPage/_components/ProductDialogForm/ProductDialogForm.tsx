@@ -44,7 +44,18 @@ function ProductDialogForm({
   const [sizes, setSizes] = useState<{ name: string; stock: number }[]>(
     product?.sizes || []
   );
-  const [newSize, setNewSize] = useState({ name: "", stock: 0 });
+  const [newSize, setNewSize] = useState<{ name: string; stock: number }>({
+    name: "",
+    stock: 0,
+  });
+
+  const [cuotas, setCuotas] = useState<
+    { quantity: number | null; amount: number | null }[]
+  >(product?.installments || []);
+  const [newCuota, setNewCuota] = useState<{
+    quantity: number | null;
+    amount: number | null;
+  }>({ quantity: null, amount: null });
 
   // URLs ya persistidas (si estás editando un producto existente)
   const [existingUrls, setExistingUrls] = useState<string[]>(
@@ -60,6 +71,15 @@ function ProductDialogForm({
     defaultValues: product || defaultValues,
   });
 
+  function addCuota() {
+    if (newCuota.quantity && newCuota.amount) {
+      setCuotas([...cuotas, newCuota]);
+      setNewCuota({ quantity: null, amount: null });
+    }
+  }
+  function removeCuota(index: number) {
+    setCuotas(cuotas.filter((_, i) => i !== index));
+  }
   function addSize() {
     if (newSize.name) {
       setSizes([...sizes, newSize]);
@@ -101,6 +121,7 @@ function ProductDialogForm({
     onSave({
       ...values,
       sizes,
+      installments: cuotas[0] ? cuotas : [],
       images: finalImages, // <- string[]
     });
 
@@ -166,7 +187,7 @@ function ProductDialogForm({
             )}
           />
 
-          {/* Precio y efectivo */}
+          {/* Precio y descuento */}
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -178,6 +199,7 @@ function ProductDialogForm({
                     <Input
                       type="number"
                       {...field}
+                      value={field.value ? field.value : ""}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
@@ -187,6 +209,34 @@ function ProductDialogForm({
             />
             <FormField
               control={form.control}
+              name="discountPercentage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descuento (%)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="1"
+                      min="0"
+                      max="100"
+                      value={field.value ? field.value * 100 : ""}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value ? Number(e.target.value) / 100 : null
+                        )
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Precio en efectivo y descuento en efectivo */}
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
               name="cashPrice"
               render={({ field }) => (
                 <FormItem>
@@ -194,7 +244,7 @@ function ProductDialogForm({
                   <FormControl>
                     <Input
                       type="number"
-                      step="0.01"
+                      step="1"
                       value={field.value ? field.value : ""}
                       onChange={(e) =>
                         field.onChange(
@@ -209,16 +259,12 @@ function ProductDialogForm({
                 </FormItem>
               )}
             />
-          </div>
-
-          {/* Descuento y stock */}
-          <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="discountPercentage"
+              name="cashDiscountPercentage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descuento (%)</FormLabel>
+                  <FormLabel>Descuento en Efectivo(%)</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -297,6 +343,51 @@ function ProductDialogForm({
                   variant="outline"
                   size="sm"
                   onClick={() => removeSize(index)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+          {/* Cuotas */}
+          <div className="space-y-2">
+            <FormLabel>Cuotas</FormLabel>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Meses"
+                value={newCuota.quantity ? newCuota.quantity : ""}
+                onChange={(e) =>
+                  setNewCuota({ ...newCuota, quantity: Number(e.target.value) })
+                }
+              />
+              <Input
+                type="number"
+                placeholder="Cantidad en Pesos"
+                value={newCuota.amount ? newCuota.amount : ""}
+                onChange={(e) =>
+                  setNewCuota({
+                    ...newCuota,
+                    amount: Number(e.target.value) || 0,
+                  })
+                }
+              />
+              <Button type="button" onClick={addCuota}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+            {cuotas.map((size, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between bg-muted p-2 rounded"
+              >
+                <span>
+                  Meses: {size.quantity} - Cantidad: {size.amount}
+                </span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => removeCuota(index)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

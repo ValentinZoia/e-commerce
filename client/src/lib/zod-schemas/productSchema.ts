@@ -13,10 +13,13 @@ const installmentSchema = z.object({
   quantity: z
     .number()
     .int()
-    .positive({ message: "La cantidad de cuotas debe ser positiva" }),
+    .positive({ message: "La cantidad de cuotas debe ser positiva" })
+    .min(1, { message: "La cantidad de cuotas debe ser mayor a 0" })
+    .nullable(),
   amount: z
     .number()
-    .positive({ message: "El monto de cuotas debe ser positivo" }),
+    .positive({ message: "El monto de cuotas debe ser positivo" })
+    .nullable(),
 });
 
 // Schema principal para productos
