@@ -59,7 +59,7 @@ const CartPanel = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) console.log(error);
+  if (error) return <div>Error: {error}</div>;
   const hasItems = cartItems.length > 0;
   return (
     <div className="p-6">

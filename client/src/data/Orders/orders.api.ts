@@ -115,7 +115,7 @@ export async function createOrder(order: OrderFormValues) {
       API_URL,
       order
     );
-    console.log(data);
+
     return data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {

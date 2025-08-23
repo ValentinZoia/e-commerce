@@ -164,7 +164,7 @@ export async function createProduct(product: ProductFormValues) {
       API_URL,
       product
     );
-    console.log(data);
+
     return data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {

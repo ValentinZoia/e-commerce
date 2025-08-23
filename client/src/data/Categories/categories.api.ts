@@ -140,7 +140,7 @@ export async function createCategory(category: CategoryFormValues) {
       API_URL,
       category
     );
-    console.log(data);
+
     return data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
