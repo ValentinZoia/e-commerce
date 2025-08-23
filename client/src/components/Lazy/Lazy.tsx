@@ -34,7 +34,7 @@ function Lazy({
         const entry = entries[0];
         if (entry.isIntersecting) {
           setIsVisible(true);
-          console.log("card");
+
           observer.unobserve(entry.target);
           // dispara animación en el siguiente frame
           requestAnimationFrame(() => setHasEntered(true));
