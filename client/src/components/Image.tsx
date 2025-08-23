@@ -28,8 +28,11 @@ export const Image: React.FC<ImageProps> = ({
   const observerRef = useRef<IntersectionObserver>(null);
 
   useEffect(() => {
+    setHasError(false);
+
     if (!lazy) {
       // Carga inmediata si lazy está desactivado
+
       loadImage();
       return;
     }
@@ -39,7 +42,7 @@ export const Image: React.FC<ImageProps> = ({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             loadImage();
-            console.log("se ve la imagen");
+
             observer.unobserve(entry.target);
           }
         });
@@ -63,6 +66,7 @@ export const Image: React.FC<ImageProps> = ({
   const loadImage = () => {
     const image = new window.Image();
     image.src = src;
+
     image.onload = () => setIsLoaded(true);
     image.onerror = () => setHasError(true);
   };
@@ -81,7 +85,7 @@ export const Image: React.FC<ImageProps> = ({
       {showPlaceholder && (
         <Placeholder
           src={placeholderSrc}
-          alt={`${alt} placeholder`}
+          alt={`${alt} placeholder - ${finalSrc} - hasError: ${hasError} - isLoaded: ${isLoaded}`}
           aspectRatio={aspectRatio}
         />
       )}
@@ -99,7 +103,7 @@ export const Image: React.FC<ImageProps> = ({
       <img
         ref={imgRef}
         src={isLoaded ? finalSrc : undefined}
-        alt={alt}
+        alt={`${alt} desde db - ${finalSrc} - hasError: ${hasError} - isLoaded: ${isLoaded}`}
         loading={lazy ? "lazy" : "eager"}
         style={{
           position: aspectRatio ? "absolute" : "static",
