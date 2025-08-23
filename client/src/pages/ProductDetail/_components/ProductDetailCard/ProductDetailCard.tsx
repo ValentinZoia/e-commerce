@@ -1,6 +1,6 @@
 import { ProductStatus, type Product } from "@/types";
 
-import { ChevronRight, RotateCcw, ShieldCheck } from "lucide-react";
+import { ChevronRight, RotateCcw, ShieldCheck, Truck } from "lucide-react";
 
 import {
   calculateItemCashPrice,
@@ -76,7 +76,7 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
               {/* Datos del producto */}
               <div>
                 {/* Nombre */}
-                <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                <h1 className="text-2xl font-bold text-gray-800 mb-4 leading-tight line-clamp-2">
                   {product.name}
                 </h1>
 
@@ -93,12 +93,12 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
 
                     {/* precio normal o con descuento fijo */}
                     <div className="flex items-center gap-2">
-                      <span className="text-4xl ">
+                      <span className="text-4xl font-bold ">
                         {formatPrice(calculateItemPrice(product))}
                       </span>
 
                       {isDiscount && (
-                        <span className="text-celeste font-semilight text-lg">
+                        <span className=" text-lg ">
                           {product.discountPercentage &&
                             product.discountPercentage * 100}
                           % OFF
@@ -109,20 +109,30 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
 
                   {/* Precio con descuento  por pagar en efectivo */}
                   {isCashDiscount && (
-                    <p className="text-celeste">
-                      <span className="text-2xl ">
-                        {formatPrice(calculateItemCashPrice(product))}{" "}
-                      </span>
-                      <span className="">con Efectivo o Transferencia</span>
-                    </p>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
+                      <p className="text-sm text-blue-700 font-semibold">
+                        💰 Efectivo :{" "}
+                        {formatPrice(calculateItemCashPrice(product))}
+                      </p>
+                      <p className="text-xs text-blue-600">
+                        Ahorrás{" "}
+                        {formatPrice(
+                          calculateItemPrice(product) -
+                            calculateItemCashPrice(product)
+                        )}
+                      </p>
+                    </div>
                   )}
 
                   {/* Cuotas */}
                   {product.installments && product.installments[0] && (
-                    <p className=" text-gray-600">
-                      {product.installments[0].quantity} cuotas sin interés de{" "}
-                      {formatPrice(product.installments[0].amount)}
-                    </p>
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-2">
+                      <p className="text-xs text-green-700 font-meduim">
+                        💳 {product.installments[0].quantity} cuotas de
+                        {formatPrice(product.installments[0].amount)} sin
+                        interés
+                      </p>
+                    </div>
                   )}
                   {/* Stock */}
                   {renderStockMessage(product)}
@@ -130,11 +140,10 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
               </div>
 
               {/* Envio gratis */}
-              {product.isFreeShipping && !product.freeShippingThreshold && (
-                <div className="flex items-center gap-2  ">
-                  <span className="text-md bg-celeste text-white px-4 py-1 rounded-md font-bold">
-                    Envio gratis
-                  </span>
+              {product.isFreeShipping && (
+                <div className="flex items-center gap-1 text-green-600">
+                  <Truck className="w-4 h-4" />
+                  <span className="text-xs font-medium">Envío gratis</span>
                 </div>
               )}
 
