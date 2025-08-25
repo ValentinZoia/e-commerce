@@ -23,7 +23,6 @@ export class GetAllProductsService extends Service<
     }
 
     if (options?.skip && options.skip < 0) {
-      console.log(options);
       throw CustomError.badRequest("El valor de skip debe ser mayor a 0");
     }
 

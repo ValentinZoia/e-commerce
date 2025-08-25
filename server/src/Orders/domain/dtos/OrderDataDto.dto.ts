@@ -1,7 +1,7 @@
 import { WhatsAppStatusNames } from "../entities";
 import { z } from "zod";
 
-const OrderItemSchema = z.object({
+export const OrderItemSchema = z.object({
   productId: z.string().min(1),
   productName: z.string().min(1),
   quantity: z.number().int().positive().default(1),

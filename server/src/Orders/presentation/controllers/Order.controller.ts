@@ -101,7 +101,7 @@ export class OrderController {
       const limit = take ? parseInt(take as string) : 10;
       const offset = skip ? parseInt(skip as string) : 0;
       const currentPage = Math.floor(offset / limit) + 1;
-      console.log(productId);
+
       const result = await this.getAllOrdersService.execute({
         customerEmail: customerEmail as string,
         customerName: customerName as string,
