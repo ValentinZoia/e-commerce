@@ -9,7 +9,7 @@
 
 - Para evitar clics repetitivos y ocasionar bugs.
 -Evitar que el servidor reciba multimples solicitudes consecutivas.
-- Usada en el boton de like, boton de follow, y useSearch
+
 
 */
 

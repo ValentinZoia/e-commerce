@@ -21,7 +21,7 @@ export const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const item = action.payload;
-      console.log(item);
+
       // Validaciones de seguridad
       // 1 -- verificamos que exita el producto
       if (!item?.product) {
@@ -56,7 +56,6 @@ export const cartSlice = createSlice({
         item.size as string
       );
 
-      console.log(existingItem ? "ya existe" : "nuevo producto");
       if (existingItem) {
         //verificar stock antes de incrementar
         if (

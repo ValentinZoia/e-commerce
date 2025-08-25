@@ -9,7 +9,7 @@ function LogoutButton() {
     try {
       await doLogout.mutateAsync();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   return (
