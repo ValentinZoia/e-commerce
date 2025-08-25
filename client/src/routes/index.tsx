@@ -24,7 +24,7 @@ import {
 } from "@/pages";
 
 import { PrivateRoutes, PublicRoutes } from "@/types";
-import { AuthGuard } from "@/guards";
+import { AuthGuard, CheckoutGuard } from "@/guards";
 
 {
   /*
@@ -127,7 +127,25 @@ const router = createBrowserRouter([
       },
       {
         path: PublicRoutes.CHECKOUT,
-        element: <Checkout />,
+        children: [
+          {
+            path: ":token",
+
+            element: <CheckoutGuard />,
+            loader: async ({ params }) => {
+              if (!params.token) {
+                throw new Response("Invalid token", { status: 400 });
+              }
+              return { token: params.token };
+            },
+            children: [
+              {
+                index: true,
+                element: <Checkout />,
+              },
+            ],
+          },
+        ],
       },
     ],
   },
