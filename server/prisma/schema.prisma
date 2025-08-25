@@ -103,6 +103,14 @@ model Order {
   @@index([createdAt])
 }
 
+model Checkout {
+  id          String   @id @map("_id") //generado por mi cuando creo el registro. 
+  userId      String   
+  createdAt DateTime @default(now())
+  expiresAt         DateTime 
+  @@unique(userId)
+}
+
 model OrderItem {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
