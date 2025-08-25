@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { PublicRoutes } from "@/types/route";
+import { useCheckoutSessionMutations } from "@/hooks/Checkout/useCheckoutMutations";
+import { DBResponseCommand } from "@/types";
+import { CheckoutDataResponse } from "@/types/checkout";
+// import { PublicRoutes } from "@/types/route";
 import { useNavigate } from "react-router-dom";
 
 interface CartCheckoutButtonProps {
@@ -9,11 +12,16 @@ interface CartCheckoutButtonProps {
 
 function CartCheckoutButton({ hasItems, onClose }: CartCheckoutButtonProps) {
   const navigate = useNavigate();
-
-  const handleCheckout = () => {
+  const { doCheckoutSession } = useCheckoutSessionMutations();
+  const handleCheckout = async () => {
     if (hasItems) {
-      navigate(PublicRoutes.CHECKOUT);
-      onClose?.(); // Cerrar el sheet después de navegar
+      doCheckoutSession.mutate("esteesmiuseriddeprueba3", {
+        onSuccess: (res: DBResponseCommand<CheckoutDataResponse>) => {
+          navigate(res.data.checkoutUrl);
+          onClose?.(); // Cerrar el sheet después de navegar
+        },
+        onError: (err: any) => console.error(err),
+      });
     }
   };
 
