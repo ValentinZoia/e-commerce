@@ -27,7 +27,7 @@ const CartPanel = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const dispatch = useAppDispatch();
-  const { totalItems, totalPrice, items, loading, error } = useSelector(
+  const { totalItems, totalPrice, items, loading } = useSelector(
     (state: RootState) => state.cart
   );
 
@@ -59,7 +59,7 @@ const CartPanel = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // if (error) return <div>Error: {error}</div>;
   const hasItems = cartItems.length > 0;
   return (
     <div className="p-6">
