@@ -9,6 +9,7 @@ export class PrismaCheckoutRepositoryImpl implements ICheckoutRepository {
       data: {
         id: session.id,
         userId: session.userId,
+        jwtToken: session.jwtToken,
         expiresAt: session.expiresAt,
         createdAt: session.createdAt,
       },
@@ -19,6 +20,31 @@ export class PrismaCheckoutRepositoryImpl implements ICheckoutRepository {
       where: { id },
     });
     if (!checkoutSession) return null;
+
+    //  Verificar si expiró
+    const now = new Date();
+
+    if (checkoutSession.expiresAt <= now) {
+      //  Eliminarlo si ya venció
+      await this.delete(id);
+      return null;
+    }
+    return this.mapPrismaToOrder(checkoutSession);
+  }
+  async findByToken(jwtToken: string): Promise<CheckoutSession | null> {
+    const checkoutSession = await prisma.checkout.findUnique({
+      where: { jwtToken },
+    });
+    if (!checkoutSession) return null;
+
+    //  Verificar si expiró
+    const now = new Date();
+
+    if (checkoutSession.expiresAt <= now) {
+      //  Eliminarlo si ya venció
+      await this.delete(checkoutSession.id);
+      return null;
+    }
     return this.mapPrismaToOrder(checkoutSession);
   }
 
@@ -32,6 +58,7 @@ export class PrismaCheckoutRepositoryImpl implements ICheckoutRepository {
     return new CheckoutSession(
       prismaCheckout.id,
       prismaCheckout.userId,
+      prismaCheckout.jwtToken,
       prismaCheckout.expiresAt,
       prismaCheckout.createdAt
     );

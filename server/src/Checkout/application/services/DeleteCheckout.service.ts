@@ -14,6 +14,7 @@ export class DeleteCheckoutService extends Service<[string], boolean> {
       jwtToken
     );
     if (!decoded) {
+      await this.checkoutRepository.findByToken(jwtToken);
       throw CustomError.unauthorized("Token de checkout inválido o expirado.");
     }
     const session = await this.checkoutRepository.findById(decoded.checkoutId);

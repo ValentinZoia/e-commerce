@@ -105,10 +105,12 @@ model Order {
 
 model Checkout {
   id          String   @id @map("_id") //generado por mi cuando creo el registro. 
-  userId      String   
+  userId      String
+  jwtToken    String   
   createdAt DateTime @default(now())
   expiresAt         DateTime 
-  @@unique(userId)
+  @@unique([userId,jwtToken])
+  
 }
 
 model OrderItem {

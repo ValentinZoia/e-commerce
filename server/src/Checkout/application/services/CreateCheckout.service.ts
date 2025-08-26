@@ -27,14 +27,6 @@ export class CreateCheckoutService extends Service<
     const expiresAt = new Date(
       Date.now() + this.CHECKOUT_EXPIRY_TIME * 60 * 1000
     );
-    const session = new CheckoutSession(
-      token.getValue(),
-      data.userId,
-      expiresAt,
-      new Date()
-    );
-
-    await this.checkoutRepoitory.save(session);
 
     const jwtPayload: JwtPayloadCheckout = {
       checkoutId: token.getValue(),
@@ -44,6 +36,15 @@ export class CreateCheckoutService extends Service<
     const jwtToken = await JwtAdapter.generateToken(jwtPayload, false);
     if (!jwtToken)
       throw CustomError.internalServerError("Error al generar JWT");
+    const session = new CheckoutSession(
+      token.getValue(), //id
+      data.userId,
+      jwtToken,
+      expiresAt,
+      new Date()
+    );
+
+    await this.checkoutRepoitory.save(session);
 
     return jwtToken;
   }

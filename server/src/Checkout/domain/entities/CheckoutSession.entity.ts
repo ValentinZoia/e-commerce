@@ -2,6 +2,7 @@ export class CheckoutSession {
   constructor(
     public readonly id: string,
     public readonly userId: string,
+    public readonly jwtToken: string,
     public readonly expiresAt: Date,
     public readonly createdAt: Date
   ) {}

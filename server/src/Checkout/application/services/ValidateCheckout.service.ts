@@ -18,6 +18,7 @@ export class ValidateCheckoutService extends Service<
       jwtToken
     );
     if (!decoded) {
+      await this.checkoutRepository.findByToken(jwtToken);
       throw CustomError.unauthorized("Token de checkout inválido o expirado.");
     }
     //Buscar session
@@ -26,6 +27,7 @@ export class ValidateCheckoutService extends Service<
       throw CustomError.unauthorized("Token de checkout inválido o expirado.");
     }
 
+    //return session
     return session;
   }
 }

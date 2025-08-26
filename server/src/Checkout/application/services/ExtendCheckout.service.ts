@@ -20,7 +20,7 @@ export class ExtendCheckoutService extends Service<[string], string> {
       Date.now() + this.CHECKOUT_EXPIRY_TIME * 60 * 1000
     );
     const jwtPayload: JwtPayloadCheckout = {
-      checkoutId: sessionDto.id,
+      checkoutId: sessionDto.checkoutId,
       exp: Math.floor(newExpiresAt.getTime() / 1000),
     };
 
