@@ -25,6 +25,9 @@ import { Order } from "@/types/order";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useCheckoutSessionMutations } from "@/hooks/Checkout/useCheckoutMutations";
 import { useCartActions } from "@/hooks/Cart/useCartActions";
+import { Banknote, CreditCard, Landmark } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 // import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CheckoutFormProps {
@@ -43,6 +46,11 @@ const cartItemToOrderItemMap = (item: CartItem) => ({
   discount: 0,
   imageUrl: item.product?.images[0],
 });
+const paymentMethods = [
+  { id: "efectivo", label: "Efectivo", icon: Banknote },
+  { id: "mercadopago", label: "MercadoPago", icon: CreditCard },
+  { id: "transferencia", label: "Transferencia", icon: Landmark },
+];
 
 function CheckoutForm({
   items,
@@ -69,6 +77,7 @@ function CheckoutForm({
       isFreeShipping: isFreeShipping ? isFreeShipping : false,
     },
   });
+
   const onSubmit = () => {
     createMutation.mutate(form.getValues(), {
       onSuccess: (res: DBResponseCommand<Order>) => {
@@ -147,16 +156,42 @@ function CheckoutForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Método de Pago</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Ej: Transferencia, Efectivo..."
-                      value={field.value ? field.value : ""}
-                      onChange={field.onChange}
-                      disabled={field.disabled}
-                      ref={field.ref}
-                      onBlur={field.onBlur}
-                    />
-                  </FormControl>
+                  <div className="flex  gap-2 mt-2">
+                    {paymentMethods.map((method) => {
+                      const Icon = method.icon;
+                      const isSelected = field.value === method.id;
+
+                      const handleClick = () => {
+                        if (isSelected) {
+                          field.onChange(""); // Deseleccionar si ya está seleccionado
+                        } else {
+                          field.onChange(method.id);
+                        }
+                      };
+
+                      return (
+                        <div
+                          key={method.id}
+                          className={cn(
+                            "flex items-center justify-start gap-3 rounded-lg border px-4 py-2 text-left transition-all",
+                            isSelected
+                              ? "border-primary bg-primary/10"
+                              : "border-muted hover:bg-muted/30"
+                          )}
+                        >
+                          <Checkbox
+                            checked={isSelected}
+                            onCheckedChange={() => {
+                              field.onChange(method.id);
+                              handleClick();
+                            }}
+                          />
+                          <Icon className="size-5" />
+                          <span className="font-medium">{method.label}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
