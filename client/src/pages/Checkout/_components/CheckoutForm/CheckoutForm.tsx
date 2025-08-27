@@ -22,7 +22,9 @@ import { Input } from "@/components/ui/input";
 import { CartItem, DBResponseCommand } from "@/types";
 import { useOrderMutations } from "@/hooks/Orders/useOrderMutations";
 import { Order } from "@/types/order";
-
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useCartActions } from "@/hooks/Cart/useCartActions";
+import { useCheckoutSessionMutations } from "@/hooks/Checkout/useCheckoutMutations";
 // import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CheckoutFormProps {
@@ -41,8 +43,11 @@ function CheckoutForm({
   isFreeShipping,
 }: CheckoutFormProps) {
   const { createMutation } = useOrderMutations();
+  const { doDeleteCheckoutSession } = useCheckoutSessionMutations();
+  const navigate = useNavigate();
+  const { token } = useLoaderData() as { token: string };
 
-  const productToCartItemMap = (item: CartItem) => ({
+  const cartItemToOrderItemMap = (item: CartItem) => ({
     productId: item.productId,
     productName: item.product?.name as string,
     quantity: item.quantity,
@@ -52,8 +57,8 @@ function CheckoutForm({
     imageUrl: item.product?.images[0],
   });
 
-  const products = items.map(productToCartItemMap);
-
+  const products = items.map(cartItemToOrderItemMap);
+  const { emptyCart } = useCartActions();
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -68,8 +73,10 @@ function CheckoutForm({
   const onSubmit = () => {
     createMutation.mutate(form.getValues(), {
       onSuccess: (res: DBResponseCommand<Order>) => {
-        console.log(res.data);
         form.reset();
+        emptyCart();
+        doDeleteCheckoutSession.mutate(token);
+        navigate(`/order/${res.data.id}`);
       },
 
       onError: (error) => {

@@ -19,3 +19,4 @@ export * from "./PrivateOrdersPage";
 export * from "./PrivateAdminsPage";
 export * from "./PrivateAnalyticsPage";
 export * from "./Search";
+export * from "./OrderDetail";
