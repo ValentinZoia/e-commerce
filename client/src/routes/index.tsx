@@ -21,6 +21,7 @@ import {
   PrivateAnalyticsPage,
   SearchPage,
   Checkout,
+  OrderDetail,
 } from "@/pages";
 
 import { PrivateRoutes, PublicRoutes } from "@/types";
@@ -144,6 +145,25 @@ const router = createBrowserRouter([
                 element: <Checkout />,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: PublicRoutes.ORDER,
+        children: [
+          {
+            index: true,
+            element: <Error />,
+          },
+          {
+            path: ":orderId",
+            element: <OrderDetail />,
+            loader: async ({ params }) => {
+              if (!params.orderId) {
+                throw new Response("Invalid order ID", { status: 400 });
+              }
+              return { orderId: params.orderId };
+            },
           },
         ],
       },
