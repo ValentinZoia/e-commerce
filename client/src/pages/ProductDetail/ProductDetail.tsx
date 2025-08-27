@@ -12,7 +12,6 @@ const ProductDetail = () => {
   if (!productId) {
     throw new Response("Invalid category ID", { status: 400 });
   }
-  window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <main className="bg-white min-h-screen rounded-md">

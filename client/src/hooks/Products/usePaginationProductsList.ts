@@ -15,7 +15,7 @@ export const usePaginationProductsList = ({
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
       onPageChange(newPage);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 

@@ -41,7 +41,7 @@ const ProductSizesHandler = ({ product }: Props) => {
                 key={size.name}
                 variant="outline"
                 className={cn(
-                  "h-8 w-10 rounded-sm cursor-pointer border-[1px]",
+                  "h-8 w-10 rounded-none cursor-pointer border-[1px]",
                   selectedSize === size.name
                     ? "bg-gray-300 text-black border-black hover:bg-gray-300"
                     : "bg-white"

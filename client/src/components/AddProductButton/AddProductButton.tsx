@@ -34,7 +34,7 @@ const AddProductButton = ({
     <Button
       disabled={isOutOfStock || disabled}
       onClick={() => handleAddToCart(product)}
-      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+      className="cursor-pointer w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
     >
       <div className="flex items-center gap-2">
         <ShoppingCart className="w-4 h-4 mr-2" />

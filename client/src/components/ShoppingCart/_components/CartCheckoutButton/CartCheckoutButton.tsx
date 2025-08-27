@@ -40,7 +40,7 @@ function CartCheckoutButton({ hasItems, onClose }: CartCheckoutButtonProps) {
   return (
     <Button
       variant="outline"
-      className="h-12 cursor-pointer text-md bg-addCart hover:bg-addCart/80 font-light"
+      className="h-12 cursor-pointer text-md   font-light bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white hover:text-white"
       onClick={handleCheckout}
       disabled={!hasItems}
     >

@@ -42,7 +42,7 @@ const CartPanel = () => {
             variant="ghost"
             className="relative cursor-pointer hover:bg-transparent"
           >
-            <div className="bg-lime-100 rounded-full p-2">
+            <div className="bg-blue-100 rounded-full p-2">
               <ShoppingBag className="h-5 w-5" />
             </div>
             <div className="flex flex-col items-start gap-0">
