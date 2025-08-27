@@ -68,7 +68,11 @@ export class OrderRoutes {
 
     //GETS - con autenticacion - authMiddleware.authenticate
     router.get("/", authMiddleware.authenticate, controller.getAllOrders);
-    router.get("/:id", authMiddleware.authenticate, controller.getOrderById);
+    router.get(
+      "/:id",
+      //  authMiddleware.authenticate,
+      controller.getOrderById
+    );
     router.get(
       "/customerEmail/:customerEmail",
       authMiddleware.authenticate,
