@@ -3,34 +3,32 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 import { DetailOrderProductsHeader } from "../DetailOrderProductsHeader";
-import { DetailOrderProductsBody } from "../DetailOrderProductsBody";
-import { CartItem } from "@/types";
+
+import { JSX } from "react";
 
 interface DetailOrderProductsProps {
-  totalItems: number;
-  totalPrice: number;
-  isFreeShipping: boolean;
-  items: CartItem[];
-  needActions?: boolean;
+  HeaderComponent: JSX.Element;
+  BodyComponent: JSX.Element;
+  headerTitle: string;
 }
 
 function DetailOrderProductsCard({
-  totalItems,
-  totalPrice,
-  isFreeShipping,
-  items,
-  needActions,
+  BodyComponent,
+  HeaderComponent,
+  headerTitle,
 }: DetailOrderProductsProps) {
-  console.log(items);
   return (
     <Card className="rounded-none">
-      <DetailOrderProductsHeader items={items} needActions={needActions} />
+      <DetailOrderProductsHeader title={headerTitle}>
+        {HeaderComponent}
+      </DetailOrderProductsHeader>
       <Separator />
-      <DetailOrderProductsBody
+      {BodyComponent}
+      {/* <DetailOrderProductsBody
         totalItems={totalItems}
         totalPrice={totalPrice}
         isFreeShipping={isFreeShipping}
-      />
+      /> */}
     </Card>
   );
 }

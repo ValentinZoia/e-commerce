@@ -5,12 +5,14 @@ interface DetailOrderProductsBodyProps {
   totalItems: number;
   totalPrice: number;
   isFreeShipping: boolean;
+  paymentMethod: string | null;
 }
 
 function DetailOrderProductsBody({
   totalItems,
   totalPrice,
   isFreeShipping,
+  paymentMethod,
 }: DetailOrderProductsBodyProps) {
   return (
     <CardContent>
@@ -31,7 +33,9 @@ function DetailOrderProductsBody({
         </div>
         <div className="flex justify-between text-muted-foreground text-sm">
           <span className="text-muted-foreground">Método de pago:</span>
-          <span className="">No especificado</span>
+          <span className="">
+            {paymentMethod ? paymentMethod : "No especificado"}
+          </span>
         </div>
       </div>
       <Separator />

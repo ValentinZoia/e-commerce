@@ -143,6 +143,12 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <Checkout />,
+                loader: async ({ params }) => {
+                  if (!params.token) {
+                    throw new Response("Invalid token", { status: 400 });
+                  }
+                  return { token: params.token };
+                },
               },
             ],
           },
