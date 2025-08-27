@@ -23,8 +23,8 @@ import { CartItem, DBResponseCommand } from "@/types";
 import { useOrderMutations } from "@/hooks/Orders/useOrderMutations";
 import { Order } from "@/types/order";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useCartActions } from "@/hooks/Cart/useCartActions";
 import { useCheckoutSessionMutations } from "@/hooks/Checkout/useCheckoutMutations";
+import { useCartActions } from "@/hooks/Cart/useCartActions";
 // import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CheckoutFormProps {
@@ -34,6 +34,15 @@ interface CheckoutFormProps {
   shippingCost?: number;
   isFreeShipping?: boolean;
 }
+const cartItemToOrderItemMap = (item: CartItem) => ({
+  productId: item.productId,
+  productName: item.product?.name as string,
+  quantity: item.quantity,
+  size: item.size,
+  unitPrice: item.product?.price as number,
+  discount: 0,
+  imageUrl: item.product?.images[0],
+});
 
 function CheckoutForm({
   items,
@@ -46,16 +55,6 @@ function CheckoutForm({
   const { doDeleteCheckoutSession } = useCheckoutSessionMutations();
   const navigate = useNavigate();
   const { token } = useLoaderData() as { token: string };
-
-  const cartItemToOrderItemMap = (item: CartItem) => ({
-    productId: item.productId,
-    productName: item.product?.name as string,
-    quantity: item.quantity,
-    size: item.size,
-    unitPrice: item.product?.price as number,
-    discount: 0,
-    imageUrl: item.product?.images[0],
-  });
 
   const products = items.map(cartItemToOrderItemMap);
   const { emptyCart } = useCartActions();
