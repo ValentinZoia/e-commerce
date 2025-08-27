@@ -3,14 +3,13 @@ import { ButtonEmptyCart } from "../ButtonEmptyCart";
 
 interface CartHeaderProps {
   hasItems: boolean;
-  onEmptyCart: () => void;
 }
 
-function CartHeader({ hasItems, onEmptyCart }: CartHeaderProps) {
+function CartHeader({ hasItems }: CartHeaderProps) {
   return (
     <SheetHeader className="flex flex-row items-center justify-between">
       <SheetTitle>Carrito de compras</SheetTitle>
-      {hasItems && <ButtonEmptyCart emptyCart={onEmptyCart} />}
+      {hasItems && <ButtonEmptyCart />}
     </SheetHeader>
   );
 }

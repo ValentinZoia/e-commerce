@@ -1,16 +1,10 @@
 import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
-import { RootState, useAppDispatch } from "@/store/store";
+import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { CartItem } from "@/types/cart";
+
 import {
-  removeItemFromCart,
-  removeProductFromCart,
-  clearCart,
-  plusItemFromCart,
-} from "@/store/states/cart";
-import {
-  // CartTriggerButton,
   CartCheckoutButton,
   CartHeader,
   CartItemList,
@@ -25,8 +19,6 @@ import { formatPrice } from "@/utilities";
 const CartPanel = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-
-  const dispatch = useAppDispatch();
   const { totalItems, totalPrice, items, loading } = useSelector(
     (state: RootState) => state.cart
   );
@@ -35,25 +27,6 @@ const CartPanel = () => {
     setCartItems(items);
   }, [items]);
 
-  //Vaciar carrito
-  const emptyCart = () => {
-    dispatch(clearCart());
-  };
-
-  //remover item individual
-  const removeItem = (productId: string, size?: string) => {
-    dispatch(removeItemFromCart({ id: productId, size }));
-  };
-
-  //incrementar item individual
-  const plusItem = (productId: string, size?: string) => {
-    dispatch(plusItemFromCart({ id: productId, size: size }));
-  };
-
-  //remover item completo
-  const removeProduct = (productId: string, size?: string) => {
-    dispatch(removeProductFromCart({ id: productId, size: size }));
-  };
   const closeSheet = () => {
     setIsOpen(false);
   };
@@ -65,7 +38,6 @@ const CartPanel = () => {
     <div className="p-6">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          {/* <CartTriggerButton totalItems={totalItems} totalPrice={totalPrice} /> */}
           <Button
             variant="ghost"
             className="relative cursor-pointer hover:bg-transparent"
@@ -84,18 +56,13 @@ const CartPanel = () => {
         </SheetTrigger>
 
         <SheetContent side="right" className="px-6">
-          <CartHeader hasItems={hasItems} onEmptyCart={emptyCart} />
+          <CartHeader hasItems={hasItems} />
 
           {!hasItems ? (
             <EmptyCartMessage />
           ) : (
             <>
-              <CartItemList
-                items={cartItems}
-                onRemoveItem={removeItem}
-                onRemoveProduct={removeProduct}
-                onPlusItem={plusItem}
-              />
+              <CartItemList items={cartItems} />
 
               <Separator className="my-4" />
 

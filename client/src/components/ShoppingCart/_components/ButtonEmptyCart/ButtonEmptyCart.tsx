@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { useCartActions } from "@/hooks/Cart/useCartActions";
 import { Trash2 } from "lucide-react";
 
-interface ButtonEmptyCartProps {
-  emptyCart: () => void;
-}
-
-function ButtonEmptyCart({ emptyCart }: ButtonEmptyCartProps) {
+function ButtonEmptyCart() {
+  const { emptyCart } = useCartActions();
   return (
     <Button
       variant="ghost"
