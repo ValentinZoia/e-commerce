@@ -7,6 +7,7 @@ import {
   BarChart3,
   Settings,
   Store,
+  BotIcon,
 } from "lucide-react";
 
 import {
@@ -65,9 +66,9 @@ const data = {
       title: "Administración",
       items: [
         {
-          title: "Admins",
-          url: "/private/admin/admins",
-          icon: Users,
+          title: "AI",
+          url: "/private/admin/ai",
+          icon: BotIcon,
         },
         {
           title: "Configuración",

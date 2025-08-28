@@ -3,6 +3,8 @@ import { get } from "env-var";
 
 export const envs = {
   PORT: get("PORT").required().asPortNumber(),
+  SERVER_URL: get("SERVER_URL").required().asString(),
+  GITHUB_TOKEN: get("GITHUB_TOKEN").required().asString(),
   JWT_SECRET: get("JWT_SECRET").required().asString(),
   CORS_ORIGIN: get("CORS_ORIGIN").required().asString(),
   SALT_ROUNDS: get("SALT_ROUNDS").default("10").asIntPositive(),

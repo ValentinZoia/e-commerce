@@ -4,6 +4,7 @@ import { AuthAdminRoutes } from "../../../Auth/presentation/routes";
 import { OrderRoutes } from "../../../Orders/presentation/routes/Order.route";
 import { Router } from "express";
 import { CheckoutRoutes } from "../../../Checkout/presentation/routes";
+import { AIRoutes } from "../../../AI/presentation/routes";
 
 export class AppRoutes {
   static get routes(): Router {
@@ -15,6 +16,7 @@ export class AppRoutes {
     router.use("/api/categories", CategoryRoutes.routes);
     router.use("/api/orders", OrderRoutes.routes);
     router.use("/api/checkout", CheckoutRoutes.routes);
+    router.use("/api/ai", AIRoutes.routes);
 
     return router;
   }
