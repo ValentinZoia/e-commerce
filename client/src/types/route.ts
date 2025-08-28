@@ -20,4 +20,5 @@ export enum PrivateRoutes {
   ADMINS = "admins",
   SETTINGS = "settings",
   ANALYTICS = "analytics",
+  AI = "ai",
 }

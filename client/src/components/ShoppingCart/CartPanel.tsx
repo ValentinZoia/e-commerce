@@ -40,9 +40,9 @@ const CartPanel = () => {
         <SheetTrigger asChild>
           <Button
             variant="ghost"
-            className="relative cursor-pointer hover:bg-transparent"
+            className="relative cursor-pointer hover:bg-transparent hover:text-card-foreground"
           >
-            <div className="bg-blue-100 rounded-full p-2">
+            <div className="bg-gradient-to-r from-blue-500/50 to-blue-300/40 rounded-full p-2">
               <ShoppingBag className="h-5 w-5" />
             </div>
             <div className="flex flex-col items-start gap-0">

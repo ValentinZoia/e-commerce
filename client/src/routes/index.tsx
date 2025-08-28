@@ -22,6 +22,7 @@ import {
   SearchPage,
   Checkout,
   OrderDetail,
+  PrivateAdminAI,
 } from "@/pages";
 
 import { PrivateRoutes, PublicRoutes } from "@/types";
@@ -220,6 +221,10 @@ const router = createBrowserRouter([
           {
             path: PrivateRoutes.ANALYTICS,
             element: <PrivateAnalyticsPage />,
+          },
+          {
+            path: PrivateRoutes.AI,
+            element: <PrivateAdminAI />,
           },
         ],
       },

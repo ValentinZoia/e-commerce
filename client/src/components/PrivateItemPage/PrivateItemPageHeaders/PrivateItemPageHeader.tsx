@@ -28,7 +28,7 @@ function PrivateItemPageHeader({
   return (
     <>
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center">
         <div>
           <h1 className="text-3xl font-bold">
             {capitalizeFirstLetter(titlePlural)}
@@ -57,7 +57,7 @@ function PrivateItemPageHeader({
         </div>
 
         {/* Filtros específicos */}
-        <div className="flex items-end space-x-2 ">
+        <div className="flex flex-wrap gap-2 items-end space-x-2 ">
           {children}
           <ResetFiltersButton resetFilters={resetFilters} />
         </div>

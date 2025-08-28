@@ -28,7 +28,7 @@ function ProductDataTableFilters({
   setFilters,
 }: ProductDataTableFiltersProps) {
   return (
-    <div className="w-full flex gap-2">
+    <div className="w-full flex flex-wrap gap-2">
       <div className="space-y-2">
         <Label htmlFor="featured">Destacados</Label>
 

@@ -40,68 +40,70 @@ function OrdersDataTableFilters({
   setFilters,
 }: OrdersDataTableFiltersProps) {
   return (
-    <div className="w-full flex flex-col gap-2">
-      <div className="">
-        <div className=" flex items-center gap-4 justify-between w-full">
-          <div className="flex items-center space-x-2 flex-1">
-            <Search className="h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={`Email del cliente...`}
-              value={customerEmailFilter}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  customerEmailFilter: e.target.value,
-                }))
-              }
-              className="max-w-sm"
-            />
-          </div>
-          <div className="flex items-center space-x-2 flex-1">
-            <Search className="h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={`Celular del cliente...`}
-              value={customerPhoneFilter}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  customerPhoneFilter: e.target.value,
-                }))
-              }
-              className="max-w-sm"
-            />
-          </div>
-          <div className="flex items-center space-x-2 flex-1">
-            <Search className="h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={`Nombre del cliente...`}
-              value={customerNameFilter}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  customerNameFilter: e.target.value,
-                }))
-              }
-              className="max-w-sm"
-            />
-          </div>
-
-          <div className="flex items-center space-x-2 flex-1">
-            <Search className="h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={`id del producto...`}
-              value={productIdFilter}
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  productIdFilter: e.target.value,
-                }))
-              }
-              className="max-w-sm"
-            />
-          </div>
+    <div className="w-full flex flex-wrap flex-col gap-2">
+      <div className=" grid grid-cols-2 gap-2 md:grid-cols-4">
+        {/* Buscar por Email del Cliente */}
+        <div className="flex items-center space-x-2 flex-1">
+          <Search className="h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder={`Email del cliente...`}
+            value={customerEmailFilter}
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                customerEmailFilter: e.target.value,
+              }))
+            }
+            className="max-w-sm"
+          />
+        </div>
+        {/* Buscar por Celular del Cliente */}
+        <div className="flex items-center space-x-2 flex-1">
+          <Search className="h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder={`Celular del cliente...`}
+            value={customerPhoneFilter}
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                customerPhoneFilter: e.target.value,
+              }))
+            }
+            className="max-w-sm"
+          />
+        </div>
+        {/* Buscar por Nombre del Cliente */}
+        <div className="flex items-center space-x-2 flex-1">
+          <Search className="h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder={`Nombre del cliente...`}
+            value={customerNameFilter}
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                customerNameFilter: e.target.value,
+              }))
+            }
+            className="max-w-sm"
+          />
+        </div>
+        {/* Buscar por Product Id */}
+        <div className="flex items-center space-x-2 flex-1">
+          <Search className="h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder={`id del producto...`}
+            value={productIdFilter}
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                productIdFilter: e.target.value,
+              }))
+            }
+            className="max-w-sm"
+          />
         </div>
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="status">Status</Label>
 

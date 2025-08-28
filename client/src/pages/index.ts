@@ -20,3 +20,4 @@ export * from "./PrivateAdminsPage";
 export * from "./PrivateAnalyticsPage";
 export * from "./Search";
 export * from "./OrderDetail";
+export * from "./PrivateAdminAI";
