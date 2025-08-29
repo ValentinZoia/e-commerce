@@ -27,6 +27,8 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "openai": "^5.16.0",
+    "qr-image": "^3.2.0",
+    "whatsapp-web.js": "^1.33.0",
     "zod": "^3.24.4"
   },
   "devDependencies": {
@@ -37,6 +39,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/multer": "^2.0.0",
     "@types/node": "^22.15.3",
+    "@types/qr-image": "^3.2.9",
     "@types/supertest": "^6.0.3",
     "jest": "^30.0.5",
     "prisma": "^6.7.0",

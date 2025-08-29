@@ -56,13 +56,22 @@ export class Order {
       )
       .join("\n");
 
+    const ShippingMessage = this.isFreeShipping
+      ? `Envío gratis\n`
+      : `Envío: $${(this.shippingCost || 0).toFixed(2)}\n`;
+
+    const paymentMethod = this.paymentMethod
+      ? `Método de pago: ${this.paymentMethod}\n`
+      : `Por favor confirmame: Método de pago (Efectivo/transferencia/MercadoPago).`;
+
     return (
       `¡Hola ${this.customerName}! 👋\n\n` +
       `Resumen de tu pedido:\n\n${itemsText}\n\n` +
       `Subtotal: $${this.subtotal.toFixed(2)}\n` +
-      `Envío: $${(this.shippingCost || 0).toFixed(2)}\n` +
+      ShippingMessage +
       `TOTAL: $${this.total.toFixed(2)}\n\n` +
-      `Por favor confirmame:\n1. Método de pago (efectivo/transferencia/tarjeta)\n2. Dirección de envío (si aplica)`
+      `${paymentMethod}` +
+      `Por favor confirmame:\n Método de Envio`
     );
   }
 }

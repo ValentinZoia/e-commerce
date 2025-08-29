@@ -1,6 +1,6 @@
 import { PrismaAdminRepositoryImpl } from "../../../Auth/infrastructure/repositories";
 import { PrismaOrderRepositoryImpl } from "../../infrastructure/repositories";
-import { OrderSendMessageToCustomer } from "../../infrastructure/adapters";
+import { SendMessageToCustomerByWhatsApp } from "../../infrastructure/adapters";
 import { CreateOrderDtoSchema } from "../../domain/dtos";
 import {
   AuthMiddleware,
@@ -25,7 +25,8 @@ export class OrderRoutes {
     const router = Router();
     const adminRepository = new PrismaAdminRepositoryImpl();
     const orderRepository = new PrismaOrderRepositoryImpl();
-    const orderSendMessageToCustomer = new OrderSendMessageToCustomer();
+    const orderSendMessageToCustomer = new SendMessageToCustomerByWhatsApp();
+    // orderSendMessageToCustomer.destroy();
     const createOrderService = new CreateOrderService(
       orderRepository,
       orderSendMessageToCustomer

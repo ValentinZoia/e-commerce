@@ -24,5 +24,6 @@ export interface IOrderRepository {
   findByProductId(productId: string): Promise<Order[] | null>;
   findByStatus(status: WhatsAppStatusNames): Promise<Order[] | null>;
   update(id: string, order: Order): Promise<Order>;
+  updateWhatsAppStatus(id: string, status: WhatsAppStatusNames): Promise<Order>;
   delete(id: string): Promise<void>;
 }

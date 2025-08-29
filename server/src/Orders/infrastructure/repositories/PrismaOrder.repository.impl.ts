@@ -106,6 +106,20 @@ export class PrismaOrderRepositoryImpl implements IOrderRepository {
     // Mapear el resultado de Prisma a nuestra entidad Order
     return this.mapPrismaToOrder(updatedOrder);
   }
+  async updateWhatsAppStatus(
+    id: string,
+    status: WhatsAppStatusNames
+  ): Promise<Order> {
+    const wStatus = this.parseWhatsAppStatus(status);
+    const updatedOrder = await prisma.order.update({
+      where: { id },
+      data: { whatsappStatus: wStatus },
+      include: {
+        products: true,
+      },
+    });
+    return this.mapPrismaToOrder(updatedOrder);
+  }
   async delete(id: string): Promise<void> {
     await prisma.order.delete({
       where: { id },

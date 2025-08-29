@@ -6,6 +6,7 @@ import {
   Order,
   OrderBuilder,
   OrderItem,
+  WhatsAppStatusNames,
 } from "../../domain/entities";
 
 export class CreateOrderService extends Service<[CreateOrderDto], Order> {
@@ -57,8 +58,15 @@ export class CreateOrderService extends Service<[CreateOrderDto], Order> {
     const savedOrder = await this.orderRepository.save(order);
 
     // Enviar mensaje solo si se guardó correctamente
-    await this.orderSendMessageToCustomer.sendMessage(savedOrder);
-
+    const isMessageSent = await this.orderSendMessageToCustomer.sendMsj(
+      savedOrder
+    );
+    if (isMessageSent.success && isMessageSent.data !== null) {
+      await this.orderRepository.updateWhatsAppStatus(
+        savedOrder.id as string,
+        WhatsAppStatusNames.SENT
+      );
+    }
     return savedOrder;
   }
 }

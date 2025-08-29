@@ -1,5 +1,8 @@
 import { Order } from "../entities";
-
+export interface Return {
+  success: boolean;
+  data: { id: string } | null;
+}
 export interface IOrderSendMessage {
-  sendMessage(order: Order): Promise<boolean>;
+  sendMsj(order: Order): Promise<Return>;
 }
