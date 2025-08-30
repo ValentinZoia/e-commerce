@@ -1,3 +1,4 @@
+import { installmentSchema } from "../../../Products/domain/dtos";
 import { WhatsAppStatusNames } from "../entities";
 import { z } from "zod";
 
@@ -29,6 +30,15 @@ export const CreateOrderDtoSchema = z.object({
   subtotal: z.number().nonnegative().default(0),
   total: z.number().nonnegative().default(0),
   isFreeShipping: z.boolean().default(false),
+  isCashDiscount: z.boolean().default(false),
+  cashDiscountPercentage: z
+    .number()
+    .min(0)
+    .max(1)
+    .nullable()
+    .optional()
+    .default(null),
+  installments: z.array(installmentSchema).optional().default([]),
   products: z.array(OrderItemSchema).min(1),
   shippingCost: z.number().nonnegative().nullable().optional().default(null),
 });

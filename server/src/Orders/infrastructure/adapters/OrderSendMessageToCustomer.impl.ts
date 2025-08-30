@@ -9,6 +9,7 @@ import { image as imageQr } from "qr-image";
 import fs from "fs";
 
 import path from "path";
+import { envs } from "../../../shared/infrastructure/adapters";
 
 export enum WhatsAppStatus {
   DISCONNECTED = "disconnected",
@@ -61,8 +62,8 @@ export class SendMessageToCustomerByWhatsApp implements IOrderSendMessage {
     });
 
     //Para desconectar la session descomentar lo siguiente y comentar lo de abajo.
-    this.handleAuthFailure();
-    this.handleDisconnection();
+    // this.handleAuthFailure();
+    // this.handleDisconnection();
 
     //lo de abajo.
     // this.setupEventListeners();
@@ -120,12 +121,22 @@ export class SendMessageToCustomerByWhatsApp implements IOrderSendMessage {
   }
 
   async sendMsj(order: Order): Promise<Return> {
+    //Si no quiero que funcione
+    if (envs.DISABLE_WHATSAPP === "true") {
+      console.log("📴 WhatsApp deshabilitado por configuración");
+      return {
+        success: true,
+        data: null, // O un id simulado
+      };
+    }
+
     // Si está listo, enviar inmediatamente
     if (this.status === WhatsAppStatus.READY) {
       return this.sendMessageNow(order);
     }
 
     // Si no está listo, encolar mensaje
+
     return this.enqueueMessage(order);
   }
 
@@ -278,7 +289,6 @@ export class SendMessageToCustomerByWhatsApp implements IOrderSendMessage {
     console.log("🔔 ACCIÓN REQUERIDA: Escanea el código QR para continuar");
     console.log(`📂 Ubicación del QR: ${this.qrPath}`);
 
-    // Ejemplo: podrías enviar un webhook o email aquí
     // await this.notificationService.sendQrNotification(this.qrPath);
   }
 

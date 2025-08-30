@@ -53,6 +53,9 @@ export class UpdateOrderService extends Service<
       .setShippingCost(data.shippingCost)
       .setTotal(data.total)
       .setIsFreeShipping(data.isFreeShipping)
+      .setIsCashDiscount(data.isCashDiscount)
+      .setCashDiscountPercentage(data.cashDiscountPercentage)
+      .setInstallments(data.installments)
       .build();
 
     // Calcular totales

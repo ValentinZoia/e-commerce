@@ -63,6 +63,8 @@ function OrderDetailCard({ order }: { order: Order }) {
                 totalPrice={order.total}
                 isFreeShipping={order.isFreeShipping}
                 paymentMethod={order.paymentMethod}
+                initialInstallments={order.installments}
+                initialCashDiscoutnt={order.cashDiscountPercentage}
               />
             }
             HeaderComponent={<ItemList items={items} needActions={false} />}

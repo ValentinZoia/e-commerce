@@ -1,3 +1,4 @@
+import { Installment } from "../../../Products/domain/entities";
 import { OrderItem } from "./OrderItem.entity";
 
 export enum WhatsAppStatusNames {
@@ -28,6 +29,9 @@ export class Order {
     public shippingCost: number | null = null,
     public total: number = 0,
     public isFreeShipping: boolean = false,
+    public isCashDiscount: boolean = false,
+    public cashDiscountPercentage: number | null = null,
+    public installments: Installment[] = [],
     public createdAt: Date = new Date(),
     public updatedAt: Date = new Date(),
     public whatsappSentAt: Date | null = null,
@@ -64,6 +68,16 @@ export class Order {
       ? `Método de pago: ${this.paymentMethod}\n`
       : `Por favor confirmame: Método de pago (Efectivo/transferencia/MercadoPago).`;
 
+    const isCashDiscount = this.isCashDiscount
+      ? `%${
+          (this.cashDiscountPercentage as number) * 100
+        } de descuento por pagar en efectivo`
+      : "No";
+    const haveInstallments =
+      this.installments.length > 0
+        ? `${this.installments[0].amount}cuotas de $${this.installments[0].quantity}`
+        : "No";
+    const aditionalTest = `Descuento en Efectivo: ${isCashDiscount}\nTiene Cuotas: ${haveInstallments}\n`;
     return (
       `¡Hola ${this.customerName}! 👋\n\n` +
       `Resumen de tu pedido:\n\n${itemsText}\n\n` +
@@ -71,6 +85,7 @@ export class Order {
       ShippingMessage +
       `TOTAL: $${this.total.toFixed(2)}\n\n` +
       `${paymentMethod}` +
+      `${aditionalTest}` +
       `Por favor confirmame:\n Método de Envio`
     );
   }

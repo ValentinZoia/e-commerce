@@ -35,6 +35,9 @@ export class PrismaOrderRepositoryImpl implements IOrderRepository {
         shippingCost: order.shippingCost,
         total: order.total,
         isFreeShipping: order.isFreeShipping,
+        isCashDiscount: order.isCashDiscount,
+        cashDiscountPercentage: order.cashDiscountPercentage,
+        installments: order.installments,
         whatsappSentAt: order.whatsappSentAt,
         completedAt: order.completedAt,
         expiredAt: order.expiredAt,
@@ -113,7 +116,10 @@ export class PrismaOrderRepositoryImpl implements IOrderRepository {
     const wStatus = this.parseWhatsAppStatus(status);
     const updatedOrder = await prisma.order.update({
       where: { id },
-      data: { whatsappStatus: wStatus },
+      data: {
+        whatsappStatus: wStatus,
+        whatsappSentAt: new Date(),
+      },
       include: {
         products: true,
       },
@@ -281,6 +287,9 @@ export class PrismaOrderRepositoryImpl implements IOrderRepository {
       .setShippingCost(prismaOrder.shippingCost)
       .setTotal(prismaOrder.total)
       .setIsFreeShipping(prismaOrder.isFreeShipping)
+      .setIsCashDiscount(prismaOrder.isCashDiscount)
+      .setCashDiscountPercentage(prismaOrder.cashDiscountPercentage)
+      .setInstallments(prismaOrder.installments)
       .setCreatedAt(new Date(prismaOrder.createdAt))
       .setUpdatedAt(new Date(prismaOrder.updatedAt))
       .setWhatsappSentAt(

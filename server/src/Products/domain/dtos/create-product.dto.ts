@@ -10,7 +10,7 @@ const sizeSchema = z.object({
 });
 
 // Schema para cuotas
-const installmentSchema = z.object({
+export const installmentSchema = z.object({
   quantity: z
     .number()
     .int()

@@ -1,3 +1,4 @@
+import { Installment } from "./product";
 import { BaseEntity, GetItemParamsBase } from "./shared";
 export enum WhatsAppStatusNames {
   PENDING = "pending",
@@ -37,6 +38,9 @@ export interface Order extends BaseEntity {
   shippingCost: number | null;
   total: number;
   isFreeShipping: boolean;
+  isCashDiscount: boolean;
+  cashDiscountPercentage: number | null;
+  installments: Installment[];
   whatsappSentAt: Date | null;
   completedAt: Date | null;
   expiredAt: Date | null;

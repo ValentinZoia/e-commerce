@@ -90,7 +90,10 @@ model Order {
   shippingCost    Float?
   total           Float
   isFreeShipping  Boolean     @default(false)
-
+  isCashDiscount  Boolean     @default(false)
+  cashDiscountPercentage   Float?          // 0-1
+  installments             Installments[] // Relación 1-a-muchos
+  
   //Fechas importantes
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt

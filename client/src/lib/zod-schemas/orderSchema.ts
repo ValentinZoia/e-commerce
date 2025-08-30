@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { installmentSchema } from "./productSchema";
 export enum WhatsAppStatusNames {
   PENDING = "pending",
   SENT = "sent",
@@ -31,6 +32,9 @@ export const orderSchema = z.object({
   subtotal: z.number().nonnegative(),
   total: z.number().nonnegative(),
   isFreeShipping: z.boolean(),
+  isCashDiscount: z.boolean(),
+  cashDiscountPercentage: z.number().min(0).max(1).nullable(),
+  installments: z.array(installmentSchema).nullable(),
   products: z.array(OrderItemSchema).min(0),
   shippingCost: z.number().nonnegative().nullable().optional(),
 });
@@ -48,6 +52,9 @@ export const defaultValues: OrderFormValues = {
   subtotal: 0,
   total: 0,
   isFreeShipping: false,
+  isCashDiscount: false,
+  cashDiscountPercentage: null,
+  installments: [],
   products: [],
   shippingCost: null,
 };

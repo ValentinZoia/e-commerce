@@ -12,4 +12,5 @@ export const envs = {
   DATABASE_URL_DEV: get("DATABASE_URL_DEV").required().asString(),
   DATABASE_URL_TEST: get("DATABASE_URL_TEST").required().asString(),
   NODE_ENV: get("NODE_ENV").default("development").asString(),
+  DISABLE_WHATSAPP: get("DISABLE_WHATSAPP").default("false").asString(),
 };

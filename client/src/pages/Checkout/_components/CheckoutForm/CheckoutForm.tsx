@@ -5,8 +5,7 @@ import {
   defaultValues,
 } from "@/lib/zod-schemas/orderSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { DialogFooter } from "@/components/ui/dialog";
-// import { Button } from "@/components/ui/button";
+
 import { SubmitBtn } from "@/pages/Login/_components";
 import {
   //   FormControl,
@@ -64,8 +63,28 @@ function CheckoutForm({
   const navigate = useNavigate();
   const { token } = useLoaderData() as { token: string };
 
+  const hasInstallments = items.some(
+    (item) =>
+      item.product?.installments && item.product?.installments.length > 0
+  );
+
+  const hasCashDiscount = items.some(
+    (item) =>
+      item.product?.cashDiscountPercentage &&
+      item.product?.cashDiscountPercentage > 0
+  );
+
   const products = items.map(cartItemToOrderItemMap);
   const { emptyCart } = useCartActions();
+
+  const initialInstallments = hasInstallments
+    ? items.flatMap((item) => item.product?.installments || []).filter(Boolean) // elimina null/undefined
+    : [];
+
+  const initialCashDiscount = hasCashDiscount
+    ? items.find((item) => item.product?.cashDiscountPercentage)?.product
+        ?.cashDiscountPercentage || null
+    : null;
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -75,10 +94,15 @@ function CheckoutForm({
       total: total ? total : 0,
       shippingCost: shippingCost ? shippingCost : null,
       isFreeShipping: isFreeShipping ? isFreeShipping : false,
+      installments: initialInstallments,
+      cashDiscountPercentage: initialCashDiscount,
+      isCashDiscount: false,
     },
   });
 
   const onSubmit = () => {
+    console.log(form.getValues());
+    console.log(form.formState.errors);
     createMutation.mutate(form.getValues(), {
       onSuccess: (res: DBResponseCommand<Order>) => {
         form.reset();
@@ -92,6 +116,8 @@ function CheckoutForm({
       },
     });
   };
+  console.log(form.getValues());
+  console.log(form.formState.errors);
 
   return (
     <Form {...form}>

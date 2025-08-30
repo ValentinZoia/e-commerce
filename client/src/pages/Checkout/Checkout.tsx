@@ -11,7 +11,25 @@ function Checkout() {
   );
 
   const isFreeShipping = items.every((item) => item.product?.isFreeShipping);
+  const hasInstallments = items.some(
+    (item) =>
+      item.product?.installments && item.product?.installments.length > 0
+  );
 
+  const hasCashDiscount = items.some(
+    (item) =>
+      item.product?.cashDiscountPercentage &&
+      item.product?.cashDiscountPercentage > 0
+  );
+
+  const initialInstallments = hasInstallments
+    ? items.flatMap((item) => item.product?.installments || []).filter(Boolean) // elimina null/undefined
+    : [];
+
+  const initialCashDiscount = hasCashDiscount
+    ? items.find((item) => item.product?.cashDiscountPercentage)?.product
+        ?.cashDiscountPercentage || null
+    : null;
   return (
     <div className=" bg-white px-4 py-4 w-full h-screen grid grid-cols-1 lg:grid-cols-2 gap-2 ">
       <div className="">
@@ -36,6 +54,8 @@ function Checkout() {
               totalPrice={totalPrice}
               isFreeShipping={isFreeShipping}
               paymentMethod={null}
+              initialInstallments={initialInstallments}
+              initialCashDiscoutnt={initialCashDiscount}
             />
           }
           HeaderComponent={<ItemList items={items} needActions={true} />}

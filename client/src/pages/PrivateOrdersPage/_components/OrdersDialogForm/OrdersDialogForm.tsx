@@ -27,8 +27,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
 
 interface OrderDialogFormProps {
   item: Order | null;
@@ -43,13 +44,31 @@ function OrdersDialogForm({
   onClose,
   isLoading,
 }: OrderDialogFormProps) {
+  const [cuotas, setCuotas] = useState<
+    { quantity: number | null; amount: number | null }[]
+  >(order?.installments || []);
+
+  const [newCuota, setNewCuota] = useState<{
+    quantity: number | null;
+    amount: number | null;
+  }>({ quantity: null, amount: null });
+  function addCuota() {
+    if (newCuota.quantity && newCuota.amount) {
+      setCuotas([...cuotas, newCuota]);
+      setNewCuota({ quantity: null, amount: null });
+    }
+  }
+  function removeCuota(index: number) {
+    setCuotas(cuotas.filter((_, i) => i !== index));
+  }
+
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderSchema),
     defaultValues: order || defaultValues,
   });
 
   const onSubmit = () => {
-    onSave(form.getValues());
+    onSave({ ...form.getValues(), installments: cuotas[0] ? cuotas : [] });
   };
   const removeProduct = (index: number) => {
     const updated = [...form.getValues("products")];
@@ -205,7 +224,7 @@ function OrdersDialogForm({
           </div>
 
           {/* Costos */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="subtotal"
@@ -261,6 +280,30 @@ function OrdersDialogForm({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="cashDiscountPercentage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descuento en Efectivo(%)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="1"
+                      min="0"
+                      max="100"
+                      value={field.value ? field.value * 100 : ""}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value ? Number(e.target.value) / 100 : null
+                        )
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             {/* Envío gratis */}
             <FormField
               control={form.control}
@@ -279,7 +322,51 @@ function OrdersDialogForm({
               )}
             />
           </div>
-
+          {/* Cuotas */}
+          <div className="space-y-2">
+            <FormLabel>Cuotas</FormLabel>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Meses"
+                value={newCuota.quantity ? newCuota.quantity : ""}
+                onChange={(e) =>
+                  setNewCuota({ ...newCuota, quantity: Number(e.target.value) })
+                }
+              />
+              <Input
+                type="number"
+                placeholder="Cantidad en Pesos"
+                value={newCuota.amount ? newCuota.amount : ""}
+                onChange={(e) =>
+                  setNewCuota({
+                    ...newCuota,
+                    amount: Number(e.target.value) || 0,
+                  })
+                }
+              />
+              <Button type="button" onClick={addCuota}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+            {cuotas.map((size, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between bg-muted p-2 rounded"
+              >
+                <span>
+                  Meses: {size.quantity} - Cantidad: {size.amount}
+                </span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => removeCuota(index)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
           {/* Lista de productos con opción de eliminar */}
           <div>
             <FormLabel>Productos</FormLabel>

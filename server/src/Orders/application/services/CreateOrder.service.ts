@@ -49,6 +49,9 @@ export class CreateOrderService extends Service<[CreateOrderDto], Order> {
       .setShippingCost(data.shippingCost)
       .setTotal(data.total)
       .setIsFreeShipping(data.isFreeShipping)
+      .setIsCashDiscount(data.isCashDiscount)
+      .setCashDiscountPercentage(data.cashDiscountPercentage)
+      .setInstallments(data.installments)
       .build();
 
     // Calcular totales
@@ -61,12 +64,14 @@ export class CreateOrderService extends Service<[CreateOrderDto], Order> {
     const isMessageSent = await this.orderSendMessageToCustomer.sendMsj(
       savedOrder
     );
+
     if (isMessageSent.success && isMessageSent.data !== null) {
       await this.orderRepository.updateWhatsAppStatus(
         savedOrder.id as string,
         WhatsAppStatusNames.SENT
       );
     }
+
     return savedOrder;
   }
 }
