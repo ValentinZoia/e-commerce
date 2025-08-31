@@ -45,7 +45,7 @@ const ProductFilters = ({
   const isEspecial = isNew || isPromotion || isFeatured;
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="bg-white w-full max-w-sm">
       <CardContent className="pt-6">
         <div className="space-y-6">
           {/* Buscador */}

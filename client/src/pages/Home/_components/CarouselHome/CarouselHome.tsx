@@ -34,7 +34,7 @@ const CarouselHome = () => {
   ];
 
   return (
-    <section className="py-6">
+    <section className="">
       <div className="">
         <Carousel className="w-full">
           <CarouselContent>

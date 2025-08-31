@@ -1,3 +1,4 @@
+import LoaderPage from "@/components/LoaderPage/LoaderPage";
 import { ProductsList } from "@/components/ProductList";
 import { ProductStatus } from "@/types/product";
 import { Suspense } from "react";
@@ -10,7 +11,7 @@ function SearchPage() {
   const searchTerm = searchParams.get("q");
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoaderPage />}>
       <ProductsList
         title={`Resultados para: ${searchTerm}`}
         productsStatus={ProductStatus.All}
