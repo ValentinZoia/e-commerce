@@ -36,7 +36,7 @@ export class OrderController {
     try {
       const createdOrderDto = CreateOrderDTO.create(req.body);
       const order = await this.createOrderService.execute(createdOrderDto);
-      console.log("HOOLA", order);
+
       res.status(201).json({
         success: true,
         message: "Orden Creada Exitosamente",
