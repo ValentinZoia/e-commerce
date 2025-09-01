@@ -3,6 +3,18 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.7.2-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-%5E6.2.0-blue)](https://vitejs.dev/)
 
+<div align="center"  >
+            <img src="https://skillicons.dev/icons?i=typescript,tailwind,react,vite" />
+   <img src="https://skills.syvixor.com/api/icons?i=cloudinary,reacthookform,zod,redux,tanstack,reactquery)" > 
+            <img src="https://skillicons.dev/icons?i=nodejs,express,prisma,mongodb" />
+           
+            
+             
+             
+             
+            
+</div>
+
 An e-commerce platform built with React, TypeScript, and Vite, leveraging modern web development practices and a component-driven architecture.
 
 
