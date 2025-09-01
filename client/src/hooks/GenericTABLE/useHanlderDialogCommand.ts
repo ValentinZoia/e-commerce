@@ -100,10 +100,15 @@ export function useHandlerDialogCommand<T extends { id: string }, T2>({
             type: res?.success ? "success" : "error",
             text: res?.message || `${title} eliminado`,
           });
+
           setOpenDelete(false);
+          toast.success(res?.message || `${title} eliminado`, {
+            position: "bottom-center",
+          });
         },
         onError: (err: any) => {
           setResponseMessage({ type: "error", text: err.message });
+          toast.error(err.message);
         },
       }
     );

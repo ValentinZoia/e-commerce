@@ -46,7 +46,7 @@ function DialogManage<T>({
         onSave={confirmDelete}
         responseMessage={responseMessage}
         isLoading={isLoading}
-        titleSingular="orden"
+        titleSingular={titleSingular}
         extraDeleteMessage={extraDeleteMessage}
       />
     </>
