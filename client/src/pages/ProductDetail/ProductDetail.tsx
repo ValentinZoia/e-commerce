@@ -14,7 +14,7 @@ const ProductDetail = () => {
   }
 
   return (
-    <main className="bg-white min-h-screen rounded-md">
+    <main className="container bg-white min-h-screen rounded-md">
       <Suspense fallback={<LoaderPage />}>
         <ProductDetailFetchData id={productId} />
       </Suspense>
