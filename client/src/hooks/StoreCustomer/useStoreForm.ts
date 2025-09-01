@@ -62,9 +62,9 @@ export const useStoreForm = (data: StoreCustomer) => {
 
   const onSubmit = async () => {
     const values = form.getValues();
-    console.log(values);
+
     const banners = [...values.banners];
-    console.log(banners);
+
     const dataToSave: StoreCustomerFormValues = {
       ...values,
       banners,
@@ -81,7 +81,7 @@ export const useStoreForm = (data: StoreCustomer) => {
             onError: (err: any) => toast.error(err.message),
           }
         );
-        console.log("Updating store data:", dataToSave);
+
         return;
       }
       createMuation.mutate(dataToSave, {
@@ -90,7 +90,6 @@ export const useStoreForm = (data: StoreCustomer) => {
         },
         onError: (err: any) => toast.error(err.message),
       });
-      console.log("Submitting store data:", dataToSave);
     } catch (error) {
       console.error("Error submitting form:", error);
     }

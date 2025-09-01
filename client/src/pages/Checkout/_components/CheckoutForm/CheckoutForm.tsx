@@ -110,12 +110,10 @@ function CheckoutForm({
       },
 
       onError: (error) => {
-        console.log(error);
+        console.error(error);
       },
     });
   };
-  console.log(form.getValues());
-  console.log(form.formState.errors);
 
   return (
     <Form {...form}>

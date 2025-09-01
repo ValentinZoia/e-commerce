@@ -46,7 +46,6 @@ export class AIController {
         data: aiResponse.choices[0].message.content,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
