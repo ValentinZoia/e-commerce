@@ -5,6 +5,7 @@ import { CartPanel } from "../ShoppingCart";
 import { NavMenu } from "./_components";
 import { Suspense } from "react";
 import { Logo } from "../Logo";
+import { Skeleton } from "../ui/skeleton";
 
 const Navbar = () => {
   return (
@@ -13,7 +14,7 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Left Side -  Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <Suspense fallback={<h1>LOGO</h1>}>
+          <Suspense fallback={<Skeleton className="rounded-full size-6" />}>
             <Logo />
           </Suspense>
         </Link>

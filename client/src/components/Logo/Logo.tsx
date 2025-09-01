@@ -2,8 +2,8 @@ import { useStoreCustomerSuspense } from "@/hooks/StoreCustomer/useStoreCustomer
 
 function Logo() {
   const { data } = useStoreCustomerSuspense();
-  if (data.length === 0) return <div>Logo</div>;
-  if (data[0].logo === null) return <div>Logo</div>;
+  if (data.length === 0) return <div>MI TIENDA</div>;
+  if (data[0].logo === null) return <div>MI TIENDA</div>;
 
   return (
     <>
