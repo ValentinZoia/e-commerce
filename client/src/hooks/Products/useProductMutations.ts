@@ -4,6 +4,7 @@ import {
   updateProduct,
 } from "@/data/Products/products.api";
 import { ProductFormValues } from "@/lib/zod-schemas/productSchema";
+import { ReactQueryKeys } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useProductMutations() {
@@ -12,7 +13,7 @@ export function useProductMutations() {
   const createMutation = useMutation({
     mutationFn: (data: ProductFormValues) => createProduct(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.PRODUCTS] });
     },
   });
 
@@ -20,14 +21,14 @@ export function useProductMutations() {
     mutationFn: ({ id, values }: { id: string; values: ProductFormValues }) =>
       updateProduct(id, values),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.PRODUCTS] });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: ({ id }: { id: string }) => deleteProduct(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.PRODUCTS] });
     },
   });
 

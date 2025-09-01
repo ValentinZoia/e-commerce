@@ -101,8 +101,6 @@ function CheckoutForm({
   });
 
   const onSubmit = () => {
-    console.log(form.getValues());
-    console.log(form.formState.errors);
     createMutation.mutate(form.getValues(), {
       onSuccess: (res: DBResponseCommand<Order>) => {
         form.reset();

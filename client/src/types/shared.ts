@@ -31,3 +31,15 @@ export interface GetItemParamsBase<T> {
   sortBy?: keyof T | string;
   sortDir?: SortDir;
 }
+
+export enum ReactQueryKeys {
+  PRODUCTS = "products",
+  PRODUCT = "product",
+  CATEGORIES = "categories",
+  ORDERS = "orders",
+  ORDER = "order",
+  CHECKOUT = "checkout-session",
+  AI = "ai",
+  STORE_CUSTOMER = "store-customer",
+  SESSION = "session",
+}

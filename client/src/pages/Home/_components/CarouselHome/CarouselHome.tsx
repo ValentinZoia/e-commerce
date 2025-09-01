@@ -7,6 +7,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Image } from "@/components/Image";
+import { useStoreCustomerSuspense } from "@/hooks/StoreCustomer/useStoreCustomer";
+import { Link } from "react-router-dom";
 
 const CarouselHome = () => {
   const carouselinfo = [
@@ -32,38 +34,79 @@ const CarouselHome = () => {
       cta: "Comprar Ahora",
     },
   ];
+  const { data } = useStoreCustomerSuspense();
 
   return (
     <section className="">
       <div className="">
-        <Carousel className="w-full">
+        <Carousel className="w-full rounded-none">
           <CarouselContent>
-            {carouselinfo.map((slide) => (
-              <CarouselItem key={slide.id}>
-                <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-xl">
+            {data.length === 0 && (
+              <>
+                {carouselinfo.map((banner, index) => (
+                  <CarouselItem key={index}>
+                    <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-xl">
+                      <Image
+                        src={banner.image || "/placeholder.svg"}
+                        alt={banner.title || "Banner"}
+                        className="object-cover"
+                        lazy={true}
+                        placeholderSrc="https://placehold.co/1000x500"
+                        errorSrc="https://placehold.co/1000x500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex flex-col justify-center p-10">
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                          {banner.title}
+                        </h2>
+                        <p className="text-white/90 text-lg md:text-xl mb-6 max-w-md">
+                          {banner.description}
+                        </p>
+                        <Button className="w-fit">{banner.cta}</Button>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </>
+            )}
+
+            {data[0].banners.map((banner, index) => (
+              <CarouselItem key={index}>
+                <div className=" w-full overflow-hidden">
                   <Image
-                    src={slide.image || "/placeholder.svg"}
-                    alt={slide.title}
+                    src={banner.imageUrl || "/placeholder.svg"}
+                    alt={banner.title || "Banner"}
                     className="object-cover"
+                    aspectRatio={16 / 5}
                     lazy={true}
                     placeholderSrc="https://placehold.co/1000x500"
                     errorSrc="https://placehold.co/1000x500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex flex-col justify-center p-10">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-                      {slide.title}
-                    </h2>
-                    <p className="text-white/90 text-lg md:text-xl mb-6 max-w-md">
-                      {slide.description}
-                    </p>
-                    <Button className="w-fit">{slide.cta}</Button>
-                  </div>
+                  {banner.title ||
+                    (banner.description && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex flex-col justify-center p-10">
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                          {banner.title}
+                        </h2>
+                        <p className="text-white/90 text-lg md:text-xl mb-6 max-w-md">
+                          {banner.description}
+                        </p>
+                        {banner.redirectUrl && (
+                          <Button className="w-fit">
+                            <Link to={banner.redirectUrl || "/"}>Ver más</Link>
+                          </Button>
+                        )}
+                      </div>
+                    ))}
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
+          {data[0].banners.length > 1 && (
+            <>
+              <CarouselPrevious className="left-4" />
+              <CarouselNext className="right-4" />
+            </>
+          )}
         </Carousel>
       </div>
     </section>

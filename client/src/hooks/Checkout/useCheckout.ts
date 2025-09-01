@@ -1,10 +1,11 @@
 import { getCheckoutSession } from "@/data/Checkout/checkout.api";
+import { ReactQueryKeys } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 const useCheckoutSession = ({ token }: { token: string }) => {
   const { data, isLoading, isError, isSuccess, isFetching, isPending } =
     useQuery({
-      queryKey: ["checkout-session"],
+      queryKey: [ReactQueryKeys.CHECKOUT, token],
       queryFn: () => getCheckoutSession(token),
     });
 

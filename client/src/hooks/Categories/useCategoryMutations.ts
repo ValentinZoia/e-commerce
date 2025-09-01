@@ -4,6 +4,7 @@ import {
   updateCategory,
 } from "@/data/Categories/categories.api";
 import { CategoryFormValues } from "@/lib/zod-schemas/categorySchema";
+import { ReactQueryKeys } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useCategoryMutations() {
@@ -12,7 +13,7 @@ export function useCategoryMutations() {
   const createMutation = useMutation({
     mutationFn: (data: CategoryFormValues) => createCategory(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.CATEGORIES] });
     },
   });
 
@@ -20,14 +21,14 @@ export function useCategoryMutations() {
     mutationFn: ({ id, values }: { id: string; values: CategoryFormValues }) =>
       updateCategory(id, values),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.CATEGORIES] });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: ({ id }: { id: string }) => deleteCategory(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.CATEGORIES] });
     },
   });
 

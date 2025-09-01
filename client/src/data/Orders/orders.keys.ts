@@ -1,7 +1,8 @@
+import { ReactQueryKeys } from "@/types";
 import { GetOrdersParams } from "@/types/order";
 
 export const ordersKeys = {
-  all: ["orders"] as const,
+  all: [ReactQueryKeys.ORDERS] as const,
   list: (params: GetOrdersParams) =>
     [
       ...ordersKeys.all,

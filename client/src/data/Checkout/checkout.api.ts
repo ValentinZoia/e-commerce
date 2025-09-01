@@ -2,7 +2,7 @@ import instance from "@/lib/axios";
 import { DBResponseCommand } from "@/types";
 import { CheckoutDataResponse, CheckoutSession } from "@/types/checkout";
 import axios from "axios";
-const API_URL = "api/checkout";
+const API_URL = import.meta.env.VITE_API_CHECKOUT_URL;
 
 export async function createCheckoutSession(userId: string) {
   try {

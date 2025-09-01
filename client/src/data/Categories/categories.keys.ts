@@ -1,8 +1,8 @@
 import { Category } from "@/types";
-import { GetItemParamsBase } from "@/types/shared";
+import { GetItemParamsBase, ReactQueryKeys } from "@/types/shared";
 
 export const categoriesKeys = {
-  all: ["categories"] as const,
+  all: [ReactQueryKeys.CATEGORIES] as const,
   list: (params: GetItemParamsBase<Category>) =>
     [
       ...categoriesKeys.all,

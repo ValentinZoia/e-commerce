@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { MobileMenu, SearchInput } from "./_components";
 import { CartPanel } from "../ShoppingCart";
 import { NavMenu } from "./_components";
+import { Suspense } from "react";
+import { Logo } from "../Logo";
 
 const Navbar = () => {
   return (
@@ -11,7 +13,9 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Left Side -  Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <h1>LOGO</h1>
+          <Suspense fallback={<h1>LOGO</h1>}>
+            <Logo />
+          </Suspense>
         </Link>
 
         {/* Center Side - Input Search */}

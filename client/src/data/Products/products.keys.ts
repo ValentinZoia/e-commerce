@@ -1,7 +1,8 @@
+import { ReactQueryKeys } from "@/types";
 import { GetProductsParams } from "@/types/product";
 
 export const productsKeys = {
-  all: ["products"] as const,
+  all: [ReactQueryKeys.PRODUCTS] as const,
   list: (params: GetProductsParams) =>
     [
       ...productsKeys.all,

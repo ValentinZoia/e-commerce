@@ -3,7 +3,7 @@ import instance from "@/lib/axios";
 import axios from "axios";
 import { GetOrdersParams, Order } from "@/types/order";
 import { OrderFormValues } from "@/lib/zod-schemas/orderSchema";
-const API_URL = "api/orders";
+const API_URL = import.meta.env.VITE_API_ORDER_URL;
 
 export async function getOrders(
   params: GetOrdersParams

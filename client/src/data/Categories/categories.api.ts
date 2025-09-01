@@ -8,7 +8,7 @@ import {
 import instance from "@/lib/axios";
 import { CategoryFormValues } from "@/lib/zod-schemas/categorySchema";
 import axios from "axios";
-const API_URL = "api/categories";
+const API_URL = import.meta.env.VITE_API_CATEGORY_URL;
 
 export async function getCategories(
   params: GetItemParamsBase<Category>

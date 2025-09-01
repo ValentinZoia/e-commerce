@@ -1,8 +1,6 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet } from "react-router-dom";
-
-import TopAdminNav from "./_components/TopAdminNav/TopAdminNav";
-import { AppSidebar } from "./_components/Sidebar/Sidebar";
+import { TopAdminNav, AppSidebar } from "./_components";
 
 const AdminLayout = () => {
   return (

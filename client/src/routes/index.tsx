@@ -43,6 +43,9 @@ import { AuthGuard, CheckoutGuard } from "@/guards";
         /promotion - Productos en promoción
         /about-us - Información sobre la tienda
         /login - Página de inicio de sesión - El unico que puede hacerlo es el admin.
+        /search - Busqueda de productos
+        /checkout/:token - Página de checkout
+        /order/:orderId - Detalle de una orden
 
         --------------- RUTAS PRIVADAS-------------------
         /private - realmente aqui no hay nada - redirigira a /private/admin
@@ -50,9 +53,9 @@ import { AuthGuard, CheckoutGuard } from "@/guards";
         /private/admin/products - Tabla de todos los productos - para editar, eliminar y crear productos.
         /private/admin/categories - Tabla de todas las categorías - para editar, eliminar y crear categorias.
         /private/admin/orders - Tabla de todas las ordenes - para editar, eliminar y crear ordenes.
-        /private/admin/admins - Listado de todos los admins/empleados
-        /private/admin/settings - Configuraciones de la tienda
-        /private/admin/analytics - Estadísticas de la tienda
+        /private/admin/ai- Asistente de IA
+        /private/admin/settings - Configuraciones de la tienda - Cambiar nombre, logo, etc.
+        /private/admin/analytics - Estadísticas de la tienda.
         
     
     

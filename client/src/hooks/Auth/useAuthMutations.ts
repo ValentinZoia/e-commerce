@@ -1,5 +1,6 @@
 import { login, logout, deleteAdmin } from "@/data/Auth/auth.api";
 import { LoginFormValues } from "@/lib/zod-schemas/loginSchema";
+import { ReactQueryKeys } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useAuthMutations() {
@@ -14,13 +15,13 @@ export function useAuthMutations() {
   const doLogout = useMutation({
     mutationFn: () => logout(),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.SESSION] });
     },
   });
   const doDeleteAdmin = useMutation({
     mutationFn: (username: string) => deleteAdmin(username),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.SESSION] });
     },
   });
   return {

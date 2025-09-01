@@ -18,7 +18,7 @@ export class AppRoutes {
     router.use("/api/orders", OrderRoutes.routes);
     router.use("/api/checkout", CheckoutRoutes.routes);
     router.use("/api/ai", AIRoutes.routes);
-    router.use("/api/storeCustomer", StoreCustomerRoutes.routes);
+    router.use("/api/storecustomer", StoreCustomerRoutes.routes);
 
     return router;
   }

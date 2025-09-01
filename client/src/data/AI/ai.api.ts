@@ -1,7 +1,8 @@
 import instance from "@/lib/axios";
 import { DBResponseCommand } from "@/types";
 import axios from "axios";
-const API_URL = "api/ai";
+const API_URL = import.meta.env.VITE_API_AI_URL;
+
 export async function generate(prompt: string) {
   try {
     const { data } = await instance.post<DBResponseCommand<string | null>>(

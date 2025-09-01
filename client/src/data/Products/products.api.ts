@@ -7,7 +7,7 @@ import {
 import instance from "@/lib/axios";
 import { ProductFormValues } from "@/lib/zod-schemas/productSchema";
 import axios from "axios";
-const API_URL = "api/products";
+const API_URL = import.meta.env.VITE_API_PRODUCT_URL;
 
 export async function getProducts(
   params: GetProductsParams

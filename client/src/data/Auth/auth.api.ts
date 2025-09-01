@@ -3,7 +3,8 @@ import { LoginFormValues } from "@/lib/zod-schemas/loginSchema";
 import { User } from "@/types";
 import { DBResponseCommand } from "@/types/shared";
 import axios from "axios";
-const API_URL = "api/admin";
+const API_URL = import.meta.env.VITE_API_ADMIN_URL;
+
 export async function login(credentials: LoginFormValues) {
   try {
     const { data } = await instance.post<DBResponseCommand<User>>(

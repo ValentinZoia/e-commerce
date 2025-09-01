@@ -53,7 +53,7 @@ export class StoreCustomerController {
         id,
         storeCustomerDataDto
       );
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         message: "Store actualizado exitosamente",
         data: storeCustomer,
@@ -71,11 +71,11 @@ export class StoreCustomerController {
       const { id } = req.params;
       if (!id) {
         throw CustomError.badRequest(
-          "id es requerido para actualizar los datos de tu store"
+          "id es requerido para eliminar los datos de tu store"
         );
       }
       await this.deleteStoreCustomerService.execute(id);
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         message: "StoreData eliminada exitosamente",
         data: {},
@@ -91,11 +91,7 @@ export class StoreCustomerController {
   ): Promise<void> => {
     try {
       const storeCustomer = await this.getAllStoreCustomerService.execute();
-      res.status(201).json({
-        success: true,
-        message: "StoreData eliminada exitosamente",
-        data: storeCustomer,
-      });
+      res.status(200).json(storeCustomer);
     } catch (error) {
       next(error);
     }
@@ -109,11 +105,11 @@ export class StoreCustomerController {
       const { id } = req.params;
       if (!id) {
         throw CustomError.badRequest(
-          "id es requerido para actualizar los datos de tu store"
+          "id es requerido para obtener los datos de tu store"
         );
       }
       const storeCustomer = await this.getStoreCustomerByIdService.execute(id);
-      res.status(201).json(storeCustomer);
+      res.status(200).json(storeCustomer);
     } catch (error) {
       next(error);
     }

@@ -98,7 +98,7 @@ function ProductDialogForm({
     const uploadedUrls: string[] = [];
     for (const file of localFiles) {
       // Convertir a WEBP
-      const webpFile = await transformImageToWebp(file);
+      const webpFile = await transformImageToWebp(file, "product");
       if (!webpFile) {
         console.error("No se pudo transformar a WebP");
         continue;
