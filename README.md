@@ -4,11 +4,9 @@
 [![Vite](https://img.shields.io/badge/Vite-%5E6.2.0-blue)](https://vitejs.dev/)
 
 <div align="center"  >
-            <img src="https://skillicons.dev/icons?i=typescript,tailwind,react,vite" />
-               <img src="https://skills.syvixor.com/api/icons?i=cloudinary,reacthookform,zod,redux,tanstack,reactquery" > 
+               <img src="https://skills.syvixor.com/api/icons?i=typescript,reactjs,vite,reactrouter,tailwindcss,shadcnui,reacthookform,zod,redux,tanstack,reactquery,cloudinary" > 
 <br>
-            <img src="https://skillicons.dev/icons?i=nodejs,express,prisma,mongodb" />
-            <img src="https://skills.syvixor.com/api/icons?i=chatgpt,whatsapp" > 
+            <img src="https://skills.syvixor.com/api/icons?i=nodejs,express,prisma,mongodb,chatgpt,whatsapp,jest" > 
            
             
              
