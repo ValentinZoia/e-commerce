@@ -6,9 +6,10 @@ import {
 } from "@/utilities/cartSlice";
 import { formatPrice } from "@/utilities";
 import ProductCardImage from "./ProductCardIamge/ProductCardImage";
-import { AddProductButton } from "../AddProductButton";
+// import { AddProductButton } from "../AddProductButton";
 import { Star, Truck } from "lucide-react";
 import { renderStockMessage } from "./RenderStockMessage";
+import { ProductSizesHandler } from "@/pages/ProductDetail/_components/ProductSizesHandler";
 
 interface ProductCardProps {
   product: Product;
@@ -103,7 +104,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
 
         <div className="pt-2">
-          <AddProductButton product={product} disabled={false} />
+          <ProductSizesHandler product={product} isForProductCard={true} />
+          {/* <AddProductButton product={product} disabled={false} /> */}
         </div>
       </CardContent>
     </Card>
