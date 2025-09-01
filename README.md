@@ -5,8 +5,10 @@
 
 <div align="center"  >
             <img src="https://skillicons.dev/icons?i=typescript,tailwind,react,vite" />
-   <img src="https://skills.syvixor.com/api/icons?i=cloudinary,reacthookform,zod,redux,tanstack,reactquery)" > 
+               <img src="https://skills.syvixor.com/api/icons?i=cloudinary,reacthookform,zod,redux,tanstack,reactquery" > 
+<br>
             <img src="https://skillicons.dev/icons?i=nodejs,express,prisma,mongodb" />
+            <img src="https://skills.syvixor.com/api/icons?i=chatgpt,whatsapp" > 
            
             
              
