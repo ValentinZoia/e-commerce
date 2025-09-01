@@ -4,7 +4,7 @@ function Logo() {
   const { data } = useStoreCustomerSuspense();
   if (data.length === 0) return <div>Logo</div>;
   if (data[0].logo === null) return <div>Logo</div>;
-  console.log(data[0].logo);
+
   return (
     <>
       {/* <Image
