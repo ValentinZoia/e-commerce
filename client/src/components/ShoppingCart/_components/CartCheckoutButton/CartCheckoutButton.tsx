@@ -4,6 +4,7 @@ import { DBResponseCommand } from "@/types";
 import { CheckoutDataResponse } from "@/types/checkout";
 // import { PublicRoutes } from "@/types/route";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface CartCheckoutButtonProps {
   hasItems: boolean;
@@ -32,7 +33,10 @@ function CartCheckoutButton({ hasItems, onClose }: CartCheckoutButtonProps) {
           navigate(res.data.checkoutUrl);
           onClose?.(); // Cerrar el sheet después de navegar
         },
-        onError: (err: any) => console.error(err),
+        onError: (err: any) => {
+          console.error(err);
+          toast.error(err.message);
+        },
       });
     }
   };

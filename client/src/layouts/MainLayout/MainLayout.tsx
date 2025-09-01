@@ -1,6 +1,7 @@
 import { Navbar } from "@/components";
 import Footer from "@/components/Footer/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { Toaster } from "@/components/ui/sonner";
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
@@ -14,6 +15,7 @@ const MainLayout = () => {
         </main>
       </div>
       <Footer />
+      <Toaster richColors />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { DBResponseCommand } from "@/types/shared";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface MutationResult<T> {
   mutate: (variables: T, options?: any) => void;
@@ -58,9 +59,14 @@ export function useHandlerDialogCommand<T extends { id: string }, T2>({
               text: res?.message || `${title} actualizado`,
             });
             setOpen(false);
+            //toast
+            toast.success(res?.message || `${title} actualizado`, {
+              position: "bottom-center",
+            });
           },
           onError: (err: any) => {
             setResponseMessage({ type: "error", text: err.message });
+            toast.error(err.message);
           },
         }
       );
@@ -72,9 +78,13 @@ export function useHandlerDialogCommand<T extends { id: string }, T2>({
             text: res?.message || `${title} creado`,
           });
           setOpen(false);
+          toast.success(res?.message || `${title} creado`, {
+            position: "bottom-center",
+          });
         },
         onError: (err: any) => {
           setResponseMessage({ type: "error", text: err.message });
+          toast.error(err.message);
         },
       });
     }

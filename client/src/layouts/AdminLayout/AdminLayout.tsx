@@ -1,6 +1,7 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet } from "react-router-dom";
 import { TopAdminNav, AppSidebar } from "./_components";
+import { Toaster } from "@/components/ui/sonner";
 
 const AdminLayout = () => {
   return (
@@ -15,6 +16,7 @@ const AdminLayout = () => {
           </main>
         </SidebarInset>
       </SidebarProvider>
+      <Toaster richColors />
     </div>
   );
 };

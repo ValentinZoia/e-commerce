@@ -7,8 +7,9 @@ import {
   StoreCustomerFormValues,
   defaultValues,
 } from "@/lib/zod-schemas/storeCustomerSchema";
-import { StoreCustomer } from "@/types";
+import { DBResponseCommand, StoreCustomer } from "@/types";
 import { useStoreCustomerMutations } from "@/hooks/StoreCustomer/useStoreCustomerMutations";
+import { toast } from "sonner";
 
 export const useStoreForm = (data: StoreCustomer) => {
   const { createMuation, updateMuation } = useStoreCustomerMutations();
@@ -71,11 +72,24 @@ export const useStoreForm = (data: StoreCustomer) => {
 
     try {
       if (data) {
-        updateMuation.mutate({ id: data.id, values: dataToSave });
+        updateMuation.mutate(
+          { id: data.id, values: dataToSave },
+          {
+            onSuccess: (res: DBResponseCommand<StoreCustomer>) => {
+              toast.success(res?.message || "Datos actualizados correctamente");
+            },
+            onError: (err: any) => toast.error(err.message),
+          }
+        );
         console.log("Updating store data:", dataToSave);
         return;
       }
-      createMuation.mutate(dataToSave);
+      createMuation.mutate(dataToSave, {
+        onSuccess: (res: DBResponseCommand<StoreCustomer>) => {
+          toast.success(res?.message || "Datos creados correctamente");
+        },
+        onError: (err: any) => toast.error(err.message),
+      });
       console.log("Submitting store data:", dataToSave);
     } catch (error) {
       console.error("Error submitting form:", error);
