@@ -30,39 +30,40 @@
 </div>
 
 An e-commerce platform built with React, TypeScript, and Vite, leveraging modern web development practices and a component-driven architecture.
-
-
-
 ## Table of Contents
-- [Description](#description)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
+- [Overview](#overview)
+  - [Features](#features)
+  - [System Architecture](#system-architecture)
+  - [Technology Stack](#technology-stack)
+  - [Core Businnes Processes](#core-businnes-processes)
+  - [Key Components & Entities](#key-components--entities)
+  - [Want to Dive Deeper?](#want-to-dive-deeper)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Key Functionality and Usage Examples](#key-functionality-and-usage-examples)
 - [How to Use](#how-to-use)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
 - [Important Links](#important-links)
 - [Footer](#footer)
+  
+## Overview
 
+E-commerce system, a full-stack web application built with React and Node.js. The system enables customers to browse products, manage shopping carts, complete purchases through a checkout process, and receive WhatsApp notifications for order confirmations. It includes a comprehensive admin panel for managing products, categories, orders, and an AI-powered assistant.
 
-
-## Description
-This project implements an e-commerce platform featuring product listings, shopping cart functionality, user authentication, and administrative capabilities. It utilizes a modern tech stack, including React for the frontend, TypeScript for type safety, and Vite for fast development and build times. The backend, built with Node.js, Express, and Prisma, provides API endpoints for managing products, categories, orders, and user authentication.
-
-
+The system implements a dual-interface architecture: a public-facing e-commerce store and a private administrative dashboard. For detailed information about the client-side architecture, see **Client-Side Architecture**. For backend implementation details, see **Server-Side Architecture**. Database schema and relationships are covered in **Database Design**.
 
 ## Features
-- **Product Listings**: Display of products with details such as name, description, price, and images. 🖼️
-- **Category Management**: Categorizing products for easy navigation. 🏷️
-- **Shopping Cart**: Add, remove, and manage products in a shopping cart. 🛒
-- **User Authentication**: Secure user login and registration. 🔑
-- **Admin Panel**: Administrative interface for managing products, categories, and orders. ⚙️
-- **Checkout Process**: Streamlined checkout process with token-based validation. 💳
-- **AI Assistant**: Private admin AI to help manage the store. 🤖
-- **Image Handling**: Image compression and lazy loading for optimized performance. 🖼️
-- **Real-time Analytics**: Track statistics of the store. 📈
+- 🖼️ **Product Listings**: Display of products with details such as name, description, price, and images. 
+- 🏷️ **Category Management**: Categorizing products for easy navigation. 
+- 🛒 **Shopping Cart**: Add, remove, and manage products in a shopping cart. 
+- 🔑 **User Authentication**: Secure user login and registration. 
+- ⚙️ **Admin Panel**: Administrative interface for managing products, categories, and orders. 
+- 💳 **Checkout Process**: Streamlined checkout process with token-based validation. 
+- 🤖 **AI Assistant**: Private admin AI to help manage the store. 
+- 🖼️ **Image Handling**: Image compression and lazy loading for optimized performance. 
+- 📈 **Real-time Analytics**: Track statistics of the store. 
 - 🛠️ **Modular Components:** Reusable UI elements and organized architecture for maintainability.
 - 🚀 **Optimized Build Process:** Streamlined workflows with Vite, TailwindCSS, and TypeScript configurations.
 - 🔒 **Secure API & Authentication:** Robust route protection, session management, and user authentication.
@@ -70,25 +71,92 @@ This project implements an e-commerce platform featuring product listings, shopp
 - 📊 **State & Data Management:** Centralized store with Redux Toolkit, React Query, and data validation schemas.
 - ⚙️ **Flexible Routing & Admin Tools:** Organized navigation, admin dashboards, and private pages.
 
+## System Architecture
+
+The application follows a client-server architecture with clear separation between infrastructure/presentation and business logic layers. The frontend implements a **React SPA** with **Redux** state management and **React Query** for server communication, while the backend uses **Clean Architecture** principles with **Express.js** and **Prisma ORM**.
+
+[IMAGE]
+
+## Technology Stack
+The system leverages modern web technologies across both client and server implementations:
+
+| Layer             | Technology                       | Key Packages                                                                                                                |
+|-------------------|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| **Frontend**      | React 19, TypeScript, Vite       | `react`, `react-router-dom`, `@reduxjs/toolkit`, `@tanstack/react-query`                                                   |
+| **UI Framework**  | Tailwind CSS, Radix UI, Shadcn   | `tailwindcss`, `@radix-ui/react-*`, `lucide-react`,                                                                         |
+| **Data Table**  | Tanstack React Table and Shadcn    | `@tanstack/react-table`,                                                                                                     |
+| **Form**  | React Hook Form and Zod for Validations    | `react-hook-form`,  `zod`,                                                                                                      |
+| **State Management** | Redux Toolkit, React Query    | `@reduxjs/toolkit`, `react-redux`, `@tanstack/react-query`                                                                |
+| **Backend**       | Node.js, Express 5, TypeScript   | `express`, `typescript`, `tsx`                                                                                             |
+| **Database**      | MongoDB with Prisma ORM          | `@prisma/client`, `prisma`                                                                                                 |
+| **Authentication**| JWT, Bcrypt                      | `jsonwebtoken`, `bcryptjs`                                                                                                 |
+| **External APIs** | WhatsApp Web.js, OpenAI          | `whatsapp-web.js`, `openai`                                                                                                |
+| **Development**   | Vite, ESLint, Jest               | `vite`, `eslint`, `jest`, `supertest`                                                                                      |
+
+
+## Core Businnes Processes
+
+### Shopping Cart Management
+The shopping cart system uses Redux for local state management with the `cartSlice` maintaining cart items in browser storage. Cart operations are handled through Redux actions without server persistence until checkout.
+
+### Checkout Process
+The checkout flow implements a token-based session system:
+- **Session Creation**: `CartCheckoutButton` calls `useCheckoutSessionMutations.doCheckoutSession()`
+- **Token Generation**: Server creates a unique checkout token and returns checkout URL
+- **Validation**: `CheckoutGuard` validates the token before rendering `Checkout` component
+- **Order Submission**: `CheckoutForm` submits `CreateOrderDto` to `/api/orders`
+
+### Order Management
+Order follow this lifecycle:
+- **Creation**: The use-case `CreateOrderService` builds `Order` entity using `OrderBuilder` pattern
+- **WhatsApp Notification**: `SendMessageToCustomerByWhatsApp` sends automated message
+- **Status Tracking**: Orders progress through `WhatsAppStatusNames` (PENDING -> SENT -> RESPONDED -> COMPLETED)
+
+### Authentication & Authorization
+- **Public Routes**: Product browsing, cart management, checkout process
+- **Private Routes**: Admin panel protected by `AuthGuard` using JWT validation
+- **Middleware**: `AuthMiddleware` validates JWT tokens for admin endpoints 
+
+## Key Components & Entities
+
+### Frontend Core Components
+- **MainLayout**: Public route wrapper with Navbar and Footer
+- **AdminLayout**: Private admin interface with SidebarProvider and TopAdminNav
+- **CheckoutGuard**: Route guard validating checkout tokens via useCheckoutSession
+- **CartCheckoutButton**: Initiates checkout flow with pilot ID generation
+
+### Backend Domain Entities
+- **Order**: Central business entity with calculateTotals() and generateWhatsAppMessage() methods
+- **OrderItem**: Product line items within orders
+- **OrderBuilder/OrderItemBuilder**: Builder pattern for entity construction
+- **WhatsAppStatusNames**: Enum defining order status lifecycle
+
+### Service Layer
+- **CreateOrderService**: Orchestrates order creation with WhatsApp messaging
+- **PrismaOrderRepositoryImpl**: Data persistence using Prisma ORM
+- **SendMessageToCustomerByWhatsApp**: WhatsApp Web.js integration with queue management
+
+### External Integrations
+- **WhatsApp Integration**: Automated order notifications with QR authentication
+- **AI Assistant**: OpenAI integration for admin content generation
+- **Image Management**: Cloudinary for product image handling
+
+## Want to Dive Deeper?
+If you're interested in exploring this project further, check out the full documentation:  
+[E-Commerce Valentin Zoia 2025](https://deepwiki.com/ValentinZoia/e-commerce/1-overview).  
+You’ll find a sidebar with detailed navigation. Enjoy! 🎉
 
 
 
-## Tech Stack
-- **Frontend**: 
-  - [React](https://react.dev/) - A JavaScript library for building user interfaces. ⚛️
-  - [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript. 🟦
-  - [Vite](https://vitejs.dev/) - A build tool that provides a fast and performant development experience. 🚀
-  - [Redux Toolkit](https://redux-toolkit.js.org/) - For state management. 🧰
-  - [TanStack React Query](https://tanstack.com/query/latest) - For data fetching and caching.
-  - [TanStack React Table](https://tanstack.com/table/v8) - For building tables.
-  - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework. 🎨
-  - [Shadcn UI](https://ui.shadcn.com/) - Re-usable components built using Radix UI and Tailwind CSS.
-  - [React Hook Form](https://react-hook-form.com/) - For form management and validation. 📝
-  - [Radix UI](https://www.radix-ui.com/) - For accessible UI components.
-- **Backend**: 
-  - [Node.js](https://nodejs.org/en) - JavaScript runtime environment. 🟢
-  - [Express](https://expressjs.com/) - A web application framework for Node.js. 🌐
-  - [Prisma](https://www.prisma.io/) - Next-generation ORM. 📊
+
+
+
+
+
+
+
+
+
 
 
 
@@ -114,10 +182,10 @@ This project implements an e-commerce platform featuring product listings, shopp
     npm install
     ```
 6.  **Set up the database**: 
-    - Ensure that you have a PostgreSQL database running.
+    - Ensure that you have a Mongodb database running.
     - Configure the database connection in the `.env` file in the `server` directory.
     ```
-    DATABASE_URL="postgres://user:password@host:port/database"
+    DATABASE_URL="<your-mongodb-url>"
     ```
     - Generate the Prisma client:
     ```bash
@@ -295,6 +363,4 @@ Fork, like ⭐, and raise issues [here](https://github.com/ValentinZoia/e-commer
 
 
 
-## My Project Logo
 
-![Project Logo](https://placehold.co/200x80?text=Logo+Placeholder "The logo I designed represents [meaning]")
