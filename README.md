@@ -1,8 +1,22 @@
-# E-commerce 🛍️
+
+
+<div align="center">
+
+# E-COMMERCE  
+*Transform Shopping Into Seamless, Limitless Experiences*  
+
+![last-commit](https://img.shields.io/github/last-commit/ValentinZoia/e-commerce?style=flat&logo=git&logoColor=white&color=0080ff)
+![repo-top-language](https://img.shields.io/github/languages/top/ValentinZoia/e-commerce?style=flat&color=0080ff)
+![repo-language-count](https://img.shields.io/github/languages/count/ValentinZoia/e-commerce?style=flat&color=0080ff)
 [![React](https://img.shields.io/badge/React-v19.0.0-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.7.2-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-%5E6.2.0-blue)](https://vitejs.dev/)
 
+*Built with the tools and technologies:*  
+
+
+
+</div>
 <div align="center"  >
                <img src="https://skills.syvixor.com/api/icons?i=typescript,reactjs,vite,reactrouter,tailwindcss,shadcnui,reacthookform,zod,redux,tanstack,reactquery,cloudinary" > 
 <br>
