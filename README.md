@@ -49,6 +49,13 @@ This project implements an e-commerce platform featuring product listings, shopp
 - **AI Assistant**: Private admin AI to help manage the store. 🤖
 - **Image Handling**: Image compression and lazy loading for optimized performance. 🖼️
 - **Real-time Analytics**: Track statistics of the store. 📈
+- 🛠️ **Modular Components:** Reusable UI elements and organized architecture for maintainability.
+- 🚀 **Optimized Build Process:** Streamlined workflows with Vite, TailwindCSS, and TypeScript configurations.
+- 🔒 **Secure API & Authentication:** Robust route protection, session management, and user authentication.
+- 🖼️ **Media & Image Utilities:** Image transformation, WebP conversion, and cloud uploads for performance.
+- 📊 **State & Data Management:** Centralized store with Redux Toolkit, React Query, and data validation schemas.
+- ⚙️ **Flexible Routing & Admin Tools:** Organized navigation, admin dashboards, and private pages.
+
 
 
 
