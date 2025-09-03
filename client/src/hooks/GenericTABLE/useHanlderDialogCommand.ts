@@ -67,6 +67,7 @@ export function useHandlerDialogCommand<T extends { id: string }, T2>({
           onError: (err: any) => {
             setResponseMessage({ type: "error", text: err.message });
             toast.error(err.message);
+            updateMutation.isPending = false;
           },
         }
       );
@@ -85,6 +86,7 @@ export function useHandlerDialogCommand<T extends { id: string }, T2>({
         onError: (err: any) => {
           setResponseMessage({ type: "error", text: err.message });
           toast.error(err.message);
+          createMutation.isPending = false;
         },
       });
     }
@@ -109,6 +111,7 @@ export function useHandlerDialogCommand<T extends { id: string }, T2>({
         onError: (err: any) => {
           setResponseMessage({ type: "error", text: err.message });
           toast.error(err.message);
+          deleteMutation.isPending = false;
         },
       }
     );
