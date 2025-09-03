@@ -33,6 +33,9 @@ An e-commerce platform built with React, TypeScript, and Vite, leveraging modern
 ## Table of Contents
 - [Overview](#overview)
   - [Features](#features)
+  - [Pages Preview](#pages-preview)
+    - [Public Pages](#public-pages)
+    - [Private Pages](#private-pages)
   - [System Architecture](#system-architecture)
   - [Technology Stack](#technology-stack)
   - [Core Businnes Processes](#core-businnes-processes)
@@ -50,10 +53,9 @@ An e-commerce platform built with React, TypeScript, and Vite, leveraging modern
   
 ## Overview
 
-E-commerce system, a full-stack web application built with React and Node.js. The system enables customers to browse products, manage shopping carts, complete purchases through a checkout process, and receive WhatsApp notifications for order confirmations. It includes a comprehensive admin panel for managing products, categories, orders, and an AI-powered assistant.
+E-commerce system, a full-stack web application built with React and Node.js. The system enables customers to browse products, manage shopping carts, complete purchases through a checkout process, and receive **WhatsApp notifications** for order confirmations. It includes a comprehensive admin panel for managing products, categories, orders, and an **AI-powered assistant**.
 
-The system implements a dual-interface architecture: a public-facing e-commerce store and a private administrative dashboard. For detailed information about the client-side architecture, see **Client-Side Architecture**. For backend implementation details, see **Server-Side Architecture**. Database schema and relationships are covered in **Database Design**.
-
+The system implements a dual-interface architecture: a public-facing e-commerce store and a private administrative dashboard.
 ## Features
 - 🖼️ **Product Listings**: Display of products with details such as name, description, price, and images. 
 - 🏷️ **Category Management**: Categorizing products for easy navigation. 
@@ -70,6 +72,79 @@ The system implements a dual-interface architecture: a public-facing e-commerce 
 - 🖼️ **Media & Image Utilities:** Image transformation, WebP conversion, and cloud uploads for performance.
 - 📊 **State & Data Management:** Centralized store with Redux Toolkit, React Query, and data validation schemas.
 - ⚙️ **Flexible Routing & Admin Tools:** Organized navigation, admin dashboards, and private pages.
+
+## Pages Preview
+### Public Pages
+#### '/'
+ <img src="/images/home.png" >
+ <img src="/images/carousel-home.png" >
+ 
+#### '/products'
+ <img src="/images/AllProductsList.png" >
+ 
+#### '/promotion'
+ <img src="/images/promotion.png" >
+ 
+#### '/featured'
+ <img src="/images/featured.png" >
+ 
+#### '/new'
+ <img src="/images/new.png" >
+ 
+#### '/categories/zapatillas'
+ <img src="/images/category-zapatillas.png" >
+ 
+#### '/search'
+ <img src="/images/search-query=sanlorenzo.png" >
+ 
+#### '/products/:id'
+ <img src="/images/ProductDetail.png" >
+ 
+#### Shopping Cart
+ <img src="/images/AddProductToCart.png" >
+ 
+#### '/checkout/:token'
+ <img src="/images/checkout-token.png" >
+ <img src="/images/checkout-form-with-data.png" >
+ 
+#### '/order/:id' 
+ <img src="/images/order-1.png" >
+ <img src="/images/order-2.png" >
+ 
+#### '/login'
+ <img src="/images/login.png" >
+
+### Private Pages
+#### '/private/admin'
+ <img src="/images/private-admin.png" >
+ 
+ #### '/private/admin/analytics'
+ <img src="/images/private-admin-analytics.png" >
+ 
+#### '/private/admin/products'
+ <img src="/images/private-admin-products-1.png" >
+ <img src="/images/private-admin-products-2.png" >
+ 
+#### '/private/admin/categories'
+ <img src="/images/private-categories.png" >
+ 
+#### '/private/admin/order'
+ <img src="/images/private-admin-orders.png" >
+ <img src="/images/private-admin-order-2.png" >
+ 
+#### '/private/admin/ai'
+ <img src="/images/private-admin-ai.png" >
+ 
+#### '/private/admin/settings'
+ <img src="/images/private-admin-settings.png" >
+ <img src="/images/private-admin-settings-2.png" >
+ 
+ 
+ 
+ 
+ 
+
+ 
 
 ## System Architecture
 
