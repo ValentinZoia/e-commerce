@@ -60,16 +60,16 @@ The system implements a dual-interface architecture: a public-facing e-commerce 
 - 🖼️ **Product Listings**: Display of products with details such as name, description, price, and images. 
 - 🏷️ **Category Management**: Categorizing products for easy navigation. 
 - 🛒 **Shopping Cart**: Add, remove, and manage products in a shopping cart. 
-- 🔑 **User Authentication**: Secure user login and registration. 
-- ⚙️ **Admin Panel**: Administrative interface for managing products, categories, and orders. 
+- 🔑 **Admin Authentication**: Secure admin login. 
+- ⚙️ **Admin Panel**: Administrative interface for managing products, categories, and orders with Data-Tables(tanstack/react-table). 
 - 💳 **Checkout Process**: Streamlined checkout process with token-based validation. 
-- 🤖 **AI Assistant**: Private admin AI to help manage the store. 
-- 🖼️ **Image Handling**: Image compression and lazy loading for optimized performance. 
-- 📈 **Real-time Analytics**: Track statistics of the store. 
+- 🤖 **AI Assistant**: Private admin AI to help manage the store.
+- 📱  **Whatsapp Automated Message**: WhatsApp notifications for order confirmations.
+- 🖼️ **Image Handling**: Image transformation, WebP conversion, and cloudinary uploads, and lazy loading for optimized performance. 
+- 📈 **Real-time Analytics**: Track statistics of the store with Chartjs. 
 - 🛠️ **Modular Components:** Reusable UI elements and organized architecture for maintainability.
 - 🚀 **Optimized Build Process:** Streamlined workflows with Vite, TailwindCSS, and TypeScript configurations.
 - 🔒 **Secure API & Authentication:** Robust route protection, session management, and user authentication.
-- 🖼️ **Media & Image Utilities:** Image transformation, WebP conversion, and cloud uploads for performance.
 - 📊 **State & Data Management:** Centralized store with Redux Toolkit, React Query, and data validation schemas.
 - ⚙️ **Flexible Routing & Admin Tools:** Organized navigation, admin dashboards, and private pages.
 
