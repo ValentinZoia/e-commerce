@@ -422,7 +422,7 @@ We welcome contributions to this project! Please follow these guidelines:
 
 
 ## License
-This project has no license.
+[MIT License](./LICENSE)
 
 
 
