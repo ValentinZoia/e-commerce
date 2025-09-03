@@ -16,7 +16,7 @@ export * from "./PrivateSettingsPage";
 export * from "./PrivateProductsPage";
 export * from "./PrivateCategoriesPage";
 export * from "./PrivateOrdersPage";
-export * from "./PrivateAdminsPage";
+
 export * from "./PrivateAnalyticsPage";
 export * from "./Search";
 export * from "./OrderDetail";

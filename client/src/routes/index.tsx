@@ -13,7 +13,6 @@ import {
   FeaturedProducts,
   PromotionalProducts,
   AdminPage,
-  PrivateAdminsPage,
   PrivateCategoriesPage,
   PrivateOrdersPage,
   PrivateProductsPage,
@@ -213,10 +212,7 @@ const router = createBrowserRouter([
             path: PrivateRoutes.ORDERS,
             element: <PrivateOrdersPage />,
           },
-          {
-            path: PrivateRoutes.ADMINS,
-            element: <PrivateAdminsPage />,
-          },
+
           {
             path: PrivateRoutes.SETTINGS,
             element: <PrivateSettingsPage />,

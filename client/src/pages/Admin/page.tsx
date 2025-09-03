@@ -39,24 +39,27 @@ const salesData = [
 const topProducts = [
   {
     id: 1,
-    name: "iPhone 15 Pro",
+    name: "Camperón Selección Argentina",
     sales: 1250,
-    revenue: 1562500,
-    image: "/iphone-15-pro-hands.png",
+    revenue: 300000,
+    image:
+      "https://instagram.faep14-3.fna.fbcdn.net/v/t39.30808-6/361659009_17966504375544470_8921065227647180027_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0uaW1hZ2VfdXJsZ2VuLjE0NDB4MTgwMC5zZHIuZjMwODA4LmRlZmF1bHRfaW1hZ2UuYzIifQ&_nc_ht=instagram.faep14-3.fna.fbcdn.net&_nc_cat=102&_nc_oc=Q6cZ2QE5x1tJt24b7T6cMnenudHXECy0mCJ23iFXAUuDcWXZUFYoZ6_73rTbcGotoRZappg&_nc_ohc=-E_y08y6Pw0Q7kNvwE3pFQZ&_nc_gid=fWwswFXOXtTR6_6hPaKITQ&edm=APs17CUAAAAA&ccb=7-5&ig_cache_key=MzE1NDg4OTk3MTc4NDIzMzAzMg%3D%3D.3-ccb7-5&oh=00_AfXjqhTaaCqE6302ktroeejbx219DrGd8-INoTOlN2yq8w&oe=68BBAEE4&_nc_sid=10d13b",
   },
   {
     id: 2,
-    name: "MacBook Air M3",
+    name: "Botines Umbro Sala Pro 5 Bump Hombre",
     sales: 890,
-    revenue: 1068000,
-    image: "/macbook-air-m3.png",
+    revenue: 155900,
+    image:
+      "https://res.cloudinary.com/dqssedd6u/image/upload/v1755893133/nwr0yww1revaljtebmix.webp",
   },
   {
     id: 3,
-    name: "AirPods Pro",
+    name: "Conjunto entrenamiento Corinthians",
     sales: 2100,
-    revenue: 525000,
-    image: "/airpods-pro-lifestyle.png",
+    revenue: 50000,
+    image:
+      "https://res.cloudinary.com/dqssedd6u/image/upload/v1755827061/smnlqiubxd2i0qkdwt8g.webp",
   },
 ];
 
