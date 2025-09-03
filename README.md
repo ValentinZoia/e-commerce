@@ -53,7 +53,7 @@ An e-commerce platform built with React, TypeScript, and Vite, leveraging modern
   
 ## Overview
 
-E-commerce system, a full-stack web application built with React and Node.js. The system enables customers to browse products, manage shopping carts, complete purchases through a checkout process, and receive **WhatsApp notifications** for order confirmations. It includes a comprehensive admin panel for managing products, categories, orders, and an **AI-powered assistant**.
+E-commerce system, a full-stack web application built with React and Node.js. The system enables customers to browse products, manage shopping carts, complete purchases through a checkout process, and receive **WhatsApp notifications** for order confirmations. It includes a comprehensive admin panel with **Data-Tables(tanstack/react-table)** for managing products, categories, orders, and an **AI-powered assistant**.
 
 The system implements a dual-interface architecture: a public-facing e-commerce store and a private administrative dashboard.
 ## Features
