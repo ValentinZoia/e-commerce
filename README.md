@@ -167,7 +167,8 @@ The system leverages modern web technologies across both client and server imple
 | **Database**      | MongoDB with Prisma ORM          | `@prisma/client`, `prisma`                                                                                                 |
 | **Authentication**| JWT, Bcrypt                      | `jsonwebtoken`, `bcryptjs`                                                                                                 |
 | **External APIs** | WhatsApp Web.js, OpenAI          | `whatsapp-web.js`, `openai`                                                                                                |
-| **Development**   | Vite, ESLint, Jest               | `vite`, `eslint`, `jest`, `supertest`                                                                                      |
+| **Testing**   |  Jest , Supertest               | `jest`, `supertest`                                                                                 |
+| **Development**   | Vite, ESLint,              | `vite`, `eslint`                                                                                     |
 
 
 ## Core Businnes Processes
