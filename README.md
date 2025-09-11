@@ -151,7 +151,7 @@ The system implements a dual-interface architecture: a public-facing e-commerce 
 
 The application follows a client-server architecture with clear separation between infrastructure/presentation and business logic layers. The frontend implements a **React SPA** with **Redux** state management and **React Query** for server communication, while the backend uses **Clean Architecture** principles with **Express.js** and **Prisma ORM**.
 
-[IMAGE]
+<img src="/images/diagrama.png" >
 
 ## Technology Stack
 The system leverages modern web technologies across both client and server implementations:
