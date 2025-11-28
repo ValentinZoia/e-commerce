@@ -28,7 +28,7 @@
     "images/private-admin-order-2.png",
     "images/private-admin-ai.png",
     "images/private-admin-settings.png",
-    "images/private-admin-settings-2.png",
+    "images/private-admin-settings-2.png"
   ],
   "tags": ["react", "react-query", "redux", "tailwind", "shadcn","nodejs", "prisma", "mongodb"],
   "published": true
