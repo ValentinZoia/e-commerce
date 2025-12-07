@@ -2,7 +2,9 @@
 
 <div align="center">
 
-# E-COMMERCE  
+<img src="/images/miniatura.jpg" >
+
+# VZ-COMMERCE  
 *Transform Shopping Into Seamless, Limitless Experiences*  
 
 ![last-commit](https://img.shields.io/github/last-commit/ValentinZoia/e-commerce?style=flat&logo=git&logoColor=white&color=0080ff)
@@ -11,18 +13,13 @@
 [![React](https://img.shields.io/badge/React-v19.0.0-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.7.2-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-%5E6.2.0-blue)](https://vitejs.dev/)
-<img src="/images/miniatura.jpg" >
-*Built with the tools and technologies:*  
+
 
 
 
 </div>
 
-<div align="center"  >
-               <img src="https://skills.syvixor.com/api/icons?i=typescript,reactjs,vite,reactrouter,tailwindcss,shadcnui,reacthookform,zod,redux,tanstack,reactquery,cloudinary" > 
-<br>
-            <img src="https://skills.syvixor.com/api/icons?i=nodejs,express,prisma,mongodb,chatgpt,whatsapp,jest" > 
-           
+
             
              
              
@@ -32,8 +29,8 @@
 
 An e-commerce platform built with React, TypeScript, and Vite, leveraging modern web development practices and a component-driven architecture.
 ## Table of Contents
-- [Overview](#overview)
-  - [Features](#features)
+- [What & Why](#what--why)
+  - [Highlights](#highlights)
   - [Pages Preview](#pages-preview)
     - [Public Pages](#public-pages)
     - [Private Pages](#private-pages)
@@ -51,28 +48,42 @@ An e-commerce platform built with React, TypeScript, and Vite, leveraging modern
 - [License](#license)
 - [Important Links](#important-links)
 - [Footer](#footer)
+
   
-## Overview
+## What & Why
+### What is VZ-Commerce?
+VzCommerce is a lightweight, salex-focused ecommerce platform designed for small businesses that close deals through WhatsApp.
+Instead of forcing the entire checkout process inside the website,
+VzCommerce acts as a seamless bridge: customers browse a full product catalog, view price, stock and promotions, and once they decide to buy, the plataform automatically routes the order to WhatsApp so the seller and customer can finalize payment, shipping, and details privately.
 
-E-commerce system, a full-stack web application built with React and Node.js. The system enables customers to browse products, manage shopping carts, complete purchases through a checkout process, and receive **WhatsApp notifications** for order confirmations. It includes a comprehensive admin panel with **Data-Tables(tanstack/react-table)** for managing products, categories, orders, and an **AI-powered assistant**.
+On the admin side, sellers get a complete dashboard with real-time analytics powered by Chart.js, dynamic tables with pagination for managing products, and a dedicated orders panel. It also includes an integrated AI assistant specialized in digital business and sales to provide guidance, insights, and optimization tips.
 
-The system implements a dual-interface architecture: a public-facing e-commerce store and a private administrative dashboard.
-## Features
-- 🖼️ **Product Listings**: Display of products with details such as name, description, price, and images. 
-- 🏷️ **Category Management**: Categorizing products for easy navigation. 
-- 🛒 **Shopping Cart**: Add, remove, and manage products in a shopping cart. 
-- 🔑 **Admin Authentication**: Secure admin login. 
-- ⚙️ **Admin Panel**: Administrative interface for managing products, categories, and orders with Data-Tables(tanstack/react-table). 
-- 💳 **Checkout Process**: Streamlined checkout process with token-based validation. 
-- 🤖 **AI Assistant**: Private admin AI to help manage the store.
-- 📱  **Whatsapp Automated Message**: WhatsApp notifications for order confirmations.
-- 🖼️ **Image Handling**: Image transformation, WebP conversion, and cloudinary uploads, and lazy loading for optimized performance. 
-- 📈 **Real-time Analytics**: Track statistics of the store with Chartjs. 
-- 🛠️ **Modular Components:** Reusable UI elements and organized architecture for maintainability.
-- 🚀 **Optimized Build Process:** Streamlined workflows with Vite, TailwindCSS, and TypeScript configurations.
-- 🔒 **Secure API & Authentication:** Robust route protection, session management, and user authentication.
-- 📊 **State & Data Management:** Centralized store with Redux Toolkit, React Query, and data validation schemas.
-- ⚙️ **Flexible Routing & Admin Tools:** Organized navigation, admin dashboards, and private pages.
+### Why I Built This
+I noticed that many small sellers prefer finalizing their sales through WhatsApp, where they can negotiate, build trust, and adapt pricing or delivery on the fly. However, keeping a catalog updated manually, sending photos, prices, descriptions one by one is tedious and unscalable.
+
+VzCommerce was built to solve that gap: give customers a comfortable, organized place to explore the entire catalog, while preserving the seller's preferred workflow of closing the sale in private through WhatsApp. It blends the convenience of a modern storefront with the flexibility of conversational selling.
+
+### The Challenge
+The main challenge was to create an ecommerce plataform that feels complete and professional. And apply a Clean Architecture with some design patterns. Also learn about testing and use it in the proyect, it was a +500 test.
+At the same time, building a robust admin panel with real-time analytics, dynamic data tables, and an AI assistant required careful architecture, and clean, maintainable code.
+           
+
+## Highlights
+- **Product Listings**: Display of products with details such as name, description, price, and images. 
+-  **Category Management**: Categorizing products for easy navigation. 
+-  **Shopping Cart**: Add, remove, and manage products in a shopping cart. 
+-  **Admin Authentication**: Secure admin login. 
+-  **Admin Panel**: Administrative interface for managing products, categories, and orders with Data-Tables(tanstack/react-table). 
+-  **Checkout Process**: Streamlined checkout process with token-based validation. 
+-  **AI Assistant**: Private admin AI to help manage the store.
+-   **Whatsapp Automated Message**: WhatsApp notifications for order confirmations.
+-  **Image Handling**: Image transformation, WebP conversion, and cloudinary uploads, and lazy loading for optimized performance. 
+-  **Real-time Analytics**: Track statistics of the store with Chartjs. 
+-  **Modular Components:** Reusable UI elements and organized architecture for maintainability.
+-  **Optimized Build Process:** Streamlined workflows with Vite, TailwindCSS, and TypeScript configurations.
+-  **Secure API & Authentication:** Robust route protection, session management, and user authentication.
+-  **State & Data Management:** Centralized store with Redux Toolkit, React Query, and data validation schemas.
+-  **Flexible Routing & Admin Tools:** Organized navigation, admin dashboards, and private pages.
 
 ## Pages Preview
 ### Public Pages
@@ -149,7 +160,9 @@ The system implements a dual-interface architecture: a public-facing e-commerce 
 
 ## System Architecture
 
-The application follows a client-server architecture with clear separation between infrastructure/presentation and business logic layers. The frontend implements a **React SPA** with **Redux** state management and **React Query** for server communication, while the backend uses **Clean Architecture** principles with **Express.js** and **Prisma ORM**.
+The application follows a Clean Architecture with layers like Domain, Application, Infrastructure and Presentation.
+If you are interesting in what is a clean architecture and How you can use it, please check my free book, in spanish.
+[Arquitecturas y Patrones - Valentin Zoia](https://github.com/ValentinZoia/Libros/blob/main/Arquitecturas%20y%20Patrones%20-%20TypeScript%20-%20ValentinZoia.pdf)
 
 <img src="/images/diagrama.png" >
 
