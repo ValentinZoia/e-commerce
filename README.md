@@ -164,7 +164,7 @@ The application follows a Clean Architecture with layers like Domain, Applicatio
 If you are interesting in what is a clean architecture and How you can use it, please check my free book, in spanish.
 [Arquitecturas y Patrones - Valentin Zoia](https://github.com/ValentinZoia/Libros/blob/main/Arquitecturas%20y%20Patrones%20-%20TypeScript%20-%20ValentinZoia.pdf)
 
-<img src="/images/diagrama.png" >
+ <img src="/images/cleanarchitecture.webp" >
 
 ## Technology Stack
 The system leverages modern web technologies across both client and server implementations:
