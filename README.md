@@ -7,12 +7,26 @@
 # VZ-COMMERCE  
 *Transform Shopping Into Seamless, Limitless Experiences*  
 
-![last-commit](https://img.shields.io/github/last-commit/ValentinZoia/e-commerce?style=flat&logo=git&logoColor=white&color=0080ff)
-![repo-top-language](https://img.shields.io/github/languages/top/ValentinZoia/e-commerce?style=flat&color=0080ff)
-![repo-language-count](https://img.shields.io/github/languages/count/ValentinZoia/e-commerce?style=flat&color=0080ff)
-[![React](https://img.shields.io/badge/React-v19.0.0-blue)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.7.2-blue)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-%5E6.2.0-blue)](https://vitejs.dev/)
+
+[![React](https://img.shields.io/badge/React-v19.0.0-61DAFB?logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-%5E6.2.0-646CFF?logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.x-38BDF8?logo=tailwindcss)](https://tailwindcss.com/)
+[![ShadcnUI](https://img.shields.io/badge/ShadcnUI-000000?logo=shadcnui)]()
+[![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-7.56.4-EC5990?logo=reacthookform)]()
+[![Zod](https://img.shields.io/badge/Zod-3.24.4-408AFF?logo=zod)]()
+[![Redux](https://img.shields.io/badge/Redux-9.2.0-764ABC?logo=redux)]()
+[![React Table](https://img.shields.io/badge/React%20Table-8.21.3-FF4154?logo=reacttable)]()
+[![React Query](https://img.shields.io/badge/React%20Query-5.85.0-FF4154?logo=reactquery)]()
+
+[![Nodejs](https://img.shields.io/badge/Nodejs-22.20.0-5FA04E?logo=nodejs)]()
+[![Express](https://img.shields.io/badge/Express-5.1.0-000000?logo=express)]()
+[![Prisma](https://img.shields.io/badge/Prisma-6.7.0-2D3748?logo=prisma)](https://www.prisma.io/) [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?logo=mongodb)](https://www.mongodb.com/)
+[![OpenAI](https://img.shields.io/badge/Openai-5.16.0-2D3748?logo=openai)]()
+[![Whatsapp-web-js](https://img.shields.io/badge/Whatsapp%20Web%20Js-1.33.0-25D366?logo=whatsapp)]()
+[![Jest](https://img.shields.io/badge/Jest-30.0.5-C21325?logo=jest)](https://www.prisma.io/)
+
+
 
 
 
@@ -36,18 +50,14 @@ An e-commerce platform built with React, TypeScript, and Vite, leveraging modern
     - [Private Pages](#private-pages)
   - [System Architecture](#system-architecture)
   - [Technology Stack](#technology-stack)
-  - [Core Businnes Processes](#core-businnes-processes)
-  - [Key Components & Entities](#key-components--entities)
-  - [Want to Dive Deeper?](#want-to-dive-deeper)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Key Functionality and Usage Examples](#key-functionality-and-usage-examples)
-- [How to Use](#how-to-use)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Important Links](#important-links)
-- [Footer](#footer)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Contact](#-contact)
+
 
   
 ## What & Why
@@ -182,61 +192,6 @@ The system leverages modern web technologies across both client and server imple
 | **External APIs** | WhatsApp Web.js, OpenAI          | `whatsapp-web.js`, `openai`                                                                                                |
 | **Testing**   |  Jest , Supertest               | `jest`, `supertest`                                                                                 |
 | **Development**   | Vite, ESLint,              | `vite`, `eslint`                                                                                     |
-
-
-## Core Businnes Processes
-
-### Shopping Cart Management
-The shopping cart system uses Redux for local state management with the `cartSlice` maintaining cart items in browser storage. Cart operations are handled through Redux actions without server persistence until checkout.
-
-### Checkout Process
-The checkout flow implements a token-based session system:
-- **Session Creation**: `CartCheckoutButton` calls `useCheckoutSessionMutations.doCheckoutSession()`
-- **Token Generation**: Server creates a unique checkout token and returns checkout URL
-- **Validation**: `CheckoutGuard` validates the token before rendering `Checkout` component
-- **Order Submission**: `CheckoutForm` submits `CreateOrderDto` to `/api/orders`
-
-### Order Management
-Order follow this lifecycle:
-- **Creation**: The use-case `CreateOrderService` builds `Order` entity using `OrderBuilder` pattern
-- **WhatsApp Notification**: `SendMessageToCustomerByWhatsApp` sends automated message
-- **Status Tracking**: Orders progress through `WhatsAppStatusNames` (PENDING -> SENT -> RESPONDED -> COMPLETED)
-
-### Authentication & Authorization
-- **Public Routes**: Product browsing, cart management, checkout process
-- **Private Routes**: Admin panel protected by `AuthGuard` using JWT validation
-- **Middleware**: `AuthMiddleware` validates JWT tokens for admin endpoints 
-
-## Key Components & Entities
-
-### Frontend Core Components
-- **MainLayout**: Public route wrapper with Navbar and Footer
-- **AdminLayout**: Private admin interface with SidebarProvider and TopAdminNav
-- **CheckoutGuard**: Route guard validating checkout tokens via useCheckoutSession
-- **CartCheckoutButton**: Initiates checkout flow with pilot ID generation
-
-### Backend Domain Entities
-- **Order**: Central business entity with calculateTotals() and generateWhatsAppMessage() methods
-- **OrderItem**: Product line items within orders
-- **OrderBuilder/OrderItemBuilder**: Builder pattern for entity construction
-- **WhatsAppStatusNames**: Enum defining order status lifecycle
-
-### Service Layer
-- **CreateOrderService**: Orchestrates order creation with WhatsApp messaging
-- **PrismaOrderRepositoryImpl**: Data persistence using Prisma ORM
-- **SendMessageToCustomerByWhatsApp**: WhatsApp Web.js integration with queue management
-
-### External Integrations
-- **WhatsApp Integration**: Automated order notifications with QR authentication
-- **AI Assistant**: OpenAI integration for admin content generation
-- **Image Management**: Cloudinary for product image handling
-
-## Want to Dive Deeper?
-If you're interested in exploring this project further, check out the full documentation:  
-[E-Commerce Valentin Zoia 2025](https://deepwiki.com/ValentinZoia/e-commerce/1-overview).  
-You’ll find a sidebar with detailed navigation. Enjoy! 🎉
-
-
 
 
 
@@ -378,17 +333,6 @@ You’ll find a sidebar with detailed navigation. Enjoy! 🎉
 
 
 
-## How to Use
-This e-commerce platform is designed for both customers and administrators. Customers can browse products, add them to their cart, and proceed to checkout. Administrators can manage products, categories, and orders through the admin panel.
-
-
-
-### Real-world Use Cases
-1.  **Online Retail:** Launch an online store to sell products directly to customers. 🛍️
-2.  **Inventory Management:** Efficiently manage product inventory and track stock levels. 📦
-3.  **Customer Relationship Management:** Collect customer data and personalize the shopping experience. 👤
-4.  **Data Analytics:** Use analytics to gain insights into customer behavior and optimize sales strategies. 📊
-5.  **AI-Driven Assistance:** Use AI assistance for customer support, product recommendations, and marketing efforts. 🤖
 
 
 
@@ -413,10 +357,20 @@ The project is structured as a monorepo, with separate directories for the clien
 │   └── vite.config.ts       # Vite configuration
 ├── server/                  # Backend application
 │   ├── src/               # Source code
-│   │   ├── app.ts         # Entry point
-│   │   ├── server.ts      # Server setup
-│   │   ├── routes/        # API routes
-│   │   └── shared/        # Shared modules
+│   │   ├── app.ts            # Entry point
+│   │   ├── server.ts         # Server setup
+│   │   ├── AI/               # AI Assistent feature (domain, application, infrastructure, presentation)
+│   │   ├── Auth/             # Auth feature (domain, application, infrastructure, presentation)
+│   │   ├── Categories/       # Categories feature (domain, application, infrastructure, presentation)
+│   │   ├── Checkout/         # Checkout feature (domain, application, infrastructure, presentation)
+│   │   ├── Orders/           # Orders feature (domain, application, infrastructure, presentation)
+│   │   ├── Products/         # Products feature (domain, application, infrastructure, presentation)
+│   │   ├── StoreCustomers/   # StoreCustomers feature (domain, application, infrastructure, presentation)
+│   │   └── shared/           # Shared modules
+│   ├── tests/         # Tests
+│   │   ├── context/         # unit tests, integration tests
+│   │   ├── apps/            # e2e - black box
+│   │   └── helpers/         # factories, mocks, helpers
 │   ├── package.json         # Dependencies and scripts
 │   ├── tsconfig.json        # TypeScript configuration
 │   └── prisma/            # Prisma schema and migrations
@@ -426,31 +380,28 @@ The project is structured as a monorepo, with separate directories for the clien
 
 
 
-## Contributing
-We welcome contributions to this project! Please follow these guidelines:
+## 🤝 Contributing
 
-1.  Fork the repository.
-2.  Create a new branch for your feature or bug fix.
-3.  Make your changes and commit them with clear, concise messages.
-4.  Submit a pull request.
+1. Fork repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
+## 📝 License
 
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## License
-[MIT License](./LICENSE)
+## 📧 Contact
 
+- **Author:** Valentín Zoia
+- **Email:** zoiavalentin.dev@gmail.com
+- **LinkedIn:** [Profile](https://linkedin.com/in/valentinzoia)
+- **Portfolio:** [Website](https://valentinzoia.vercel.app)
 
+---
 
-## Important Links
-- **GitHub Repository**: [https://github.com/ValentinZoia/e-commerce](https://github.com/ValentinZoia/e-commerce)
-
-
-
-## Footer
-Made with ❤️ by [ValentinZoia](https://github.com/ValentinZoia).
-
-Fork, like ⭐, and raise issues [here](https://github.com/ValentinZoia/e-commerce).
-
+**Built with ❤️ and best practices**
 
 
 
