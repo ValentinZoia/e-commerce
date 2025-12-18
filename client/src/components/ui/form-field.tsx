@@ -22,35 +22,38 @@ interface Props<
     TTransformedValues = TFieldValues,
 > {
     control: Control<TFieldValues, TContext, TTransformedValues>;
-    name: string;
+    nameField: Path<TFieldValues>;
     label: string;
-    type?: string;
-    placeholder?: string;
     selectValues?: Array<any>;
 }
 
+type FormFieldInputProps<TFieldValues extends FieldValues = FieldValues> =
+    Props<TFieldValues> &
+        Omit<
+            React.ComponentPropsWithoutRef<"input">,
+            "value" | "onChange" | "onBlur" | "name"
+        >;
+
 export const FormFieldInput = <TFieldValues extends FieldValues>({
     control,
-    name,
+    nameField,
     label,
-    placeholder,
-    type,
-}: Props<TFieldValues>) => {
+    ...inputProps
+}: FormFieldInputProps<TFieldValues>) => {
     return (
         <FormField
             control={control}
-            name={name as Path<TFieldValues>}
+            name={nameField as Path<TFieldValues>}
             render={({ field }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
                         <Input
-                            type={type}
-                            placeholder={placeholder}
+                            {...inputProps}
                             value={field.value || ""}
                             onChange={(e) =>
                                 field.onChange(
-                                    type == "number"
+                                    inputProps.type == "number"
                                         ? Number(e.target.value)
                                         : e.target.value,
                                 )
@@ -67,21 +70,24 @@ export const FormFieldInput = <TFieldValues extends FieldValues>({
     );
 };
 
+type FormFieldTextAreaProps<TFieldValues extends FieldValues = FieldValues> =
+    Props<TFieldValues> & React.ComponentPropsWithoutRef<"textarea">;
+
 export const FormFieldTextarea = <TFieldValues extends FieldValues>({
-    name,
+    nameField,
     label,
-    placeholder,
     control,
-}: Props<TFieldValues>) => (
+    ...textareaProps
+}: FormFieldTextAreaProps<TFieldValues>) => (
     <FormField
         control={control}
-        name={name as Path<TFieldValues>}
+        name={nameField as Path<TFieldValues>}
         render={({ field }) => (
             <FormItem>
                 <FormLabel>{label}</FormLabel>
                 <FormControl>
                     <Textarea
-                        placeholder={placeholder}
+                        {...textareaProps}
                         value={field.value || ""}
                         onChange={field.onChange}
                         onBlur={field.onBlur}
@@ -95,34 +101,50 @@ export const FormFieldTextarea = <TFieldValues extends FieldValues>({
     />
 );
 
+type FormFieldSelectProps<TFieldValues extends FieldValues = FieldValues> =
+    Props<TFieldValues> &
+        React.ComponentPropsWithoutRef<"select"> & {
+            placeholder: string;
+            selectComponent?: React.ReactNode;
+        };
+
 export const FormFieldSelect = <TFieldValues extends FieldValues>({
-    name,
+    nameField,
     control,
     label,
-    placeholder,
     selectValues,
-}: Props<TFieldValues>) => {
+    placeholder,
+    selectComponent,
+    ...selectProps
+}: FormFieldSelectProps<TFieldValues>) => {
     return (
         <FormField
             control={control}
-            name={name as Path<TFieldValues>}
+            name={nameField as Path<TFieldValues>}
             render={({ field }) => (
                 <FormItem>
-                    <FormLabel>{label}</FormLabel>
+                    <FormLabel htmlFor={nameField}>{label}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder={placeholder} />
+                            <SelectTrigger id={nameField}>
+                                <SelectValue
+                                    {...selectProps}
+                                    placeholder={placeholder}
+                                />
                             </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
-                            {selectValues?.map((status) => (
-                                <SelectItem key={status} value={status}>
-                                    {status.charAt(0).toUpperCase() +
-                                        status.slice(1)}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
+                        {selectComponent ? (
+                            <>{selectComponent}</>
+                        ) : (
+                            <SelectContent>
+                                {selectValues?.map((status) => (
+                                    <SelectItem key={status} value={status}>
+                                        {status.charAt(0).toUpperCase() +
+                                            status.slice(1)}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        )}
                     </Select>
                     <FormMessage />
                 </FormItem>
