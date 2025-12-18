@@ -8,18 +8,8 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { SubmitBtn } from "@/pages/Login/_components";
 import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -30,6 +20,7 @@ import {
     FormFieldSelect,
     FormFieldTextarea,
 } from "@/components/ui/form-field";
+import DialogFooterButtons from "@/components/DialogFooterButtons/DialogFooterButtons";
 
 interface OrderDialogFormProps {
     item: Order | null;
@@ -65,19 +56,19 @@ function OrdersDialogForm({
                     <div className="grid grid-cols-3 gap-4">
                         <FormFieldInput
                             control={form.control}
-                            name={"customerName"}
+                            nameField={"customerName"}
                             label={"Nombre del Cliente"}
                             placeholder="Juan Pérez"
                         />
                         <FormFieldInput
                             control={form.control}
-                            name={"customerPhone"}
+                            nameField={"customerPhone"}
                             label={"Teléfono"}
                             placeholder="+54 9 11 1234 5678"
                         />
                         <FormFieldInput
                             control={form.control}
-                            name={"email"}
+                            nameField={"customerEmail"}
                             label={"Email"}
                             placeholder="cliente@example.com"
                         />
@@ -86,13 +77,13 @@ function OrdersDialogForm({
                     {/* Notas y mensaje de WhatsApp */}
                     <FormFieldTextarea
                         control={form.control}
-                        name={"customerNotes"}
+                        nameField={"customerNotes"}
                         label={"Notas del Cliente"}
                         placeholder="Detalles adicionales..."
                     />
                     <FormFieldTextarea
                         control={form.control}
-                        name={"whatsappMessage"}
+                        nameField={"whatsappMessage"}
                         label={"Mensaje de WhatsApp"}
                         placeholder="Mensaje a enviar..."
                     />
@@ -101,7 +92,7 @@ function OrdersDialogForm({
                         {/* Estado de WhatsApp */}
                         <FormFieldSelect
                             control={form.control}
-                            name={"whatsappStatus"}
+                            nameField={"whatsappStatus"}
                             label={"Estado de Mensaje"}
                             placeholder="Seleccionar estado"
                             selectValues={Object.values(WhatsAppStatusNames)}
@@ -110,7 +101,7 @@ function OrdersDialogForm({
                         {/* Método de pago */}
                         <FormFieldInput
                             control={form.control}
-                            name={"paymentMethod"}
+                            nameField={"paymentMethod"}
                             label={"Método de Pago"}
                             placeholder="Ej: Transferencia, Efectivo..."
                         />
@@ -120,44 +111,25 @@ function OrdersDialogForm({
                     <div className="grid grid-cols-2 gap-4">
                         <FormFieldInput
                             control={form.control}
-                            name={"subtotal"}
+                            nameField={"subtotal"}
                             label={"Subtotal"}
                             type="number"
                         />
                         <FormFieldInput
                             control={form.control}
-                            name={"total"}
+                            nameField={"total"}
                             label={"Total"}
                             type="number"
                         />
 
-                        <FormField
+                        <FormFieldInput
                             control={form.control}
-                            name="shippingCost"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Costo de Envío</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            step="0.01"
-                                            value={
-                                                field.value ? field.value : ""
-                                            }
-                                            onChange={(e) =>
-                                                field.onChange(
-                                                    Number(e.target.value),
-                                                )
-                                            }
-                                            disabled={field.disabled}
-                                            ref={field.ref}
-                                            onBlur={field.onBlur}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                            nameField={"shippingCost"}
+                            label={"Costo de Envío"}
+                            type="number"
+                            step="0.01"
                         />
+
                         <FormField
                             control={form.control}
                             name="cashDiscountPercentage"
@@ -244,16 +216,11 @@ function OrdersDialogForm({
                         </div>
                     </div>
                 </div>
-
-                <DialogFooter>
-                    <Button type="button" variant="outline" onClick={onClose}>
-                        Cancelar
-                    </Button>
-                    <SubmitBtn
-                        isLoading={isLoading}
-                        name={order ? "Guardar" : "Crear"}
-                    />
-                </DialogFooter>
+                <DialogFooterButtons
+                    onClose={onClose}
+                    name={order ? "Guardar" : "Crear"}
+                    isLoading={isLoading || form.formState.isSubmitting}
+                />
             </form>
         </Form>
     );
