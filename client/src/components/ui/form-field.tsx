@@ -6,7 +6,7 @@ import {
     FormControl,
     FormMessage,
 } from "./form";
-import { Input } from "./input";
+import { Input, InputPassword } from "./input";
 import { Textarea } from "./textarea";
 import {
     Select,
@@ -61,6 +61,34 @@ export const FormFieldInput = <TFieldValues extends FieldValues>({
                             onBlur={field.onBlur}
                             disabled={field.disabled}
                             ref={field.ref}
+                        />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
+};
+
+export const FormFieldInputPassword = <TFieldValues extends FieldValues>({
+    control,
+    nameField,
+    label,
+
+    ...inputProps
+}: FormFieldInputProps<TFieldValues>) => {
+    return (
+        <FormField
+            control={control}
+            name={nameField as Path<TFieldValues>}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                        <InputPassword
+                            {...inputProps}
+                            type="password"
+                            {...field}
                         />
                     </FormControl>
                     <FormMessage />
