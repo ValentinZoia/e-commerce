@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export function useOrderMutations() {
     const queryClient = useQueryClient();
 
-    const createOrderMutation = useMutation({
+    const createItemMutation = useMutation({
         mutationFn: (data: OrderFormValues) => createOrder(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -20,7 +20,7 @@ export function useOrderMutations() {
         },
     });
 
-    const updateOrderMutation = useMutation({
+    const updateItemMutation = useMutation({
         mutationFn: ({ id, values }: { id: string; values: OrderFormValues }) =>
             updateOrder(id, values),
         onSuccess: () => {
@@ -30,7 +30,7 @@ export function useOrderMutations() {
         },
     });
 
-    const deleteOrderMutation = useMutation({
+    const deleteItemMutation = useMutation({
         mutationFn: ({ id }: { id: string }) => deleteOrder(id),
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -40,8 +40,8 @@ export function useOrderMutations() {
     });
 
     return {
-        createOrderMutation,
-        updateOrderMutation,
-        deleteOrderMutation,
+        createItemMutation,
+        updateItemMutation,
+        deleteItemMutation,
     };
 }

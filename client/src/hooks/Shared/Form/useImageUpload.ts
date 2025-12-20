@@ -1,1 +1,1 @@
-export const useImageUpload = (existingImages: string[]) => {};
+export const useImageUpload = (_existingImages: string[]) => {};

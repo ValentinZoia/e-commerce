@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { OrderFormValues, orderSchema, defaultValues } from "@/lib/zod-schemas/orderSchema";
+import {
+    OrderFormValues,
+    orderSchema,
+    defaultValues,
+} from "@/lib/zod-schemas/orderSchema";
 import { CartItem } from "@/types";
 import { useOrderMutations } from "@/hooks/Orders/useOrderMutations";
 import { useCheckoutSessionMutations } from "@/hooks/Checkout/useCheckoutMutations";
@@ -30,12 +34,11 @@ const mapCartItemToOrderItem = (item: CartItem) => ({
 
 // Business logic functions - PURE functions
 const calculateInitialInstallments = (items: CartItem[]) =>
-    items
-        .flatMap((item) => item.product?.installments || [])
-        .filter(Boolean);
+    items.flatMap((item) => item.product?.installments || []).filter(Boolean);
 
 const calculateInitialCashDiscount = (items: CartItem[]) =>
-    items.find((item) => item.product?.cashDiscountPercentage)?.product?.cashDiscountPercentage || null;
+    items.find((item) => item.product?.cashDiscountPercentage)?.product
+        ?.cashDiscountPercentage || null;
 
 export const useCheckoutForm = ({
     items,
@@ -45,7 +48,7 @@ export const useCheckoutForm = ({
     isFreeShipping,
 }: CheckoutFormProps) => {
     // Hooks
-    const { createOrderMutation } = useOrderMutations();
+    const { createItemMutation } = useOrderMutations();
     const { doDeleteCheckoutSession } = useCheckoutSessionMutations();
     const navigate = useNavigate();
     const { token } = useLoaderData() as { token: string };
@@ -53,16 +56,23 @@ export const useCheckoutForm = ({
 
     // Business calculations
     const hasInstallments = items.some(
-        (item) => item.product?.installments && item.product.installments.length > 0
+        (item) =>
+            item.product?.installments && item.product.installments.length > 0,
     );
 
     const hasCashDiscount = items.some(
-        (item) => item.product?.cashDiscountPercentage && item.product.cashDiscountPercentage > 0
+        (item) =>
+            item.product?.cashDiscountPercentage &&
+            item.product.cashDiscountPercentage > 0,
     );
 
     const products = items.map(mapCartItemToOrderItem);
-    const initialInstallments = hasInstallments ? calculateInitialInstallments(items) : [];
-    const initialCashDiscount = hasCashDiscount ? calculateInitialCashDiscount(items) : null;
+    const initialInstallments = hasInstallments
+        ? calculateInitialInstallments(items)
+        : [];
+    const initialCashDiscount = hasCashDiscount
+        ? calculateInitialCashDiscount(items)
+        : null;
 
     // Form setup
     const form = useForm<OrderFormValues>({
@@ -82,7 +92,7 @@ export const useCheckoutForm = ({
 
     // Submit handler - contains business logic
     const onSubmit = () => {
-        createOrderMutation.mutate(form.getValues(), {
+        createItemMutation.mutate(form.getValues(), {
             onSuccess: (res: DBResponseCommand<Order>) => {
                 form.reset();
                 emptyCart();
@@ -98,7 +108,7 @@ export const useCheckoutForm = ({
     return {
         form,
         onSubmit,
-        isLoading: createOrderMutation.isPending,
+        isLoading: createItemMutation.isPending,
         hasInstallments,
         hasCashDiscount,
     };

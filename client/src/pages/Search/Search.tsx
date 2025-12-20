@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
 
 function SearchPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // Get the value of the 'q' query parameter
   const searchTerm = searchParams.get("q");

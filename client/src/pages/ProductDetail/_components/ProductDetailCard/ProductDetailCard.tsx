@@ -129,7 +129,7 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
                     <div className="bg-green-50 border border-green-200 rounded-lg p-2">
                       <p className="text-xs text-green-700 font-meduim">
                         💳 {product.installments[0].quantity} cuotas de
-                        {formatPrice(product.installments[0].amount)} sin
+                        {formatPrice(product.installments[0].amount || 0)} sin
                         interés
                       </p>
                     </div>
