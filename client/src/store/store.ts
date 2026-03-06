@@ -1,52 +1,38 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
-    persistReducer,
-    persistStore,
-    FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER,
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Importación correcta
-import {
-    cartSlice,
-    //  productsSlice,
-    //  categoriesSlice,
-    authSlice,
-} from "./states";
+import storage from "redux-persist/lib/storage";
+import { cartSlice, authSlice } from "./states";
 import { useDispatch } from "react-redux";
 
 // Configuración de persistencia
 const cartPersistConfig = {
-    key: "cart",
-    storage, // Usa el storage importado de redux-persist
-    whitelist: ["items", "totalItems", "totalPrice"], // Especifica qué campos persistir
+  key: "cart",
+  storage, // Usa el storage importado de redux-persist
+  whitelist: ["items", "totalItems", "totalPrice"], // Especifica qué campos persistir
 };
 
 const cartPersistReducer = persistReducer(cartPersistConfig, cartSlice.reducer);
 
 export const store = configureStore({
-    reducer: {
-        cart: cartPersistReducer,
-        // products: productsSlice.reducer,
-        // categories: categoriesSlice.reducer,
-        auth: authSlice.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [
-                    FLUSH,
-                    REHYDRATE,
-                    PAUSE,
-                    PERSIST,
-                    PURGE,
-                    REGISTER,
-                ],
-            },
-        }),
+  reducer: {
+    cart: cartPersistReducer,
+    auth: authSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export const persistor = persistStore(store); // Exporta el persistor
